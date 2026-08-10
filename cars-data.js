@@ -38,11 +38,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'nidai', label: 'にだい',
-        text: 'その ために、うんてんせきの うしろが、にもつを つむ ひろい にだいに なって います。'
+        text: 'その ために、うんてんせきの うしろが、フォークリフトで にもつを その まま のせられる、ひろくて たいらな にだいに なって います。'
       },
       {
         part: 'tire', label: 'タイヤ',
-        text: 'おもい にもつを のせても つぶれない ように、じょうぶで <ruby>大<rt>おお</rt></ruby>きな タイヤが、うしろでは <ruby>二本<rt>にほん</rt></ruby>ずつ ならべて ついて います。'
+        text: 'おもい にもつを のせても つぶれない ように、うしろの タイヤは <ruby>二本<rt>にほん</rt></ruby>ずつ ならべて つけて あり、ぜんぶで <ruby>十<rt>じゅっ</rt></ruby>こ ちかくも あります。'
       }
     ],
     hakken: 'にだいの よこの とびらが、<ruby>鳥<rt>とり</rt></ruby>の つばさの ように ま<ruby>上<rt>うえ</rt></ruby>まで <ruby>大<rt>おお</rt></ruby>きく ひらく トラックも あります。「ウィングドア」と いいます。'
@@ -58,11 +58,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'seat', label: 'ざせき',
-        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>に、ならんで すわれる ざせきが たくさん つくって あります。'
+        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>は、まん<ruby>中<rt>なか</rt></ruby>の つうろを あけて ざせきが ならび、<ruby>立<rt>た</rt></ruby>って のる <ruby>人<rt>ひと</rt></ruby>の ための つりかわも ついて います。'
       },
       {
         part: 'door', label: 'とびら',
-        text: 'のりおりが しやすい ように、とびらが <ruby>大<rt>おお</rt></ruby>きく ひらいて、ゆかが ひくく なって います。'
+        text: 'のりおりが しやすい ように、とびらが <ruby>二<rt>に</rt></ruby>まいに <ruby>分<rt>わ</rt></ruby>かれて ひらき、ゆかが <ruby>地<rt>じ</rt></ruby>めんの ちかくまで ひくく なって います。'
       }
     ],
     hakken: 'そとの けしきが よく <ruby>見<rt>み</rt></ruby>えるように、まどが <ruby>大<rt>おお</rt></ruby>きく つくって あります。'
@@ -78,11 +78,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'seat', label: 'ざせき',
-        text: 'その ために、<ruby>四人<rt>よにん</rt></ruby>か <ruby>五人<rt>ごにん</rt></ruby>が ゆったり すわれる ざせきが、つくって あります。'
+        text: 'その ために、うんてんせきも <ruby>入<rt>い</rt></ruby>れて <ruby>四人<rt>よにん</rt></ruby>か <ruby>五人<rt>ごにん</rt></ruby>が すわれる ざせきが、<ruby>二<rt>に</rt></ruby>れつに ならべて あります。'
       },
       {
         part: 'window', label: 'まど',
-        text: 'うんてんする <ruby>人<rt>ひと</rt></ruby>が まわりを よく <ruby>見<rt>み</rt></ruby>られる ように、まどが ぐるりと ついて います。'
+        text: 'うんてんする <ruby>人<rt>ひと</rt></ruby>が まわりの <ruby>車<rt>くるま</rt></ruby>や <ruby>人<rt>ひと</rt></ruby>に すぐ <ruby>気<rt>き</rt></ruby>づける ように、まどが ぐるりと つき、うしろを うつす かがみも ついて います。'
       }
     ],
     hakken: 'うしろの ざせきを たおすと、<ruby>大<rt>おお</rt></ruby>きな にもつも のせられます。'
@@ -98,11 +98,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'andon', label: 'あんどん',
-        text: 'その ために、やねの <ruby>上<rt>うえ</rt></ruby>に「あんどん」と いう ランプが ついて いて、とおくからでも すぐに <ruby>見<rt>み</rt></ruby>つけられます。'
+        text: 'その ために、やねの <ruby>上<rt>うえ</rt></ruby>に「あんどん」と いう ランプが あり、くらい よるでも とおくから、あれは タクシーだと わかります。'
       },
       {
         part: 'seat', label: 'ざせき',
-        text: 'ゆったり すわれる ように、うしろの ざせきが ひろく つくって あります。'
+        text: '<ruby>大<rt>おお</rt></ruby>きな にもつを もった <ruby>人<rt>ひと</rt></ruby>でも ゆったり すわれる ように、うしろの ざせきは <ruby>足<rt>あし</rt></ruby>もとが ひろく つくって あります。'
       }
     ],
     hakken: 'うんてんせきの よこには、のった ながさを はかる「メーター」が ついて います。'
@@ -118,11 +118,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'nidai', label: 'にもつ<ruby>入<rt>い</rt></ruby>れ',
-        text: 'その ために、うしろが、たくさんの てがみを <ruby>入<rt>い</rt></ruby>れられる はこの かたちに なって います。'
+        text: 'その ために、うしろが、まちごとに <ruby>分<rt>わ</rt></ruby>けた てがみの ケースを、じゅんばんに ならべて つめる はこに なって います。'
       },
       {
         part: 'door', label: 'とびら',
-        text: 'てがみを すぐに <ruby>出<rt>だ</rt></ruby>せる ように、うしろの とびらが <ruby>大<rt>おお</rt></ruby>きく ひらきます。'
+        text: 'せまい みちに とめても じゃまに ならない ように、うしろの とびらは よこへ すべらせて ひらきます。'
       }
     ],
     hakken: '<ruby>車<rt>くるま</rt></ruby>の よこには、ゆうびんの しるし「〒」が かいて あります。'
@@ -138,11 +138,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'shelf', label: 'たな',
-        text: 'その ために、にもつを <ruby>入<rt>い</rt></ruby>れる ところが、いくつもの たなに <ruby>分<rt>わ</rt></ruby>かれて います。'
+        text: 'その ために、にもつを <ruby>入<rt>い</rt></ruby>れる ところが、とどける じゅんばんに ならべられる、いくつもの たなに <ruby>分<rt>わ</rt></ruby>かれて います。'
       },
       {
         part: 'door', label: 'とびら',
-        text: 'とどける にもつを すぐに <ruby>出<rt>だ</rt></ruby>せる ように、うしろの とびらが <ruby>大<rt>おお</rt></ruby>きく ひらきます。'
+        text: 'にもつを かかえた ままでも あけられる ように、うしろの とびらは <ruby>上<rt>うえ</rt></ruby>へ まきあがる シャッターに なって います。'
       }
     ],
     hakken: 'つめたい ままで とどける ために、<ruby>中<rt>なか</rt></ruby>を ひやせる たくはい<ruby>車<rt>しゃ</rt></ruby>も あります。'
@@ -158,11 +158,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'tank', label: 'タンク',
-        text: 'その ために、うしろが、まるくて <ruby>大<rt>おお</rt></ruby>きな タンクに なって います。'
+        text: 'その ために、うしろが まるくて <ruby>大<rt>おお</rt></ruby>きな タンクに なって いて、<ruby>中<rt>なか</rt></ruby>は いくつかの へやに <ruby>分<rt>わ</rt></ruby>かれて います。'
       },
       {
         part: 'hose', label: 'ホース',
-        text: 'ためた ものを ながし<ruby>出<rt>だ</rt></ruby>せる ように、ながい ホースを まいて おく ところが ついて います。'
+        text: 'ガソリンスタンドの <ruby>地<rt>じ</rt></ruby>めんの <ruby>下<rt>した</rt></ruby>の タンクへ ながしこめる ように、よこに ながい ホースを まいて しまって あります。'
       }
     ],
     hakken: 'タンクの <ruby>中<rt>なか</rt></ruby>は へやのように <ruby>分<rt>わ</rt></ruby>かれて いて、ちがう しゅるいの ものを いっしょに はこべます。'
@@ -178,11 +178,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'deck', label: 'にだい',
-        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>を のせる ゆかが、<ruby>上<rt>うえ</rt></ruby>と <ruby>下<rt>した</rt></ruby>の <ruby>二<rt>に</rt></ruby>だんに なって います。'
+        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>を のせる ゆかが <ruby>上<rt>うえ</rt></ruby>と <ruby>下<rt>した</rt></ruby>の <ruby>二<rt>に</rt></ruby>だんに なって いて、<ruby>六<rt>ろく</rt></ruby>だいほども はこべます。'
       },
       {
         part: 'slope', label: 'スロープ',
-        text: '<ruby>車<rt>くるま</rt></ruby>が じぶんで のぼれる ように、うしろに ながい さかみち（スロープ）が ついて います。'
+        text: 'はこぶ <ruby>車<rt>くるま</rt></ruby>が じぶんの タイヤで のぼれる ように、うしろの ゆかが ゆっくり かたむいて、さかみちに かわります。'
       }
     ],
     hakken: '<ruby>一<rt>いち</rt></ruby>だいの キャリアカーで、<ruby>六<rt>ろく</rt></ruby>だいくらいの <ruby>車<rt>くるま</rt></ruby>を はこべます。'
@@ -199,11 +199,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'container', label: 'コンテナ',
-        text: 'その ために、うしろが、にもつを たくさん <ruby>入<rt>い</rt></ruby>れられる ながい はこに なって います。'
+        text: 'その ために、うしろが、<ruby>船<rt>ふね</rt></ruby>にも でんしゃにも その まま つみかえられる、ながい コンテナに なって います。'
       },
       {
         part: 'joint', label: 'つなぎめ',
-        text: 'まがりみちでも まがれる ように、うんてんせきと にだいの <ruby>間<rt>あいだ</rt></ruby>が、くるりと うごく つなぎめに なって います。'
+        text: 'まがりみちでも まがれる ように、うんてんせきと コンテナの あいだが、くの<ruby>字<rt>じ</rt></ruby>に おれる つなぎめで つないで あります。'
       }
     ],
     hakken: 'にだいだけを きりはなして おいて おき、べつの うんてんせきが ひっぱって いく ことも できます。'
@@ -219,11 +219,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'cooler', label: 'ひやす きかい',
-        text: 'その ために、にだいの <ruby>前<rt>まえ</rt></ruby>に、<ruby>中<rt>なか</rt></ruby>を ひやす きかいが ついて います。'
+        text: 'その ために、にだいの <ruby>前<rt>まえ</rt></ruby>に、<ruby>中<rt>なか</rt></ruby>を こおりよりも つめたく できる きかいが ついて います。'
       },
       {
         part: 'wall', label: 'あつい かべ',
-        text: 'つめたい くうきが にげない ように、にだいの かべが あつく つくって あります。'
+        text: 'つめたい くうきが にげない ように、にだいの かべが、まほうびんの ように あつく つくって あります。'
       }
     ],
     hakken: '<ruby>中<rt>なか</rt></ruby>の つめたさは、うんてんせきに ある きかいで いつでも しらべられます。'
@@ -239,11 +239,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'nidai', label: 'にだい',
-        text: 'その ために、たんすや れいぞうこも <ruby>入<rt>はい</rt></ruby>る、せの <ruby>高<rt>たか</rt></ruby>い にだいに なって います。'
+        text: 'その ために、たんすや れいぞうこを <ruby>立<rt>た</rt></ruby>てた まま <ruby>入<rt>い</rt></ruby>れられる、せの <ruby>高<rt>たか</rt></ruby>い にだいに なって います。'
       },
       {
         part: 'gate', label: 'あげさげ<ruby>台<rt>だい</rt></ruby>',
-        text: 'おもい かぐを らくに のせられる ように、うしろの <ruby>台<rt>だい</rt></ruby>が <ruby>上<rt>うえ</rt></ruby>と <ruby>下<rt>した</rt></ruby>に うごきます。'
+        text: 'おもい かぐを かかえて はしごを のぼらなくて よい ように、うしろの <ruby>台<rt>だい</rt></ruby>が エレベーターの ように <ruby>上<rt>うえ</rt></ruby>や <ruby>下<rt>した</rt></ruby>へ うごきます。'
       }
     ],
     hakken: 'にもつに きずが つかない ように、あつい ぬのを かけてから はこびます。'
@@ -259,11 +259,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'seat', label: 'ざせき',
-        text: 'その ために、<ruby>子<rt>こ</rt></ruby>どもの からだに あった、ちいさめの ざせきが ならんで います。'
+        text: 'その ために、ざせきは <ruby>子<rt>こ</rt></ruby>どもの からだに あわせて ちいさめで、せもたれは からだを まもれる ように <ruby>高<rt>たか</rt></ruby>く つくって あります。'
       },
       {
         part: 'step', label: 'かいだん',
-        text: '<ruby>小<rt>ちい</rt></ruby>さい <ruby>子<rt>こ</rt></ruby>でも のりやすい ように、とびらの <ruby>下<rt>した</rt></ruby>に ひくい かいだんが ついて います。'
+        text: '<ruby>小<rt>ちい</rt></ruby>さい <ruby>子<rt>こ</rt></ruby>でも じぶんで のれる ように、とびらの <ruby>下<rt>した</rt></ruby>から ひくい だんが <ruby>出<rt>で</rt></ruby>て きます。'
       }
     ],
     hakken: 'まわりの <ruby>車<rt>くるま</rt></ruby>から よく <ruby>見<rt>み</rt></ruby>える ように、きいろく ぬって ある バスが おおいです。'
@@ -279,11 +279,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'safe', label: 'かたい はこ',
-        text: 'その ために、うしろが、かんたんには あかない かたい はこに なって います。'
+        text: 'その ために、うしろが、そとから <ruby>力<rt>ちから</rt></ruby>を かけても こじあけられない、てつの あつい はこに なって います。'
       },
       {
         part: 'window', label: 'まど',
-        text: 'そとから <ruby>中<rt>なか</rt></ruby>が <ruby>見<rt>み</rt></ruby>えない ように、まどが とても <ruby>小<rt>ちい</rt></ruby>さく つくって あります。'
+        text: 'そとから <ruby>中<rt>なか</rt></ruby>の ようすが <ruby>見<rt>み</rt></ruby>えない ように、まどは かおぐらいの <ruby>大<rt>おお</rt></ruby>きさしか なく、ガラスも あつく なって います。'
       }
     ],
     hakken: 'とびらは、<ruby>中<rt>なか</rt></ruby>に いる <ruby>人<rt>ひと</rt></ruby>が よいと しらせるまで あかない しくみに なって います。'
@@ -299,11 +299,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'slope', label: 'スロープ',
-        text: 'その ために、うしろに、<ruby>車<rt>くるま</rt></ruby>いすが のぼれる さかみち（スロープ）が ついて います。'
+        text: 'その ために、うしろの とびらの ところに、くるまいすに のった ままで のぼれる スロープが おりて きます。'
       },
       {
         part: 'belt', label: 'とめる ベルト',
-        text: 'はしって いる あいだ うごかない ように、<ruby>車<rt>くるま</rt></ruby>いすを ゆかに とめる ベルトが ついて います。'
+        text: 'はしって いる あいだ くるまいすが うごかない ように、<ruby>四<rt>よ</rt></ruby>すみを ベルトで ゆかに とめます。'
       }
     ],
     hakken: 'スロープの かわりに、<ruby>車<rt>くるま</rt></ruby>いすごと もち<ruby>上<rt>あ</rt></ruby>げる リフトが ついた <ruby>車<rt>くるま</rt></ruby>も あります。'
@@ -321,11 +321,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'arm', label: 'うで',
-        text: 'その ために、ながく のびる じょうぶな うでが ついて います。'
+        text: 'その ために、うでが つりざおの ように <ruby>中<rt>なか</rt></ruby>から つぎつぎ のびて、ビルの <ruby>上<rt>うえ</rt></ruby>まで とどきます。'
       },
       {
         part: 'ashi', label: 'あし',
-        text: 'おもい ものを つっても <ruby>車<rt>くるま</rt></ruby>が たおれない ように、<ruby>四本<rt>よんほん</rt></ruby>の しっかりした あしを <ruby>出<rt>だ</rt></ruby>して、<ruby>地<rt>じ</rt></ruby>めんを おさえます。'
+        text: 'おもい ものを つり<ruby>上<rt>あ</rt></ruby>げても たおれない ように、<ruby>四本<rt>よんほん</rt></ruby>の あしを <ruby>大<rt>おお</rt></ruby>きく ひろげ、タイヤが うくまで <ruby>車<rt>くるま</rt></ruby>を もち<ruby>上<rt>あ</rt></ruby>げます。'
       }
     ],
     hakken: 'うでは、はしごの ように <ruby>中<rt>なか</rt></ruby>から つぎつぎに のびて、ビルの <ruby>屋上<rt>おくじょう</rt></ruby>まで とどきます。'
@@ -341,11 +341,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'bucket', label: 'バケット',
-        text: 'その ために、うでの さきに、<ruby>土<rt>つち</rt></ruby>を すくう <ruby>大<rt>おお</rt></ruby>きな バケットが ついて います。'
+        text: 'その ために、うでの さきに するどい つめの ついた バケットが あり、<ruby>地<rt>じ</rt></ruby>めんより <ruby>下<rt>した</rt></ruby>の <ruby>土<rt>つち</rt></ruby>まで ほりおこせます。'
       },
       {
         part: 'crawler', label: 'キャタピラ',
-        text: 'やわらかい <ruby>土<rt>つち</rt></ruby>の <ruby>上<rt>うえ</rt></ruby>でも しずまない ように、タイヤの かわりに ベルトのような キャタピラが ついて います。'
+        text: 'ほった あなの ふちの やわらかい <ruby>土<rt>つち</rt></ruby>でも しずまない ように、タイヤの かわりに、ひろい めんで ささえる キャタピラで すすみます。'
       }
     ],
     hakken: 'うでの さきを とりかえると、コンクリートを こわす ドリルにも なります。'
@@ -361,11 +361,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'blade', label: 'はね',
-        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>に、<ruby>土<rt>つち</rt></ruby>を おしのける <ruby>大<rt>おお</rt></ruby>きな はねが ついて います。'
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>に、<ruby>土<rt>つち</rt></ruby>を まとめて <ruby>前<rt>まえ</rt></ruby>へ おして いく <ruby>大<rt>おお</rt></ruby>きな はねが あり、<ruby>上<rt>あ</rt></ruby>げ<ruby>下<rt>さ</rt></ruby>げも できます。'
       },
       {
         part: 'crawler', label: 'キャタピラ',
-        text: 'つよい <ruby>力<rt>ちから</rt></ruby>で おせる ように、はばの ひろい キャタピラで、しっかりと <ruby>地<rt>じ</rt></ruby>めんを つかみます。'
+        text: 'つよい <ruby>力<rt>ちから</rt></ruby>で おしても すべらない ように、キャタピラの でっぱりが <ruby>地<rt>じ</rt></ruby>めんに ぐいと くいこみます。'
       }
     ],
     hakken: 'はねは <ruby>上下<rt>じょうげ</rt></ruby>に うごきます。<ruby>少<rt>すこ</rt></ruby>しずつ <ruby>下<rt>さ</rt></ruby>げながら すすむと、<ruby>地<rt>じ</rt></ruby>めんが たいらに なります。'
@@ -381,11 +381,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'drum', label: 'ドラム',
-        text: 'その ために、うしろに、いつも ぐるぐる まわる <ruby>大<rt>おお</rt></ruby>きな ドラムが ついて います。'
+        text: 'その ために、うしろの <ruby>大<rt>おお</rt></ruby>きな ドラムが、はしって いる あいだも ぐるぐる まわりつづけ、<ruby>中<rt>なか</rt></ruby>の コンクリートを まぜて います。'
       },
       {
         part: 'chute', label: 'シュート',
-        text: 'はこんだ コンクリートを ながしこめる ように、といのような シュートが ついて います。'
+        text: 'こうじの ばしょの ねらった ところへ ながしこめる ように、うしろの とい（シュート）は むきを かえられます。'
       }
     ],
     hakken: 'ドラムが まわりつづけるのは、はこぶ とちゅうで コンクリートが かたまって しまわない ようにする ためです。'
@@ -401,11 +401,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'roller', label: 'ローラー',
-        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>と うしろに、てつで できた <ruby>大<rt>おお</rt></ruby>きくて おもい ローラーが ついて います。'
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>と うしろに、<ruby>中<rt>なか</rt></ruby>へ <ruby>水<rt>みず</rt></ruby>を <ruby>入<rt>い</rt></ruby>れて もっと おもく できる、てつの ローラーが ついて います。'
       },
       {
         part: 'seat', label: 'ざせき',
-        text: 'どこまで かためたかが よく <ruby>見<rt>み</rt></ruby>える ように、ざせきが <ruby>高<rt>たか</rt></ruby>い ところに あります。'
+        text: 'ローラーの はしが どこを とおって いるか <ruby>見<rt>み</rt></ruby>える ように、ざせきが <ruby>高<rt>たか</rt></ruby>い ところに あり、よこへ ずらす ことも できます。'
       }
     ],
     hakken: 'おなじ ところを なんども いったり きたり して、どうろを たいらに かためます。'
@@ -421,11 +421,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'nidai', label: 'にだい',
-        text: 'その ために、にだいが うしろに かたむいて、<ruby>土<rt>つち</rt></ruby>を ざあっと おろせる ように なって います。'
+        text: 'その ために、にだいの <ruby>下<rt>した</rt></ruby>に ふとい つつが あり、それが ぐいと のびて にだいを かたむけ、<ruby>土<rt>つち</rt></ruby>を ざあっと おろします。'
       },
       {
-        part: 'tire', label: 'タイヤ',
-        text: 'おもい <ruby>土<rt>つち</rt></ruby>を のせても だいじょうぶな ように、じょうぶで <ruby>大<rt>おお</rt></ruby>きな タイヤが ついて います。'
+        part: 'cab', label: 'うんてんせき',
+        text: '<ruby>上<rt>うえ</rt></ruby>から <ruby>土<rt>つち</rt></ruby>や <ruby>石<rt>いし</rt></ruby>が おちて きても だいじょうぶな ように、うんてんせきの やねが とくべつ じょうぶに つくって あります。'
       }
     ],
     hakken: 'にだいを もち<ruby>上<rt>あ</rt></ruby>げるのは、<ruby>力<rt>ちから</rt></ruby>の つよい「シリンダー」と いう ぼうです。'
@@ -441,11 +441,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'basket', label: 'かご',
-        text: 'その ために、うでの さきに、<ruby>人<rt>ひと</rt></ruby>が のる かごが ついて います。'
+        text: 'その ために、うでの さきに <ruby>人<rt>ひと</rt></ruby>が <ruby>立<rt>た</rt></ruby>って はたらける かごが つき、うでが かたむいても かごは いつも まっすぐな ままです。'
       },
       {
         part: 'ashi', label: 'あし',
-        text: 'うでを <ruby>高<rt>たか</rt></ruby>く のばしても たおれない ように、<ruby>四本<rt>よんほん</rt></ruby>の あしを <ruby>出<rt>だ</rt></ruby>して <ruby>地<rt>じ</rt></ruby>めんを おさえます。'
+        text: 'かごが ゆれて あぶなく ならない ように、<ruby>四本<rt>よんほん</rt></ruby>の あしを <ruby>出<rt>だ</rt></ruby>して <ruby>車<rt>くるま</rt></ruby>を とめてからで ないと、うでは のびません。'
       }
     ],
     hakken: 'でんちゅうの こうじや、まちの あかりを とりかえる ときに つかわれます。'
@@ -461,11 +461,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'fork', label: 'つめ',
-        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>に、にもつの <ruby>下<rt>した</rt></ruby>に さしこむ <ruby>二本<rt>にほん</rt></ruby>の つめが ついて います。'
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>に、にもつの <ruby>下<rt>した</rt></ruby>の すきまへ さしこむ <ruby>二本<rt>にほん</rt></ruby>の つめが あり、はばも かえられます。'
       },
       {
         part: 'mast', label: 'マスト',
-        text: 'にもつを <ruby>高<rt>たか</rt></ruby>い たなに のせられる ように、つめが まっすぐ <ruby>上<rt>うえ</rt></ruby>に のびて いきます。'
+        text: 'そうこの <ruby>高<rt>たか</rt></ruby>い たなに とどく ように、まっすぐな はしらが <ruby>二<rt>に</rt></ruby>だん <ruby>三<rt>さん</rt></ruby>だんと のびて、つめを <ruby>上<rt>うえ</rt></ruby>まで はこびます。'
       }
     ],
     hakken: 'そうこでは、この フォークリフトが トラックの にだいへ にもつを つみこみます。'
@@ -482,11 +482,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'bucket', label: 'バケット',
-        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>に、いちどに たくさん すくえる <ruby>大<rt>おお</rt></ruby>きな バケットが ついて います。'
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>の バケットが、すくった <ruby>土<rt>つち</rt></ruby>を その まま トラックの にだいの <ruby>高<rt>たか</rt></ruby>さまで もち<ruby>上<rt>あ</rt></ruby>げます。'
       },
       {
         part: 'bigtire', label: '<ruby>大<rt>おお</rt></ruby>きな タイヤ',
-        text: 'でこぼこの <ruby>地<rt>じ</rt></ruby>めんでも すすめる ように、みぞの ふかい <ruby>大<rt>おお</rt></ruby>きな タイヤが ついて います。'
+        text: 'すくう ときに <ruby>前<rt>まえ</rt></ruby>へ ぐっと おしつけても すべらない ように、みぞの ふかい <ruby>大<rt>おお</rt></ruby>きな タイヤが ついて います。'
       }
     ],
     hakken: 'まん<ruby>中<rt>なか</rt></ruby>から くの<ruby>字<rt>じ</rt></ruby>に まがるので、せまい ばしょでも むきを かえられます。'
@@ -502,11 +502,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'hopper', label: 'うける ところ',
-        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>に、ダンプカーから アスファルトを うけとる <ruby>大<rt>おお</rt></ruby>きな <ruby>入<rt>い</rt></ruby>れものが ついて います。'
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>が、ダンプカーが うしろむきで あける あつい アスファルトを、こぼさず うけとめる <ruby>入<rt>い</rt></ruby>れものに なって います。'
       },
       {
         part: 'screed', label: 'ならす いた',
-        text: 'どうろが たいらに なる ように、うしろの ながい いたが、アスファルトを ならしながら すすみます。'
+        text: 'どうろが たいらに なる ように、うしろの ながい いたが、アスファルトを おしつけながら すすみます。'
       }
     ],
     hakken: 'ほそう<ruby>車<rt>しゃ</rt></ruby>の あとから ロードローラーが きて、どうろを おして かためます。'
@@ -522,11 +522,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'boom', label: 'うで',
-        text: 'その ために、おれまがりながら のびる ながい うでが ついて います。'
+        text: 'その ために、くの<ruby>字<rt>じ</rt></ruby>に おれまがる ながい うでが あり、その <ruby>中<rt>なか</rt></ruby>の くだを とおって、コンクリートが <ruby>上<rt>うえ</rt></ruby>まで のぼって いきます。'
       },
       {
         part: 'ashi', label: 'あし',
-        text: 'うでを のばしても たおれない ように、よこに <ruby>四本<rt>よんほん</rt></ruby>の あしを <ruby>出<rt>だ</rt></ruby>して <ruby>地<rt>じ</rt></ruby>めんを おさえます。'
+        text: 'うでを のばした ほうへ かたむかない ように、<ruby>車<rt>くるま</rt></ruby>の <ruby>四<rt>よ</rt></ruby>すみから あしを <ruby>出<rt>だ</rt></ruby>して、<ruby>地<rt>じ</rt></ruby>めんを おさえます。'
       }
     ],
     hakken: 'うでの <ruby>中<rt>なか</rt></ruby>は くだに なって いて、その <ruby>中<rt>なか</rt></ruby>を コンクリートが とおって いきます。'
@@ -542,11 +542,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'nipper', label: 'つかむ <ruby>手<rt>て</rt></ruby>',
-        text: 'その ために、ながい うでの さきに、かべを かみくだく <ruby>大<rt>おお</rt></ruby>きな <ruby>手<rt>て</rt></ruby>が ついて います。'
+        text: 'その ために、ながい うでの さきに、コンクリートの かべを ぱきんと かみくだく <ruby>大<rt>おお</rt></ruby>きな <ruby>手<rt>て</rt></ruby>が ついて います。'
       },
       {
         part: 'crawler', label: 'キャタピラ',
-        text: 'こわれた かべの <ruby>上<rt>うえ</rt></ruby>でも すすめる ように、はばの ひろい キャタピラが ついて います。'
+        text: 'こわれた かべの するどい かけらを ふんでも パンクしない ように、ゴムの タイヤでは なく、てつの キャタピラで すすみます。'
       }
     ],
     hakken: 'ほこりが とばない ように、<ruby>水<rt>みず</rt></ruby>を かけながら たてものを こわします。'
@@ -562,11 +562,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'blade', label: 'けずる は',
-        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>と うしろの タイヤの <ruby>間<rt>あいだ</rt></ruby>に、<ruby>土<rt>つち</rt></ruby>を けずる ながい はが ついて います。'
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>と うしろの タイヤの あいだに、ななめに かたむけられる ながい はが ついて います。'
       },
       {
         part: 'body', label: 'ながい からだ',
-        text: 'すこしの でこぼこも うまく けずれる ように、からだが とても ながく つくって あります。'
+        text: 'すこしの でこぼこも けずり のこさない ように、からだを とても ながく して、はが <ruby>上<rt>うえ</rt></ruby>や <ruby>下<rt>した</rt></ruby>に ゆれにくく なって います。'
       }
     ],
     hakken: 'はの むきを かえると、けずった <ruby>土<rt>つち</rt></ruby>を みちの はしへ よせながら すすめます。'
@@ -584,11 +584,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'bed', label: 'ベッド',
-        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>に、ねかせた ままで はこべる ベッドが つくって あります。'
+        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>の ベッドは、うしろの とびらから <ruby>台<rt>だい</rt></ruby>ごと <ruby>出<rt>だ</rt></ruby>し<ruby>入<rt>い</rt></ruby>れ できる ように なって います。'
       },
       {
         part: 'lamp', label: 'ランプ',
-        text: 'まわりの <ruby>車<rt>くるま</rt></ruby>に <ruby>気<rt>き</rt></ruby>づいて もらえる ように、<ruby>上<rt>うえ</rt></ruby>に あかい ランプと サイレンが ついて います。'
+        text: 'まわりの <ruby>車<rt>くるま</rt></ruby>に はやく <ruby>気<rt>き</rt></ruby>づいて もらえる ように、<ruby>上<rt>うえ</rt></ruby>の あかい ランプが <ruby>光<rt>ひか</rt></ruby>り、サイレンの <ruby>音<rt>おと</rt></ruby>が <ruby>前<rt>まえ</rt></ruby>へ とどきます。'
       }
     ],
     hakken: 'うしろの とびらは <ruby>大<rt>おお</rt></ruby>きく ひらき、ベッドを のせやすい ように <ruby>台<rt>だい</rt></ruby>が <ruby>出<rt>で</rt></ruby>て きます。'
@@ -604,11 +604,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'pump', label: 'ポンプ',
-        text: 'その ために、<ruby>川<rt>かわ</rt></ruby>や しょうかせんから <ruby>水<rt>みず</rt></ruby>を すい<ruby>上<rt>あ</rt></ruby>げて、いきおいよく おくり<ruby>出<rt>だ</rt></ruby>す ポンプが ついて います。'
+        text: 'その ために、<ruby>川<rt>かわ</rt></ruby>や しょうかせんの <ruby>水<rt>みず</rt></ruby>を すい<ruby>上<rt>あ</rt></ruby>げて、ビルの <ruby>上<rt>うえ</rt></ruby>まで とどく いきおいで おくり<ruby>出<rt>だ</rt></ruby>す ポンプが ついて います。'
       },
       {
         part: 'hose', label: 'ホース',
-        text: '<ruby>火事<rt>かじ</rt></ruby>の ばしょまで とどく ように、ながい ホースが たくさん つんで あります。'
+        text: '<ruby>火<rt>ひ</rt></ruby>が どこで もえて いても とどく ように、ながい ホースが なん<ruby>本<rt>ぼん</rt></ruby>も、すぐ のばせる ように まいて あります。'
       }
     ],
     hakken: '<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>に <ruby>水<rt>みず</rt></ruby>の タンクを もって いるので、ついて すぐに <ruby>水<rt>みず</rt></ruby>を かけられます。'
@@ -624,11 +624,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'ladder', label: 'はしご',
-        text: 'その ために、<ruby>上<rt>うえ</rt></ruby>に、ながく のびる はしごが ついて います。'
+        text: 'その ために、<ruby>何<rt>なん</rt></ruby>だんにも かさなった はしごが、ビルの <ruby>十<rt>じゅっ</rt></ruby>かいくらいの <ruby>高<rt>たか</rt></ruby>さまで のびて いきます。'
       },
       {
         part: 'ashi', label: 'あし',
-        text: 'はしごを のばしても たおれない ように、<ruby>四本<rt>よんほん</rt></ruby>の しっかりした あしを <ruby>出<rt>だ</rt></ruby>します。'
+        text: 'はしごを のばしても たおれない ように、はしごを <ruby>出<rt>だ</rt></ruby>す <ruby>前<rt>まえ</rt></ruby>に、<ruby>四本<rt>よんほん</rt></ruby>の あしで <ruby>車<rt>くるま</rt></ruby>を もち<ruby>上<rt>あ</rt></ruby>げ、タイヤを <ruby>地<rt>じ</rt></ruby>めんから はなします。'
       }
     ],
     hakken: 'はしごの さきには <ruby>人<rt>ひと</rt></ruby>が のる かごが あり、まどから にげて きた <ruby>人<rt>ひと</rt></ruby>を のせられます。'
@@ -644,11 +644,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'lamp', label: 'ランプ',
-        text: 'その ために、やねの <ruby>上<rt>うえ</rt></ruby>に、くるくる まわる あかい ランプが ついて います。'
+        text: 'その ために、やねの <ruby>上<rt>うえ</rt></ruby>の あかい ランプは、ふだんは けして おき、いそぐ ときだけ くるくる <ruby>光<rt>ひか</rt></ruby>ります。'
       },
       {
         part: 'antenna', label: 'アンテナ',
-        text: 'はなれた ところと <ruby>話<rt>はな</rt></ruby>が できる ように、むせんの アンテナが ついて います。'
+        text: 'はなれて いる なかまと いつでも <ruby>話<rt>はな</rt></ruby>せる ように、とおくまで とどく むせんの アンテナが <ruby>立<rt>た</rt></ruby>って います。'
       }
     ],
     hakken: '<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>には、まちを しらべる ための きかいが つんで あります。'
@@ -664,11 +664,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'arm', label: 'うで',
-        text: 'その ために、うしろに、<ruby>車<rt>くるま</rt></ruby>を つり<ruby>上<rt>あ</rt></ruby>げる うでが ついて います。'
+        text: 'その ために、うしろの うでが のびて、うごかなく なった <ruby>車<rt>くるま</rt></ruby>の <ruby>前<rt>まえ</rt></ruby>の タイヤだけを もち<ruby>上<rt>あ</rt></ruby>げます。'
       },
       {
         part: 'hook', label: 'フック',
-        text: 'うごけない <ruby>車<rt>くるま</rt></ruby>を ひっぱれる ように、じょうぶな くさりと フックが ついて います。'
+        text: 'みぞに おちた <ruby>車<rt>くるま</rt></ruby>も ひきあげられる ように、じょうぶな つなと フックが あり、まきとる きかいで ひっぱります。'
       }
     ],
     hakken: '<ruby>前<rt>まえ</rt></ruby>の タイヤだけを もち<ruby>上<rt>あ</rt></ruby>げて、うしろの タイヤを ころがしながら はこびます。'
@@ -684,11 +684,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'plow', label: 'はね',
-        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>に、<ruby>雪<rt>ゆき</rt></ruby>を よこへ おしのける <ruby>大<rt>おお</rt></ruby>きな はねが ついて います。'
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>の はねが ななめに ついて いて、すすむだけで <ruby>雪<rt>ゆき</rt></ruby>が みちの わきへ よけられて いきます。'
       },
       {
         part: 'hopper', label: 'まく ところ',
-        text: 'こおった みちで すべらない ように、うしろから すなを まきながら すすみます。'
+        text: 'こおった みちで <ruby>車<rt>くるま</rt></ruby>が すべらない ように、うしろから すなや つぶを まきながら すすみます。'
       }
     ],
     hakken: '<ruby>雪<rt>ゆき</rt></ruby>の <ruby>中<rt>なか</rt></ruby>でも <ruby>見<rt>み</rt></ruby>つけやすい ように、<ruby>車<rt>くるま</rt></ruby>が きいろく ぬって あります。'
@@ -704,11 +704,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'bed', label: 'ベッド',
-        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>に、よこに なれる ベッドが ならべて あります。'
+        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>に、うでを のばして よこに なれる ベッドが、いくつも ならべて あります。'
       },
       {
         part: 'door', label: 'とびら',
-        text: 'のりおりが しやすい ように、とびらの <ruby>下<rt>した</rt></ruby>に かいだんが ついて います。'
+        text: 'まちの ひろばに とめて すぐ うけつけ できる ように、よこの とびらから、かいだんを のぼって <ruby>入<rt>はい</rt></ruby>れます。'
       }
     ],
     hakken: '<ruby>分<rt>わ</rt></ruby>けて もらった <ruby>血<rt>ち</rt></ruby>は、けがや びょうきの <ruby>人<rt>ひと</rt></ruby>を たすける ために つかわれます。'
@@ -725,11 +725,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'box', label: 'どうぐばこ',
-        text: 'その ために、よこの とびらの <ruby>中<rt>なか</rt></ruby>が、たくさんの どうぐを しまう たなに なって います。'
+        text: 'その ために、よこの とびらを ひらくと、どうぐが <ruby>一<rt>ひと</rt></ruby>つずつ きまった ところに ならんで いて、まよわず とり<ruby>出<rt>だ</rt></ruby>せます。'
       },
       {
         part: 'winch', label: 'つなを まく きかい',
-        text: 'おもい ものを ひっぱれる ように、<ruby>前<rt>まえ</rt></ruby>に つなを まきとる きかいが ついて います。'
+        text: '<ruby>川<rt>かわ</rt></ruby>や みぞに おちた <ruby>車<rt>くるま</rt></ruby>を ひきあげられる ように、<ruby>前<rt>まえ</rt></ruby>に、つなを ぐるぐる まきとる きかいが ついて います。'
       }
     ],
     hakken: 'てつを きる きかいや もち<ruby>上<rt>あ</rt></ruby>げる きかいなど、<ruby>百<rt>ひゃく</rt></ruby>より おおくの どうぐを つんで います。'
@@ -745,11 +745,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'tank', label: 'あわの タンク',
-        text: 'その ために、あわの もとを ためて おく <ruby>大<rt>おお</rt></ruby>きな タンクを つんで います。'
+        text: 'その ために、<ruby>水<rt>みず</rt></ruby>では なく、あわの もとに なる くすりを ためた タンクを つんで います。'
       },
       {
         part: 'turret', label: 'ノズル',
-        text: 'とおくまで あわを とばせる ように、やねの <ruby>上<rt>うえ</rt></ruby>に、むきを かえられる ふとい くちが ついて います。'
+        text: 'あぶなくて ちかづけない <ruby>火<rt>ひ</rt></ruby>にも とどく ように、やねの <ruby>上<rt>うえ</rt></ruby>の ふとい ノズルが、はなれた ところから あわを とばします。'
       }
     ],
     hakken: 'ガソリンの <ruby>火事<rt>かじ</rt></ruby>に <ruby>水<rt>みず</rt></ruby>を かけると あぶないので、あわで ふたを して <ruby>火<rt>ひ</rt></ruby>を けします。'
@@ -765,11 +765,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'kit', label: 'きゅうきゅうバッグ',
-        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>に、すぐに <ruby>手当<rt>てあ</rt></ruby>てが できる どうぐが つんで あります。'
+        text: 'その ために、びょういんと おなじ どうぐを つめた かばんが つんで あり、ついた その ばで <ruby>手当<rt>てあ</rt></ruby>てを はじめられます。'
       },
       {
         part: 'lamp', label: 'ランプ',
-        text: 'いそいで すすめる ように、<ruby>上<rt>うえ</rt></ruby>に あかい ランプと サイレンが ついて います。'
+        text: '<ruby>一<rt>いっ</rt></ruby>ぷんでも はやく つける ように、<ruby>上<rt>うえ</rt></ruby>の ランプと サイレンで、ほかの <ruby>車<rt>くるま</rt></ruby>に みちを あけて もらいます。'
       }
     ],
     hakken: 'びょういんに つく <ruby>前<rt>まえ</rt></ruby>から <ruby>手当<rt>てあ</rt></ruby>てを はじめられるので、いのちを たすけやすく なります。'
@@ -785,11 +785,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'machine', label: 'しらべる きかい',
-        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>が、からだの しゃしんを とる きかいの へやに なって います。'
+        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>が、からだの <ruby>中<rt>なか</rt></ruby>の しゃしんを とる きかいの、ちいさな へやに なって います。'
       },
       {
         part: 'door', label: 'とびら',
-        text: 'じゅんばんに <ruby>入<rt>はい</rt></ruby>って いける ように、よこの とびらに かいだんが ついて います。'
+        text: 'じゅんばんに <ruby>入<rt>はい</rt></ruby>って いける ように、よこの とびらに かいだんが つき、<ruby>中<rt>なか</rt></ruby>は <ruby>一人<rt>ひとり</rt></ruby>ずつの へやに <ruby>分<rt>わ</rt></ruby>かれて います。'
       }
     ],
     hakken: 'びょういんが とおい まちでも、この <ruby>車<rt>くるま</rt></ruby>が くれば からだを しらべて もらえます。'
@@ -807,11 +807,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'hopper', label: 'ごみを <ruby>入<rt>い</rt></ruby>れる ところ',
-        text: 'その ために、うしろに、ごみを <ruby>入<rt>い</rt></ruby>れる <ruby>口<rt>くち</rt></ruby>と、おくへ おしこむ ばんが ついて います。'
+        text: 'その ために、うしろの <ruby>口<rt>くち</rt></ruby>に <ruby>入<rt>い</rt></ruby>れた ごみを、くるりと まわる ばんが おくへ おしこんで いきます。'
       },
       {
         part: 'nidai', label: 'ためる ところ',
-        text: 'たくさん つめる ように、あつめた ごみを ぎゅっと おしかためて、<ruby>中<rt>なか</rt></ruby>に ためて いきます。'
+        text: 'たくさん つめる ように、おしこんだ ごみを ぎゅうっと おしかためて、<ruby>小<rt>ちい</rt></ruby>さく して ためて いきます。'
       }
     ],
     hakken: 'ばんが くるりと まわって ごみを おしこむので、<ruby>手<rt>て</rt></ruby>を <ruby>入<rt>い</rt></ruby>れると あぶないです。ちかづかない ように しましょう。'
@@ -827,11 +827,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'brush', label: 'ブラシ',
-        text: 'その ために、<ruby>下<rt>した</rt></ruby>に、ぐるぐる まわる <ruby>大<rt>おお</rt></ruby>きな ブラシが ついて います。'
+        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>下<rt>した</rt></ruby>で <ruby>大<rt>おお</rt></ruby>きな ブラシが まわり、みちの はしの すなを まん<ruby>中<rt>なか</rt></ruby>へ はきよせます。'
       },
       {
         part: 'tank', label: 'タンク',
-        text: 'あつめた ごみを ためられる ように、<ruby>上<rt>うえ</rt></ruby>が <ruby>大<rt>おお</rt></ruby>きな タンクに なって います。'
+        text: 'はきよせた すなを すいこんで ためられる ように、<ruby>上<rt>うえ</rt></ruby>が そうじきの ような <ruby>大<rt>おお</rt></ruby>きな タンクに なって います。'
       }
     ],
     hakken: 'ほこりが <ruby>立<rt>た</rt></ruby>たない ように、<ruby>水<rt>みず</rt></ruby>を まきながら そうじを します。'
@@ -847,11 +847,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'tank', label: 'タンク',
-        text: 'その ために、うしろが、きれいな <ruby>水<rt>みず</rt></ruby>を ためる <ruby>大<rt>おお</rt></ruby>きな タンクに なって います。'
+        text: 'その ために、うしろが、のみ<ruby>水<rt>みず</rt></ruby>を きれいな まま はこべる、<ruby>中<rt>なか</rt></ruby>を あらえる タンクに なって います。'
       },
       {
         part: 'tap', label: 'じゃぐち',
-        text: 'みんなが じゅんばんに <ruby>水<rt>みず</rt></ruby>を もらえる ように、よこに じゃぐちが ならんで ついて います。'
+        text: 'おおぜいが いちどに <ruby>水<rt>みず</rt></ruby>を もらえる ように、よこに じゃぐちが いくつも ならんで ついて います。'
       }
     ],
     hakken: 'じしんなどで すいどうが つかえなく なった とき、この <ruby>車<rt>くるま</rt></ruby>が <ruby>水<rt>みず</rt></ruby>を はこびます。'
@@ -867,11 +867,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'kitchen', label: 'ちょうりだい',
-        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>が、りょうりを つくれる ちょうりだいに なって います。'
+        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>に、<ruby>水<rt>みず</rt></ruby>の タンクと <ruby>火<rt>ひ</rt></ruby>が つかえる ちょうりだいが あり、その ばで りょうりが できます。'
       },
       {
         part: 'counter', label: 'カウンター',
-        text: 'りょうりを わたしやすい ように、よこの まどが <ruby>大<rt>おお</rt></ruby>きく ひらいて、カウンターに なります。'
+        text: '<ruby>立<rt>た</rt></ruby>って いる おきゃくさんに <ruby>手<rt>て</rt></ruby>わたし できる ように、よこの かべが <ruby>上<rt>うえ</rt></ruby>へ ひらいて、ちょうど よい <ruby>高<rt>たか</rt></ruby>さの まどに なります。'
       }
     ],
     hakken: '<ruby>水<rt>みず</rt></ruby>の タンクや でんきの きかいも つんで いるので、どこでも お<ruby>店<rt>みせ</rt></ruby>が ひらけます。'
@@ -887,11 +887,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'shelf', label: '<ruby>本<rt>ほん</rt></ruby>だな',
-        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>が、たくさんの <ruby>本<rt>ほん</rt></ruby>が ならぶ <ruby>本<rt>ほん</rt></ruby>だなに なって います。'
+        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の よこの かべが ひらき、そとから えらべる <ruby>本<rt>ほん</rt></ruby>だなに なります。'
       },
       {
         part: 'step', label: 'かいだん',
-        text: '<ruby>子<rt>こ</rt></ruby>どもでも のりやすい ように、<ruby>入口<rt>いりぐち</rt></ruby>に ひくい かいだんが ついて います。'
+        text: '<ruby>小<rt>ちい</rt></ruby>さな <ruby>子<rt>こ</rt></ruby>でも じぶんで えらべる ように、<ruby>入口<rt>いりぐち</rt></ruby>に ひくい かいだんが つき、<ruby>下<rt>した</rt></ruby>の たなには えほんが ならべて あります。'
       }
     ],
     hakken: '<ruby>一<rt>いち</rt></ruby>だいに <ruby>三千<rt>さんぜん</rt></ruby>さつくらいの <ruby>本<rt>ほん</rt></ruby>を つんで、まちを まわります。'
@@ -907,11 +907,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'seat', label: 'ざせき',
-        text: 'その ために、ゆったりと たおれる ざせきが、ならべて あります。'
+        text: 'その ために、ざせきは うしろへ たおせて、テーブルや <ruby>足<rt>あし</rt></ruby>を のせる <ruby>台<rt>だい</rt></ruby>も ついて います。'
       },
       {
         part: 'trunk', label: 'にもつ<ruby>入<rt>い</rt></ruby>れ',
-        text: '<ruby>大<rt>おお</rt></ruby>きな にもつも つめる ように、ゆかの <ruby>下<rt>した</rt></ruby>が、ひろい にもつ<ruby>入<rt>い</rt></ruby>れに なって います。'
+        text: 'みんなの <ruby>大<rt>おお</rt></ruby>きな かばんも つめる ように、ゆかの <ruby>下<rt>した</rt></ruby>が まるごと にもつ<ruby>入<rt>い</rt></ruby>れに なって います。'
       }
     ],
     hakken: '<ruby>高<rt>たか</rt></ruby>い ところに ざせきが あるので、まどから けしきが よく <ruby>見<rt>み</rt></ruby>えます。'
@@ -927,11 +927,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'arm', label: 'ちいさな うで',
-        text: 'その ために、うしろに、<ruby>地<rt>じ</rt></ruby>めんを ほる ちいさな うでが ついて います。'
+        text: 'その ために、うしろに、どうろを ほって <ruby>土<rt>つち</rt></ruby>の <ruby>中<rt>なか</rt></ruby>の くだを <ruby>出<rt>だ</rt></ruby>せる、ちいさな うでが ついて います。'
       },
       {
         part: 'box', label: 'どうぐばこ',
-        text: 'その ばで すぐに なおせる ように、よこに どうぐを しまう はこが ならんで います。'
+        text: 'その ばで すぐ なおせる ように、よこの はこに、くだや どうぐが しゅるいごとに <ruby>分<rt>わ</rt></ruby>けて <ruby>入<rt>い</rt></ruby>れて あります。'
       }
     ],
     hakken: 'ほった あなは、こうじが おわると もとどおりに うめもどして いきます。'
@@ -947,11 +947,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'shelf', label: 'たな',
-        text: 'その ために、よこの かべが <ruby>上<rt>うえ</rt></ruby>に ひらいて、しなものを ならべる たなに なります。'
+        text: 'その ために、よこの かべが やねの ように <ruby>上<rt>うえ</rt></ruby>へ ひらき、その まま しなものが ならぶ たなに なります。'
       },
       {
         part: 'cooler', label: 'ひやす ところ',
-        text: 'おにくや やさいが いたまない ように、ひやして おく ところが あります。'
+        text: 'おにくや ぎゅうにゅうが いたまない ように、たなの いちぶが ひえた ケースに なって います。'
       }
     ],
     hakken: 'かいものに <ruby>行<rt>い</rt></ruby>くのが たいへんな <ruby>人<rt>ひと</rt></ruby>の ところへ、お<ruby>店<rt>みせ</rt></ruby>の ほうから やって きます。'
@@ -967,11 +967,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'nidai', label: 'にだい',
-        text: 'その ために、うしろが、やさいの はこを のせる たいらな にだいに なって います。'
+        text: 'その ために、うしろが たいらで ひくい にだいに なって いて、はたけの わきでも <ruby>手<rt>て</rt></ruby>で かるがると のせおろし できます。'
       },
       {
         part: 'body', label: 'ちいさい からだ',
-        text: 'せまい みちでも とおれる ように、からだが <ruby>小<rt>ちい</rt></ruby>さく つくって あります。'
+        text: 'はたけの あいだの せまい みちでも とおれる ように、からだが ふつうの <ruby>車<rt>くるま</rt></ruby>より <ruby>小<rt>ちい</rt></ruby>さく、はばも せまく つくって あります。'
       }
     ],
     hakken: 'にだいの よこの いたは たおせるので、よこからでも にもつを のせられます。'
@@ -987,11 +987,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'detector', label: 'しらべる きかい',
-        text: 'その ために、ガスが もれて いないかを しらべる きかいを つんで います。'
+        text: 'その ために、<ruby>目<rt>め</rt></ruby>に <ruby>見<rt>み</rt></ruby>えない ガスが もれて いないかを、<ruby>音<rt>おと</rt></ruby>で しらせる きかいを つんで います。'
       },
       {
         part: 'lamp', label: 'ランプ',
-        text: 'こうじを して いる ことが とおくからでも わかる ように、<ruby>上<rt>うえ</rt></ruby>で きいろい ランプが <ruby>光<rt>ひか</rt></ruby>ります。'
+        text: 'こうじを して いる ことが とおくからでも わかる ように、<ruby>上<rt>うえ</rt></ruby>で きいろい ランプが ゆっくり <ruby>光<rt>ひか</rt></ruby>ります。'
       }
     ],
     hakken: 'ガスの においは、もれた ことに <ruby>気<rt>き</rt></ruby>づける ように、わざと つけて あります。'
@@ -1009,11 +1009,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'rotary', label: 'たがやす きかい',
-        text: 'その ために、うしろに、<ruby>土<rt>つち</rt></ruby>を ほりおこす はの ついた きかいを つけます。'
+        text: 'その ために、うしろに つけた きかいの はが ぐるぐる まわって、かたい <ruby>土<rt>つち</rt></ruby>を ほりおこし、やわらかく して いきます。'
       },
       {
         part: 'bigtire', label: 'うしろの タイヤ',
-        text: 'やわらかい <ruby>土<rt>つち</rt></ruby>に しずまない ように、うしろの タイヤが とても <ruby>大<rt>おお</rt></ruby>きく、ふかい みぞが ついて います。'
+        text: 'やわらかい <ruby>土<rt>つち</rt></ruby>に しずまない ように、うしろの タイヤは <ruby>人<rt>ひと</rt></ruby>の せの <ruby>高<rt>たか</rt></ruby>さほども あり、ふかい みぞで <ruby>土<rt>つち</rt></ruby>を つかみます。'
       }
     ],
     hakken: 'うしろの きかいを とりかえると、たねまきや、しゅうかくにも つかえます。'
@@ -1029,11 +1029,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'reel', label: 'かりとる ところ',
-        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>に、いねを かきこんで かりとる はが ついて います。'
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>の <ruby>水車<rt>すいしゃ</rt></ruby>の ような ぶぶんが まわって いねを かきこみ、すぐ <ruby>下<rt>した</rt></ruby>の はが かりとります。'
       },
       {
         part: 'tank', label: 'ためる ところ',
-        text: 'つぶだけを ためて おける ように、<ruby>上<rt>うえ</rt></ruby>に <ruby>大<rt>おお</rt></ruby>きな はこが ついて います。'
+        text: 'かりとりながら つぶだけを ためられる ように、<ruby>上<rt>うえ</rt></ruby>の はこに おこめが たまり、いっぱいに なると くだから <ruby>出<rt>だ</rt></ruby>せます。'
       }
     ],
     hakken: 'かりとる・つぶを はずす・ためる の <ruby>三<rt>みっ</rt></ruby>つの しごとを、いちどに して しまいます。'
@@ -1049,11 +1049,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'planter', label: 'うえる つめ',
-        text: 'その ために、うしろに、なえを <ruby>土<rt>つち</rt></ruby>に さしこむ つめが ならんで います。'
+        text: 'その ために、うしろの つめが、なえを <ruby>一本<rt>いっぽん</rt></ruby>ずつ つまんでは たんぼに さす うごきを、なんども くりかえします。'
       },
       {
         part: 'tray', label: 'なえの たな',
-        text: 'たくさん うえられる ように、<ruby>上<rt>うえ</rt></ruby>に なえを ならべる ななめの たなが あります。'
+        text: 'なんども なえを とりに もどらなくて よい ように、<ruby>上<rt>うえ</rt></ruby>の ななめの たなに、なえが たくさん のせて あります。'
       }
     ],
     hakken: 'なえと なえの あいだが きれいに そろうので、あとの おせわが しやすく なります。'
@@ -1069,11 +1069,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'cutter', label: 'かる は',
-        text: 'その ために、よこに のびる うでの さきに、ぐるぐる まわる はが ついて います。'
+        text: 'その ために、よこへ のびる うでの さきの はが ぐるぐる まわり、<ruby>土手<rt>どて</rt></ruby>の ななめの くさも かる ことが できます。'
       },
       {
         part: 'guard', label: 'カバー',
-        text: 'かった くさが とんで こない ように、はの まわりが カバーで かこって あります。'
+        text: 'かった くさや <ruby>小石<rt>こいし</rt></ruby>が とんで こない ように、はの まわりが カバーで すっぽり かこって あります。'
       }
     ],
     hakken: '<ruby>人<rt>ひと</rt></ruby>が かまで かるより ずっと はやく、ひろい ばしょを きれいに できます。'
@@ -1089,11 +1089,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'grapple', label: 'つかむ うで',
-        text: 'その ために、<ruby>木<rt>き</rt></ruby>を つかんで もち<ruby>上<rt>あ</rt></ruby>げる うでが ついて います。'
+        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>に ついた クレーンの さきの <ruby>手<rt>て</rt></ruby>が、まるたを がしっと つかんで、じぶんで にだいに つみます。'
       },
       {
         part: 'stake', label: 'とめる ぼう',
-        text: '<ruby>木<rt>き</rt></ruby>が ころがり <ruby>落<rt>お</rt></ruby>ちない ように、にだいの よこに ふとい ぼうが <ruby>立<rt>た</rt></ruby>てて あります。'
+        text: 'まるたが よこへ ころがり おちない ように、にだいの りょうがわに ふとい ぼうが <ruby>立<rt>た</rt></ruby>てて あります。'
       }
     ],
     hakken: 'はこばれた <ruby>木<rt>き</rt></ruby>は、いえの はしらや、かみに なります。'
@@ -1109,11 +1109,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'boom', label: 'ながい うで',
-        text: 'その ために、うしろに、<ruby>左右<rt>さゆう</rt></ruby>へ ながく のびる うでが ついて いて、いちどに ひろく まけます。'
+        text: 'その ために、うしろの うでが <ruby>左右<rt>さゆう</rt></ruby>へ <ruby>大<rt>おお</rt></ruby>きく ひろがり、いちど とおるだけで ひろい はたけに まけます。'
       },
       {
         part: 'tank', label: 'タンク',
-        text: 'なんども <ruby>入<rt>い</rt></ruby>れに もどらなくても よい ように、まん<ruby>中<rt>なか</rt></ruby>に くすりを ためる タンクが あります。'
+        text: 'とちゅうで <ruby>入<rt>い</rt></ruby>れに もどらなくて よい ように、まん<ruby>中<rt>なか</rt></ruby>に くすりを ためる <ruby>大<rt>おお</rt></ruby>きな タンクが あります。'
       }
     ],
     hakken: 'うでは たたんで しまえるので、みちを はしる ときは じゃまに なりません。'
@@ -1131,11 +1131,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'body', label: 'ひくい からだ',
-        text: 'その ために、ひこうきの <ruby>下<rt>した</rt></ruby>に <ruby>入<rt>はい</rt></ruby>れる ように、からだが とても ひくく つくって あります。'
+        text: 'その ために、ひこうきの おなかの <ruby>下<rt>した</rt></ruby>に もぐりこめるほど、からだが ひくく たいらに つくって あります。'
       },
       {
         part: 'hitch', label: 'つなぐ ところ',
-        text: 'ひこうきと しっかり つなげる ように、<ruby>前<rt>まえ</rt></ruby>に ふとい かなぐが ついて います。'
+        text: '<ruby>何十<rt>なんじゅう</rt></ruby>トンも ある ひこうきを うごかせる ように、<ruby>前<rt>まえ</rt></ruby>に ふとい かなぐが つき、<ruby>車<rt>くるま</rt></ruby>じたいも おもく つくって あります。'
       }
     ],
     hakken: 'ひこうきは じぶんで うしろへ さがれないので、この <ruby>車<rt>くるま</rt></ruby>が おして あげます。'
@@ -1151,11 +1151,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'tank', label: 'タンク',
-        text: 'その ために、たくさんの あぶらを ためて おける ながい タンクが ついて います。'
+        text: 'その ために、ドラムかん <ruby>何百本<rt>なんびゃっぽん</rt></ruby>ぶんもの あぶらを ためられる、ながい タンクが ついて います。'
       },
       {
         part: 'lift', label: 'あがる <ruby>台<rt>だい</rt></ruby>',
-        text: 'ひこうきの つばさまで とどく ように、<ruby>人<rt>ひと</rt></ruby>が のる <ruby>台<rt>だい</rt></ruby>が <ruby>上<rt>うえ</rt></ruby>へ あがります。'
+        text: 'つばさの <ruby>高<rt>たか</rt></ruby>さまで とどく ように、<ruby>人<rt>ひと</rt></ruby>の のる <ruby>台<rt>だい</rt></ruby>が <ruby>上<rt>うえ</rt></ruby>へ あがって いきます。'
       }
     ],
     hakken: 'ひこうきの あぶらは つばさの <ruby>中<rt>なか</rt></ruby>に <ruby>入<rt>い</rt></ruby>れるので、つばさに くだを つなぎます。'
@@ -1171,11 +1171,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'deck', label: 'あがる ゆか',
-        text: 'その ために、にもつを のせる ゆかが、そのまま <ruby>上<rt>うえ</rt></ruby>へ もち<ruby>上<rt>あ</rt></ruby>がります。'
+        text: 'その ために、にもつを のせる ゆかが、ひこうきの <ruby>入口<rt>いりぐち</rt></ruby>と おなじ <ruby>高<rt>たか</rt></ruby>さまで もち<ruby>上<rt>あ</rt></ruby>がります。'
       },
       {
         part: 'roller', label: 'ころ',
-        text: 'おもい にもつを かるく うごかせる ように、ゆかに まるい ころが ならんで います。'
+        text: 'おもい にもつを <ruby>一人<rt>ひとり</rt></ruby>でも うごかせる ように、ゆかに まるい ころが ならんで いて、すべらせて おせます。'
       }
     ],
     hakken: 'ひこうきの ゆかと おなじ <ruby>高<rt>たか</rt></ruby>さに ぴったり あわせてから、にもつを おしこみます。'
@@ -1191,11 +1191,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'stairs', label: 'かいだん',
-        text: 'その ために、うしろが、ながい かいだんに なって います。'
+        text: 'その ために、うしろが、ひこうきの <ruby>入口<rt>いりぐち</rt></ruby>まで つづく ながい かいだんに なって います。'
       },
       {
         part: 'lift', label: 'のびる ところ',
-        text: 'いろいろな <ruby>大<rt>おお</rt></ruby>きさの ひこうきに あう ように、かいだんの <ruby>高<rt>たか</rt></ruby>さを かえられます。'
+        text: '<ruby>大<rt>おお</rt></ruby>きな ひこうきにも <ruby>小<rt>ちい</rt></ruby>さな ひこうきにも あう ように、かいだん ぜんたいが <ruby>上<rt>うえ</rt></ruby>や <ruby>下<rt>した</rt></ruby>へ うごきます。'
       }
     ],
     hakken: 'かいだんの <ruby>上<rt>うえ</rt></ruby>には やねが ついて いて、あめの <ruby>日<rt>ひ</rt></ruby>でも ぬれずに のれます。'
@@ -1211,11 +1211,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'arm', label: 'のびる うで',
-        text: 'その ために、ななめに ながく のびる じょうぶな うでが ついて います。'
+        text: 'その ために、ななめに のびる じょうぶな うでが、コンテナを <ruby>四<rt>よっ</rt></ruby>つぶんの <ruby>高<rt>たか</rt></ruby>さまで もち<ruby>上<rt>あ</rt></ruby>げます。'
       },
       {
         part: 'spreader', label: 'つかむ ところ',
-        text: 'コンテナを おとさない ように、うでの さきが かどを がっちり つかみます。'
+        text: 'コンテナを おとさない ように、うでの さきの わくが <ruby>四<rt>よ</rt></ruby>すみの あなに はまって、かちっと とまります。'
       }
     ],
     hakken: 'コンテナを <ruby>四<rt>よっ</rt></ruby>つも <ruby>五<rt>いつ</rt></ruby>つも かさねて つみ<ruby>上<rt>あ</rt></ruby>げられます。'
@@ -1231,11 +1231,11 @@ window.carsData = [
     tsukuri: [
       {
         part: 'railwheel', label: 'てつの わ',
-        text: 'その ために、せんろの <ruby>上<rt>うえ</rt></ruby>を はしれる てつの わが ついて います。'
+        text: 'その ために、タイヤの ほかに てつの わも ついて いて、せんろの <ruby>上<rt>うえ</rt></ruby>では それを おろして はしります。'
       },
       {
         part: 'arm', label: 'クレーン',
-        text: 'おもい レールを とりかえられる ように、ちいさな クレーンが ついて います。'
+        text: '<ruby>一本<rt>いっぽん</rt></ruby>で <ruby>何百<rt>なんびゃく</rt></ruby>キロも ある レールを とりかえられる ように、ちいさな クレーンが ついて います。'
       }
     ],
     hakken: 'ひるまは タイヤで どうろを はしり、よるは せんろの <ruby>上<rt>うえ</rt></ruby>に のって しごとを します。'
