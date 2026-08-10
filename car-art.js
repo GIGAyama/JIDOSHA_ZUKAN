@@ -1354,20 +1354,21 @@
     }
   };
 
+  /* 軽自動車の きまり（長さ 3.4メートル 以下）に あわせて w = 95 */
   ART.kei = {
-    label: 'けいトラック', w: 98, h: 56,
+    label: 'けいトラック', w: 95, h: 56,
     draw: function (L) {
       var body = '#f5f7fa';
       return [
-        rect(L + 34, G - 40, 64, 20, { rx: 3, fill: '#d9dfe8', part: 'nidai' }),
-        rect(L + 34, G - 40, 64, 6, { rx: 2, fill: '#b9c3d1', sw: 2, part: 'nidai' }),
+        rect(L + 34, G - 40, 61, 20, { rx: 3, fill: '#d9dfe8', part: 'nidai' }),
+        rect(L + 34, G - 40, 61, 6, { rx: 2, fill: '#b9c3d1', sw: 2, part: 'nidai' }),
         // のせた やさいの はこ
-        rect(L + 42, G - 54, 22, 14, { rx: 2, fill: '#e0b878', sw: 2 }),
-        rect(L + 68, G - 52, 20, 12, { rx: 2, fill: '#9fc7a8', sw: 2 }),
+        rect(L + 41, G - 54, 22, 14, { rx: 2, fill: '#e0b878', sw: 2 }),
+        rect(L + 66, G - 52, 20, 12, { rx: 2, fill: '#9fc7a8', sw: 2 }),
         rect(L, G - 54, 38, 34, { rx: 7, fill: body, part: 'body' }),
         glass(L + 5, G - 49, 26, 16),
         lamp(L + 4, G - 26, 4, LAMP_Y, null),
-        wheels([L + 18, L + 80], 12)
+        wheels([L + 18, L + 78], 12)
       ].join('');
     }
   };
@@ -1537,11 +1538,11 @@
   };
 
   ART.sprayer = {
-    label: 'くすりを まく 車', w: 186, h: 94,
+    label: 'くすりを まく 車', w: 156, h: 94,
     draw: function (L) {
       var body = '#4aa564';
       var noz = [];
-      [L + 126, L + 150, L + 174].forEach(function (x) {
+      [L + 116, L + 132, L + 148].forEach(function (x) {
         noz.push(line(x, G - 50, x, G - 38, { sw: 2.5, stroke: STEEL_D, part: 'boom' }));
         noz.push(path('M' + n(x) + ' ' + n(G - 38) + 'l-6 12', { sw: 2, stroke: '#9fc7d8', part: 'boom' }));
         noz.push(path('M' + n(x) + ' ' + n(G - 38) + 'l6 12', { sw: 2, stroke: '#9fc7d8', part: 'boom' }));
@@ -1552,8 +1553,8 @@
         glass(L + 23, G - 89, 32, 22),
         // くすりを ためる タンク
         rect(L + 62, G - 86, 58, 36, { rx: 15, fill: '#eef4ef', part: 'tank' }),
-        // よこに ながく のびる うで（ブーム）
-        rect(L + 108, G - 57, 78, 8, { rx: 3, fill: '#8b98ad', part: 'boom' }),
+        // うしろに ついた、左右へ のびる うで（ブーム）
+        rect(L + 106, G - 57, 46, 8, { rx: 3, fill: '#8b98ad', part: 'boom' }),
         noz.join(''),
         wheels([L + 22, L + 96], 18)
       ].join('');
@@ -1715,6 +1716,11 @@
         rect(L + 8, G - 62, 152, 42, { rx: 7, fill: body, part: 'body' }),
         rect(L + 14, G - 96, 54, 38, { rx: 7, fill: shade(body, 1.1), part: 'cab' }),
         glass(L + 20, G - 90, 42, 24),
+        // どうろを はしる ための タイヤ（せんろの 上では もち上げて おく）
+        circ(L + 62, G - 16, 11, { fill: TIRE }),
+        circ(L + 62, G - 16, 4.5, { fill: HUB, sw: 2 }),
+        circ(L + 104, G - 16, 11, { fill: TIRE }),
+        circ(L + 104, G - 16, 4.5, { fill: HUB, sw: 2 }),
         // レールを とりかえる ちいさな クレーン
         '<g' + P('arm') + ' transform="rotate(-38 ' + n(px) + ' ' + n(py) + ')">' +
         rect(px - 6, py - 9, len, 18, { rx: 6, fill: '#8b98ad' }) +

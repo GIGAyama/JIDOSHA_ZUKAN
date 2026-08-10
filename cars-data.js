@@ -42,7 +42,7 @@ window.carsData = [
       },
       {
         part: 'tire', label: 'タイヤ',
-        text: 'おもい にもつを のせても つぶれない ように、じょうぶで <ruby>大<rt>おお</rt></ruby>きな タイヤが、かたがわに <ruby>四本<rt>よんほん</rt></ruby>ずつ ついて います。'
+        text: 'おもい にもつを のせても つぶれない ように、じょうぶで <ruby>大<rt>おお</rt></ruby>きな タイヤが、うしろでは <ruby>二本<rt>にほん</rt></ruby>ずつ ならべて ついて います。'
       }
     ],
     hakken: 'にだいの よこの とびらが、<ruby>鳥<rt>とり</rt></ruby>の つばさの ように ま<ruby>上<rt>うえ</rt></ruby>まで <ruby>大<rt>おお</rt></ruby>きく ひらく トラックも あります。「ウィングドア」と いいます。'
@@ -1109,7 +1109,7 @@ window.carsData = [
     tsukuri: [
       {
         part: 'boom', label: 'ながい うで',
-        text: 'その ために、よこに ながく のびる うでが ついて いて、いちどに ひろく まけます。'
+        text: 'その ために、うしろに、<ruby>左右<rt>さゆう</rt></ruby>へ ながく のびる うでが ついて いて、いちどに ひろく まけます。'
       },
       {
         part: 'tank', label: 'タンク',
