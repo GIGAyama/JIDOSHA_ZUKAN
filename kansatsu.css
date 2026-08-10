@@ -1,0 +1,727 @@
+/* =========================================================================
+   kansatsu.css — ものすごい かんさつ（ぜんがめんの かんさつしつ）
+
+   ・くらい へやで、じどう車に ライトを あてて 見る イメージ
+   ・◯マークは ゆびで おせる 大きさ（44px 以上）に する
+   ・よこ向きの タブレットでも、たてに もった スマホでも 見られるように する
+   ========================================================================= */
+
+.kz {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  /* minmax(0,1fr) にしないと、中みの はばに ひっぱられて
+     がめんより よこに ひろがって しまう */
+  grid-template-columns: minmax(0, 1fr);
+  background: #0b1220;
+  color: #eaf1fb;
+  font-family: var(--font);
+  overscroll-behavior: contain;
+  animation: kzIn .35s var(--ease) both;
+}
+
+@keyframes kzIn {
+  from {
+    opacity: 0;
+  }
+}
+
+body.kz-open {
+  overflow: hidden;
+}
+
+/* ============================ うえの バー ============================ */
+
+.kz__bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(10, 17, 30, .92);
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  min-height: 60px;
+}
+
+.kz__title {
+  font-family: var(--font-title);
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-inline-end: auto;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.kz__title rt {
+  color: #9fb6d6;
+}
+
+.kz__len {
+  font-size: 14px;
+  color: #9fb6d6;
+  font-weight: 400;
+}
+
+.kz__count {
+  font-size: 15px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 30px;
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+
+.kz__count.is-done {
+  background: var(--lit);
+  border-color: var(--lit);
+  color: #2a1600;
+  animation: kzPop .5s var(--ease) both;
+}
+
+@keyframes kzPop {
+  from {
+    transform: scale(.7);
+  }
+
+  60% {
+    transform: scale(1.12);
+  }
+}
+
+.kz-btn {
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  color: #eaf1fb;
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 30px;
+  padding: 9px 16px;
+  min-height: 44px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .2s var(--ease), transform .12s var(--ease);
+}
+
+.kz-btn:hover {
+  background: rgba(255, 255, 255, .2);
+}
+
+.kz-btn:active {
+  transform: scale(.96);
+}
+
+.kz-btn.is-on {
+  background: var(--lit);
+  border-color: var(--lit);
+  color: #2a1600;
+}
+
+.kz-btn--back {
+  background: rgba(255, 255, 255, .16);
+}
+
+.kz-btn:focus-visible,
+.kz-mark:focus-visible,
+.kz-chip:focus-visible {
+  outline: 4px solid #ffd34d;
+  outline-offset: 3px;
+}
+
+/* ============================== ステージ ============================== */
+
+.kz__main {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.kz__stage {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+  cursor: grab;
+  background:
+    radial-gradient(120% 90% at 50% 42%, #24395c 0%, #16233a 45%, #0b1220 100%);
+}
+
+.kz__stage.is-grabbing {
+  cursor: grabbing;
+}
+
+.kz__stage>svg.car-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, .55));
+}
+
+/* ゆかの ライト */
+.kz__stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(90% 60% at 50% 50%, transparent 40%, rgba(4, 8, 16, .55) 100%);
+}
+
+/* ものさしの めもり（1メートルごと） */
+.kz-grid line {
+  stroke: #7ea8dd;
+  stroke-opacity: .3;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ものさしの 線と 文字（じかの 子どもだけ。1年生の 絵には かけない） */
+.kz-ruler>line {
+  stroke: var(--yellow);
+  fill: none;
+  stroke-linecap: round;
+}
+
+.kz-ruler>text {
+  fill: var(--yellow);
+  font-family: var(--font);
+  font-weight: 700;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: rgba(8, 14, 26, .85);
+}
+
+.kz-person {
+  opacity: .85;
+}
+
+/* ============================== ◯マーク ============================== */
+
+.kz__marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kz-mark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background: rgba(255, 138, 0, .92);
+  color: #fff;
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .5);
+  transition: width .2s var(--ease), height .2s var(--ease),
+    margin .2s var(--ease), background .2s var(--ease), opacity .2s var(--ease);
+}
+
+.kz-mark::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 210, 120, .9);
+  animation: kzPing 2.4s var(--ease) infinite;
+}
+
+@keyframes kzPing {
+
+  0%,
+  70%,
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+
+  10% {
+    transform: scale(1);
+    opacity: .95;
+  }
+
+  55% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
+
+.kz-mark.is-found {
+  background: rgba(43, 156, 104, .95);
+}
+
+.kz-mark.is-found::before {
+  display: none;
+}
+
+.kz-mark.is-on {
+  background: var(--lit);
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  box-shadow: 0 0 0 6px rgba(255, 138, 0, .3), 0 6px 18px rgba(0, 0, 0, .55);
+}
+
+.kz-mark.is-on::before {
+  display: none;
+}
+
+/* えらんで いる ときは、ほかの マークを 小さな 点に する */
+.kz__marks.has-on .kz-mark:not(.is-on) {
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  font-size: 0;
+  opacity: .55;
+}
+
+.kz__marks.has-on .kz-mark:not(.is-on)::before {
+  display: none;
+}
+
+/* ============================ ズームの バー ============================ */
+
+/* ものさしの 文字と かさならない ように、みぎ下に おく */
+.kz__zoom {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 40px;
+  background: rgba(10, 17, 30, .82);
+  border: 1px solid rgba(255, 255, 255, .16);
+  backdrop-filter: blur(6px);
+  z-index: 4;
+}
+
+.kz-zbtn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255, 255, 255, .14);
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.kz-zbtn:hover {
+  background: rgba(255, 255, 255, .26);
+}
+
+.kz-zbtn:active {
+  transform: scale(.93);
+}
+
+.kz__zoom input[type=range] {
+  width: 150px;
+  accent-color: var(--yellow);
+  cursor: pointer;
+}
+
+.kz-zoomval {
+  font-size: 14px;
+  font-weight: 700;
+  color: #cfe0f5;
+  min-width: 44px;
+  text-align: center;
+}
+
+/* ============================== ヒント ============================== */
+
+.kz__hint {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  transform: translateX(-50%);
+  z-index: 4;
+  background: rgba(10, 17, 30, .85);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 30px;
+  padding: 9px 18px;
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: center;
+  max-width: min(92%, 620px);
+  pointer-events: none;
+  animation: kzFloat 2.6s ease-in-out infinite;
+}
+
+@keyframes kzFloat {
+
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+
+  50% {
+    transform: translate(-50%, -5px);
+  }
+}
+
+/* ============================ せつめいパネル ============================ */
+
+.kz__panel {
+  position: absolute;
+  z-index: 5;
+  right: 14px;
+  top: 14px;
+  width: min(360px, 40vw);
+  background: #fff;
+  color: var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, .5);
+  padding: 16px 16px 14px;
+  animation: kzSlide .28s var(--ease) both;
+  max-height: calc(100% - 28px);
+  overflow: auto;
+}
+
+@keyframes kzSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.kz__panel-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.kz__panel-n {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--lit);
+  color: #fff;
+  font-family: var(--font-title);
+  font-size: 19px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.kz__panel-name {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-inline-end: auto;
+}
+
+.kz__panel-close {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--bg-soft);
+  color: var(--ink-sub);
+  font-size: 19px;
+  cursor: pointer;
+}
+
+.kz__panel-close:hover {
+  background: var(--line);
+}
+
+.kz__thumb {
+  height: 96px;
+  border-radius: var(--radius-s);
+  background: linear-gradient(180deg, #f7fafd, #e9f0f8);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.kz__thumb svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.kz__panel-text {
+  font-size: 17px;
+  line-height: 1.95;
+  margin-bottom: 10px;
+}
+
+/* ずかんの 本文（③ つくり）と つながる ところ */
+.kz__tsukuri {
+  background: var(--t-bg);
+  border-inline-start: 6px solid var(--t);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 16px;
+  line-height: 1.95;
+  margin-bottom: 10px;
+}
+
+.kz__tsukuri b {
+  color: var(--t);
+}
+
+.kz__tag {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--t);
+  border-radius: 20px;
+  padding: 2px 12px;
+  margin-bottom: 6px;
+}
+
+.kz__panel-foot {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.kz__panel-foot .btn {
+  font-size: 15px;
+  padding: 9px 14px;
+  min-height: 44px;
+}
+
+/* ============================ ぶぶんの リスト ============================ */
+
+.kz__rail {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  padding: 10px 12px;
+  min-width: 0;
+  overflow-x: auto;
+  background: rgba(10, 17, 30, .95);
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  scrollbar-width: thin;
+}
+
+.kz-chip {
+  flex: none;
+  width: 104px;
+  border: 2px solid rgba(255, 255, 255, .16);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .06);
+  color: #eaf1fb;
+  padding: 6px 6px 8px;
+  cursor: pointer;
+  font-family: var(--font);
+  text-align: center;
+  transition: border-color .2s var(--ease), background .2s var(--ease), transform .12s var(--ease);
+}
+
+.kz-chip:hover {
+  background: rgba(255, 255, 255, .14);
+}
+
+.kz-chip:active {
+  transform: scale(.96);
+}
+
+.kz-chip.is-on {
+  border-color: var(--lit);
+  background: rgba(255, 138, 0, .22);
+}
+
+.kz-chip__pic {
+  display: block;
+  height: 48px;
+  border-radius: 9px;
+  background: #f4f8fc;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.kz-chip__pic svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.kz-chip__name {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.kz-chip__name rt {
+  font-size: 9px;
+  color: #9fb6d6;
+}
+
+.kz-chip__n {
+  font-size: 11px;
+  color: #9fb6d6;
+}
+
+.kz-chip.is-found .kz-chip__n::after {
+  content: ' ✓';
+  color: #5ddba0;
+}
+
+/* ============================ ぜんぶ みつけた ============================ */
+
+.kz__done {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  background: rgba(6, 11, 20, .72);
+  animation: kzIn .3s var(--ease) both;
+}
+
+.kz__done-card {
+  background: #fff;
+  color: var(--ink);
+  border-radius: var(--radius);
+  padding: 26px 30px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  animation: kzPop .5s var(--ease) both;
+  max-width: min(92%, 420px);
+}
+
+.kz__done-card h2 {
+  font-family: var(--font-title);
+  font-size: 28px;
+  color: var(--lit);
+  margin-bottom: 8px;
+}
+
+.kz__done-card p {
+  font-size: 16px;
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.kz__done-card .btn,
+.kz__done-card .btn--next {
+  width: auto;
+  margin: 4px;
+  min-height: 54px;
+  font-size: 17px;
+}
+
+/* ============================== ちいさい がめん ============================== */
+
+@media (max-width: 760px) {
+  .kz__title {
+    font-size: 17px;
+  }
+
+  .kz__len {
+    display: none;
+  }
+
+  .kz-btn {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .kz__panel {
+    right: 8px;
+    left: 8px;
+    top: auto;
+    bottom: 8px;
+    width: auto;
+    max-height: 64%;
+    padding-bottom: 0;
+  }
+
+  /* ちいさい がめんでも、ボタンは いつも 見えるように する */
+  .kz__panel-foot {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    padding: 8px 0 12px;
+    box-shadow: 0 -10px 12px -8px rgba(30, 43, 69, .3);
+  }
+
+  .kz__thumb {
+    height: 74px;
+  }
+
+  /* スマホの ブラウザでは ぜんがめんに できない ことが おおい */
+  #kz-full {
+    display: none;
+  }
+
+  /* パネルが 出て いる ときは、ズームバーを 上に よける */
+  .kz__main.has-panel .kz__zoom {
+    display: none;
+  }
+
+  .kz__zoom input[type=range] {
+    width: 108px;
+  }
+
+  .kz-chip {
+    width: 88px;
+  }
+}
+
+@media (max-height: 460px) {
+  .kz__rail {
+    padding: 6px 10px;
+  }
+
+  .kz-chip__pic {
+    height: 34px;
+  }
+}
+
+/* うごきを へらす せっていの とき */
+@media (prefers-reduced-motion: reduce) {
+
+  .kz,
+  .kz__panel,
+  .kz__done,
+  .kz__done-card,
+  .kz__count.is-done {
+    animation: none;
+  }
+
+  .kz-mark::before,
+  .kz__hint {
+    animation: none;
+  }
+}
+
+/* いんさつの ときは 出さない */
+@media print {
+  .kz {
+    display: none !important;
+  }
+}

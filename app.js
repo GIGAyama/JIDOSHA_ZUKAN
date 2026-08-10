@@ -22,6 +22,7 @@
   var viewList = $('#view-list');
   var viewDetail = $('#view-detail');
   var viewCompare = $('#view-compare');
+  var viewKansatsu = $('#view-kansatsu');
 
   /* ------------------------------------------------------------------
      ほぞん（学校の たんまつで ブロックされて いても うごくように）
@@ -38,6 +39,9 @@
       catch (e) { return false; }
     }
   };
+
+  /* ものすごい かんさつ（kansatsu.js）からも つかう */
+  window.jzStore = store;
 
   function stars() {
     var s = store.get('stars', []);
@@ -130,6 +134,9 @@
 
     window.speechSynthesis.speak(u);
   }
+
+  /* ものすごい かんさつ（kansatsu.js）からも つかう */
+  window.jzSpeech = { speak: speak, stop: stopSpeech, reading: readingOf };
 
   function audioBtn(label) {
     var html = '🔊 こえで きく';
@@ -266,7 +273,10 @@
       '<div class="art-stage" id="art-stage">' + artHTML(car, 'fit') +
       '<div class="callout" id="callout" hidden></div>' +
       '</div>' +
-      '<p class="art-hint">「つくり」の <b>ぶん</b>を おすと、その ぶぶんが <b>光ります</b>。</p>' +
+      '<a class="btn btn--zoom" href="#/kansatsu/' + car.id + '">' +
+      '🔬 ものすごく <ruby>大<rt>おお</rt></ruby>きく <ruby>見<rt>み</rt></ruby>る</a>' +
+      '<p class="art-hint">「つくり」の <b>ぶん</b>を おすと、その ぶぶんが <b>光ります</b>。<br>' +
+      'ぜんぶの ぶぶんを しらべる ときは、<b>ものすごく <ruby>大<rt>おお</rt></ruby>きく</b> して みよう。</p>' +
       '</div>' +
 
       '<div class="steps">' +
@@ -542,9 +552,11 @@
      ================================================================== */
   function setView(name) {
     stopSpeech();
+    if (name !== 'kansatsu' && window.kansatsu) { window.kansatsu.unmount(); }
     viewList.hidden = name !== 'list';
     viewDetail.hidden = name !== 'detail';
     viewCompare.hidden = name !== 'compare';
+    viewKansatsu.hidden = name !== 'kansatsu';
     elHeader.hidden = name !== 'list';
     elTopbar.hidden = name !== 'detail';
     if (name === 'compare') {
@@ -556,9 +568,22 @@
     window.scrollTo(0, 0);
   }
 
+  /* ==================================================================
+     ものすごい かんさつ
+     ================================================================== */
+  function showKansatsu(car) {
+    setView('kansatsu');
+    document.title = plain(car.name) + 'を ものすごく 大きく - じどう車ずかん';
+    window.kansatsu.mount(car, viewKansatsu);
+  }
+
   function route() {
     var h = location.hash || '#/';
     clearPin();
+    if (h.indexOf('#/kansatsu/') === 0) {
+      var kcar = carById(h.slice('#/kansatsu/'.length));
+      if (kcar && window.kansatsu && window.carArt.has(kcar.art)) { showKansatsu(kcar); return; }
+    }
     if (h.indexOf('#/car/') === 0) {
       var car = carById(h.slice('#/car/'.length));
       if (car) { showDetail(car); return; }
