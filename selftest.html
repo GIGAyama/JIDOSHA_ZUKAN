@@ -74,7 +74,7 @@
       await go('#/car/does-not-exist');
       ok(!$('#view-list').hidden, 'しらない id は 一覧に もどす');
 
-      /* ---- 2. 30だい ぜんぶ：じゅんばん展開と 部位ハイライト ---- */
+      /* ---- 2. ぜんぶの 車：じゅんばん展開と 部位ハイライト ---- */
       var badStep = [], badLit = [], badLabel = [];
       for (var i = 0; i < cars.length; i++) {
         var car = cars[i];
@@ -112,7 +112,7 @@
         }
       }
       ok(badStep.length === 0, 'じゅんばんに しか ひらかない ' + (badStep.join(' / ') || ''));
-      ok(badLit.length === 0, '30だい ぜんぶ 絵の ぶぶんが 光る ' + (badLit.join(' / ') || ''));
+      ok(badLit.length === 0, cars.length + 'だい ぜんぶ 絵の ぶぶんが 光る ' + (badLit.join(' / ') || ''));
       ok(badLabel.length === 0, 'ふきだしが 絵の 中に 出る ' + (badLabel.join(' / ') || ''));
 
       /* ---- 3. えらんだ 車（★） ---- */

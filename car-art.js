@@ -354,6 +354,155 @@
     }
   };
 
+  ART.trailer = {
+    label: 'トレーラー', w: 420, h: 126,
+    draw: function (L) {
+      var body = '#c94f4f';
+      var con = '#4a7fd0';
+      return [
+        rect(L + 40, G - 60, 380, 10, { fill: STEEL_D, rx: 3, sw: 2 }),
+        // ながい コンテナ
+        rect(L + 96, G - 124, 324, 66, { rx: 4, fill: con, part: 'container' }),
+        line(L + 180, G - 124, L + 180, G - 58, { sw: 2, stroke: shade(con, 0.78), part: 'container' }),
+        line(L + 264, G - 124, L + 264, G - 58, { sw: 2, stroke: shade(con, 0.78), part: 'container' }),
+        line(L + 348, G - 124, L + 348, G - 58, { sw: 2, stroke: shade(con, 0.78), part: 'container' }),
+        rect(L + 392, G - 120, 24, 58, { rx: 3, fill: shade(con, 0.88), sw: 2.5, part: 'container' }),
+        // くるりと うごく つなぎめ
+        '<g' + P('joint') + '>' +
+        circ(L + 106, G - 52, 14, { fill: STEEL_D }) +
+        circ(L + 106, G - 52, 5, { fill: '#eef2f7', sw: 2 }) +
+        '</g>',
+        bigCab(L, G - 116, 68, body),
+        wheels([L + 44, L + 120, L + 330, L + 376], 25)
+      ].join('');
+    }
+  };
+
+  ART.reefer = {
+    label: 'れいとう車', w: 182, h: 92,
+    draw: function (L) {
+      var body = '#6fb7e0';
+      return [
+        // あつい かべの にだい
+        rect(L + 40, G - 76, 142, 54, { rx: 5, fill: '#ffffff', part: 'wall' }),
+        rect(L + 47, G - 69, 128, 40, { rx: 3, fill: '#e8f4fb', sw: 2, part: 'wall' }),
+        // 中を ひやす きかい
+        '<g' + P('cooler') + '>' +
+        rect(L + 46, G - 92, 48, 18, { rx: 4, fill: '#b9c3d1' }) +
+        line(L + 56, G - 88, L + 56, G - 78, { sw: 2.5, stroke: STEEL_D }) +
+        line(L + 65, G - 88, L + 65, G - 78, { sw: 2.5, stroke: STEEL_D }) +
+        line(L + 74, G - 88, L + 74, G - 78, { sw: 2.5, stroke: STEEL_D }) +
+        '</g>',
+        mark(L + 130, G - 50, 26, '❄', '#5aa9d6'),
+        rect(L, G - 62, 44, 40, { rx: 10, fill: body, part: 'cab' }),
+        glass(L + 6, G - 56, 28, 18),
+        lamp(L + 6, G - 28, 5, LAMP_Y, null),
+        wheels([L + 30, L + 148], 17)
+      ].join('');
+    }
+  };
+
+  ART.moving = {
+    label: 'ひっこし車', w: 212, h: 104,
+    draw: function (L) {
+      var body = '#e0a83c';
+      return [
+        rect(L + 44, G - 58, 166, 10, { fill: STEEL_D, rx: 3, sw: 2 }),
+        // せの 高い にだい
+        rect(L + 56, G - 104, 154, 48, { rx: 5, fill: '#fdf7ea', part: 'nidai' }),
+        rect(L + 56, G - 104, 154, 14, { rx: 4, fill: body, sw: 2, part: 'nidai' }),
+        // つんで ある かぐ
+        rect(L + 66, G - 86, 32, 30, { rx: 3, fill: '#d9a066', sw: 2 }),
+        line(L + 66, G - 71, L + 98, G - 71, { sw: 1.8, stroke: '#a97645' }),
+        rect(L + 106, G - 86, 26, 30, { rx: 3, fill: '#c8d0dc', sw: 2 }),
+        rect(L + 140, G - 82, 30, 26, { rx: 3, fill: '#9fc7a8', sw: 2 }),
+        // 上下に うごく あげさげ台
+        '<g' + P('gate') + '>' +
+        rect(L + 176, G - 44, 36, 9, { rx: 2, fill: '#b9c3d1' }) +
+        line(L + 194, G - 35, L + 194, G - 16, { sw: 3.5, stroke: STEEL_D }) +
+        path('M' + n(L + 194) + ' ' + n(G - 56) + 'l-8 10h16z', { fill: STEEL_D, sw: 2 }) +
+        '</g>',
+        rect(L, G - 92, 56, 70, { rx: 11, fill: body, part: 'cab' }),
+        glass(L + 7, G - 86, 38, 22),
+        lamp(L + 8, G - 32, 5, LAMP_Y, null),
+        wheels([L + 34, L + 168], 19)
+      ].join('');
+    }
+  };
+
+  ART.schoolbus = {
+    label: 'スクールバス', w: 252, h: 104,
+    draw: function (L) {
+      var body = '#f5c33b';
+      var win = [];
+      for (var i = 0; i < 3; i++) {
+        var x = L + 92 + i * 54;
+        win.push(glass(x, G - 94, 44, 32));
+        win.push(rect(x + 6, G - 86, 13, 22, { rx: 4, fill: SEAT, sw: 2, part: 'seat' }));
+        win.push(rect(x + 25, G - 86, 13, 22, { rx: 4, fill: SEAT, sw: 2, part: 'seat' }));
+      }
+      return [
+        rect(L, G - 104, 252, 82, { rx: 14, fill: body, part: 'body' }),
+        rect(L + 6, G - 100, 36, 12, { rx: 4, fill: '#20364d', sw: 2 }),
+        glass(L + 8, G - 84, 36, 32),
+        rect(L + 54, G - 94, 26, 62, { rx: 4, fill: GLASS, sw: 2.5, part: 'door' }),
+        win.join(''),
+        // 小さい 子でも のりやすい ひくい かいだん
+        '<g' + P('step') + '>' +
+        rect(L + 50, G - 28, 34, 8, { rx: 2, fill: STEEL_D }) +
+        rect(L + 56, G - 17, 34, 8, { rx: 2, fill: STEEL_D }) +
+        '</g>',
+        lamp(L + 10, G - 34, 5.5, LAMP_Y, null),
+        wheels([L + 48, L + 204], 22)
+      ].join('');
+    }
+  };
+
+  ART.cash = {
+    label: 'げんきんゆそう車', w: 154, h: 88,
+    draw: function (L) {
+      var body = '#5a6575';
+      return [
+        // かんたんに あかない かたい はこ
+        rect(L + 40, G - 88, 114, 66, { rx: 5, fill: '#8b98ad', part: 'safe' }),
+        rect(L + 50, G - 80, 94, 50, { rx: 3, fill: '#6f7c92', sw: 2, part: 'safe' }),
+        circ(L + 132, G - 55, 7, { fill: '#dfe5ee', sw: 2, part: 'safe' }),
+        rect(L, G - 66, 44, 44, { rx: 9, fill: body, part: 'cab' }),
+        // とても 小さな まど
+        glass(L + 8, G - 60, 20, 14, { part: 'window' }),
+        rect(L + 64, G - 78, 22, 13, { rx: 3, fill: GLASS, sw: 2.5, part: 'window' }),
+        lamp(L + 6, G - 30, 5, LAMP_Y, null),
+        wheels([L + 30, L + 120], 16)
+      ].join('');
+    }
+  };
+
+  ART.welfare = {
+    label: 'ふくし車', w: 150, h: 70,
+    draw: function (L) {
+      var body = '#6fae8f';
+      return [
+        rect(L, G - 70, 118, 50, { rx: 12, fill: '#f7f9fc', part: 'body' }),
+        rect(L, G - 34, 118, 8, { fill: body, sw: 0 }),
+        glass(L + 7, G - 64, 24, 20),
+        glass(L + 37, G - 64, 24, 20),
+        // のせた 車いす
+        circ(L + 88, G - 32, 11, { fill: 'none', stroke: '#55637a', sw: 3 }),
+        rect(L + 80, G - 56, 8, 26, { rx: 3, fill: SEAT, sw: 2 }),
+        rect(L + 88, G - 40, 20, 7, { rx: 2, fill: SEAT, sw: 2 }),
+        // 車いすを ゆかに とめる ベルト
+        '<g' + P('belt') + '>' +
+        line(L + 74, G - 22, L + 84, G - 36, { sw: 3.5, stroke: '#e5544b' }) +
+        line(L + 104, G - 22, L + 94, G - 36, { sw: 3.5, stroke: '#e5544b' }) +
+        '</g>',
+        // 車いすが のぼる スロープ
+        poly([[L + 108, G - 22], [L + 118, G - 30], [L + 150, G - 4], [L + 136, G - 4]],
+          { fill: '#b9c3d1', part: 'slope' }),
+        wheels([L + 28, L + 96], 16)
+      ].join('');
+    }
+  };
+
   /* ---------- つくる・なおす ---------- */
 
   ART.crane = {
@@ -582,6 +731,150 @@
     }
   };
 
+  ART.loader = {
+    label: 'ホイールローダー', w: 196, h: 108,
+    draw: function (L) {
+      var body = '#f0b429';
+      return [
+        rect(L + 92, G - 74, 96, 42, { rx: 8, fill: body, part: 'body' }),
+        rect(L + 110, G - 108, 56, 36, { rx: 8, fill: shade(body, 1.08), part: 'cab' }),
+        glass(L + 116, G - 102, 44, 24),
+        // すくい上げる うで
+        path('M' + n(L + 100) + ' ' + n(G - 66) + 'L' + n(L + 50) + ' ' + n(G - 54),
+          { sw: 14, stroke: body, part: 'arm' }),
+        path('M' + n(L + 100) + ' ' + n(G - 66) + 'L' + n(L + 50) + ' ' + n(G - 54),
+          { sw: 3, stroke: STROKE, part: 'arm' }),
+        // たくさん すくえる バケット
+        poly([[L + 52, G - 60], [L + 20, G - 46], [L + 6, G - 14], [L + 54, G - 14]],
+          { fill: shade(body, 0.8), part: 'bucket' }),
+        line(L + 8, G - 16, L + 52, G - 16, { sw: 4, stroke: '#f5f7fa', part: 'bucket' }),
+        // みぞの ふかい 大きな タイヤ
+        '<g' + P('bigtire') + '>' +
+        circ(L + 68, G - 26, 26, { fill: TIRE }) +
+        circ(L + 68, G - 26, 11, { fill: HUB, sw: 2 }) +
+        circ(L + 160, G - 26, 26, { fill: TIRE }) +
+        circ(L + 160, G - 26, 11, { fill: HUB, sw: 2 }) +
+        '</g>'
+      ].join('');
+    }
+  };
+
+  ART.paver = {
+    label: 'ほそう車', w: 176, h: 106,
+    draw: function (L) {
+      var body = '#f2a93b';
+      return [
+        '<g' + P('crawler') + '>' +
+        rect(L + 30, G - 32, 116, 32, { rx: 16, fill: '#4a5568' }) +
+        circ(L + 50, G - 16, 10, { fill: '#77839a', sw: 2 }) +
+        circ(L + 126, G - 16, 10, { fill: '#77839a', sw: 2 }) +
+        '</g>',
+        rect(L + 40, G - 76, 104, 46, { rx: 6, fill: body, part: 'body' }),
+        // アスファルトを うける ホッパー
+        poly([[L + 4, G - 80], [L + 62, G - 80], [L + 52, G - 44], [L + 16, G - 44]],
+          { fill: '#b9c3d1', part: 'hopper' }),
+        line(L + 12, G - 72, L + 56, G - 72, { sw: 3, stroke: '#5a6575', part: 'hopper' }),
+        rect(L + 58, G - 106, 62, 8, { rx: 3, fill: shade(body, 0.9), part: 'roof' }),
+        line(L + 64, G - 98, L + 64, G - 78, { sw: 4, stroke: STROKE, part: 'roof' }),
+        line(L + 114, G - 98, L + 114, G - 78, { sw: 4, stroke: STROKE, part: 'roof' }),
+        rect(L + 74, G - 96, 24, 22, { rx: 4, fill: SEAT, sw: 2, part: 'seat' }),
+        // たいらに ならす いた（スクリード）
+        '<g' + P('screed') + '>' +
+        rect(L + 132, G - 42, 44, 20, { rx: 3, fill: STEEL_D }) +
+        rect(L + 128, G - 24, 48, 8, { rx: 2, fill: '#e8ecf2' }) +
+        '</g>'
+      ].join('');
+    }
+  };
+
+  ART.pumpcar = {
+    label: 'コンクリートポンプ車', w: 308, h: 172,
+    draw: function (L) {
+      var body = '#3f7fbf';
+      var px = L + 148, py = G - 104;
+      var ax = L + 194, ay = G - 162;
+      var bx = L + 280, by = G - 132;
+      return [
+        '<g' + P('ashi') + '>' +
+        path('M' + n(L + 76) + ' ' + n(G - 62) + 'L' + n(L + 46) + ' ' + n(G - 62) +
+          'L' + n(L + 46) + ' ' + n(G - 14), { sw: 8, stroke: '#3f4a5c' }) +
+        rect(L + 32, G - 16, 30, 12, { rx: 3, fill: '#55637a' }) +
+        path('M' + n(L + 260) + ' ' + n(G - 62) + 'L' + n(L + 290) + ' ' + n(G - 62) +
+          'L' + n(L + 290) + ' ' + n(G - 14), { sw: 8, stroke: '#3f4a5c' }) +
+        rect(L + 276, G - 16, 30, 12, { rx: 3, fill: '#55637a' }) +
+        '</g>',
+        rect(L + 44, G - 60, 264, 10, { fill: STEEL_D, rx: 3, sw: 2 }),
+        rect(L + 70, G - 88, 236, 28, { rx: 6, fill: STEEL, part: 'body' }),
+        // おれまがりながら のびる うで（ブーム）
+        '<g' + P('boom') + '>' +
+        path('M' + n(px) + ' ' + n(py) + 'L' + n(ax) + ' ' + n(ay) + 'L' + n(bx) + ' ' + n(by),
+          { sw: 15, stroke: body }) +
+        path('M' + n(px) + ' ' + n(py) + 'L' + n(ax) + ' ' + n(ay) + 'L' + n(bx) + ' ' + n(by),
+          { sw: 3, stroke: STROKE }) +
+        circ(ax, ay, 8, { fill: shade(body, 1.2), sw: 2.5 }) +
+        '</g>',
+        circ(px, py, 12, { fill: shade(body, 0.8), part: 'boom' }),
+        // コンクリートが 出る ホース
+        path('M' + n(bx) + ' ' + n(by) + 'q10 22 -4 40', { sw: 7, stroke: '#8b98ad' }),
+        bigCab(L, G - 112, 64, body),
+        wheels([L + 44, L + 214, L + 262], 25)
+      ].join('');
+    }
+  };
+
+  ART.breaker = {
+    label: 'かいたい車', w: 258, h: 174,
+    draw: function (L) {
+      var body = '#e0632f';
+      return [
+        '<g' + P('crawler') + '>' +
+        rect(L + 8, G - 42, 152, 42, { rx: 21, fill: '#4a5568' }) +
+        circ(L + 30, G - 21, 12, { fill: '#77839a', sw: 2 }) +
+        circ(L + 138, G - 21, 12, { fill: '#77839a', sw: 2 }) +
+        circ(L + 84, G - 21, 9, { fill: '#77839a', sw: 2 }) +
+        '</g>',
+        rect(L + 28, G - 90, 112, 50, { rx: 9, fill: body, part: 'body' }),
+        rect(L + 34, G - 128, 52, 40, { rx: 9, fill: shade(body, 1.12), part: 'cab' }),
+        glass(L + 40, G - 122, 38, 24),
+        // 高い ところまで とどく ながい うで
+        path('M' + n(L + 130) + ' ' + n(G - 82) + 'L' + n(L + 176) + ' ' + n(G - 164) +
+          'L' + n(L + 234) + ' ' + n(G - 110), { sw: 13, stroke: body, part: 'arm' }),
+        path('M' + n(L + 130) + ' ' + n(G - 82) + 'L' + n(L + 176) + ' ' + n(G - 164) +
+          'L' + n(L + 234) + ' ' + n(G - 110), { sw: 3, stroke: STROKE, part: 'arm' }),
+        // かべを かみくだく 大きな 手
+        '<g' + P('nipper') + '>' +
+        poly([[L + 228, G - 114], [L + 252, G - 106], [L + 244, G - 84], [L + 224, G - 92]],
+          { fill: '#8b98ad' }) +
+        poly([[L + 230, G - 116], [L + 254, G - 124], [L + 258, G - 102], [L + 240, G - 98]],
+          { fill: '#b9c3d1' }) +
+        '</g>'
+      ].join('');
+    }
+  };
+
+  ART.grader = {
+    label: 'グレーダー', w: 238, h: 120,
+    draw: function (L) {
+      var body = '#f0b429';
+      return [
+        // ながい からだ
+        rect(L + 34, G - 74, 178, 20, { rx: 8, fill: body, part: 'body' }),
+        rect(L + 150, G - 94, 62, 26, { rx: 7, fill: body, part: 'body' }),
+        rect(L + 156, G - 120, 50, 28, { rx: 7, fill: shade(body, 1.08), part: 'cab' }),
+        glass(L + 162, G - 115, 38, 20),
+        // 土を けずる ながい は（ブレード）
+        '<g' + P('blade') + '>' +
+        line(L + 108, G - 72, L + 118, G - 48, { sw: 5, stroke: '#55637a' }) +
+        rect(L + 84, G - 46, 78, 13, { rx: 3, fill: '#b9c3d1' }) +
+        line(L + 90, G - 32, L + 156, G - 32, { sw: 4, stroke: STEEL_D }) +
+        '</g>',
+        line(L + 28, G - 68, L + 28, G - 30, { sw: 7, stroke: shade(body, 0.78) }),
+        wheel(L + 28, 18),
+        wheels([L + 180, L + 216], 22)
+      ].join('');
+    }
+  };
+
   /* ---------- たすける・まもる ---------- */
 
   ART.ambulance = {
@@ -767,6 +1060,98 @@
     }
   };
 
+  ART.rescue = {
+    label: 'きゅうじょ車', w: 196, h: 108,
+    draw: function (L) {
+      var body = '#e02f2f';
+      var box = [];
+      [L + 62, L + 128].forEach(function (x) {
+        box.push(rect(x, G - 86, 60, 42, { rx: 4, fill: '#f0f3f7', sw: 2.5, part: 'box' }));
+        box.push(line(x + 4, G - 74, x + 56, G - 74, { sw: 2, stroke: '#a9b4c4', part: 'box' }));
+        box.push(line(x + 4, G - 62, x + 56, G - 62, { sw: 2, stroke: '#a9b4c4', part: 'box' }));
+        box.push(line(x + 4, G - 50, x + 56, G - 50, { sw: 2, stroke: '#a9b4c4', part: 'box' }));
+      });
+      return [
+        rect(L, G - 98, 196, 76, { rx: 9, fill: body, part: 'body' }),
+        glass(L + 8, G - 92, 40, 26),
+        box.join(''),
+        // つなを まきとる ウインチ
+        '<g' + P('winch') + '>' +
+        rect(L + 2, G - 42, 42, 18, { rx: 4, fill: '#b9c3d1' }) +
+        circ(L + 23, G - 33, 7, { fill: STEEL_D, sw: 2 }) +
+        '</g>',
+        siren(L + 60, G - 98, 44, 'lamp'),
+        wheels([L + 42, L + 152], 21)
+      ].join('');
+    }
+  };
+
+  ART.foam = {
+    label: 'かがくしょうぼう車', w: 252, h: 128,
+    draw: function (L) {
+      var body = '#e02f2f';
+      return [
+        rect(L, G - 100, 252, 78, { rx: 9, fill: body, part: 'body' }),
+        glass(L + 8, G - 94, 38, 26),
+        rect(L + 52, G - 94, 32, 30, { rx: 4, fill: GLASS, sw: 2.5, part: 'cab' }),
+        // あわの もとを ためる タンク
+        rect(L + 96, G - 92, 144, 42, { rx: 18, fill: '#f0f3f7', part: 'tank' }),
+        line(L + 168, G - 90, L + 168, G - 52, { sw: 2, stroke: '#c9d2de', part: 'tank' }),
+        // むきを かえられる ふとい ノズル
+        '<g' + P('turret') + '>' +
+        rect(L + 152, G - 114, 22, 16, { rx: 4, fill: '#b9c3d1' }) +
+        path('M' + n(L + 166) + ' ' + n(G - 110) + 'L' + n(L + 210) + ' ' + n(G - 126),
+          { sw: 10, stroke: STEEL_D }) +
+        '</g>',
+        siren(L + 62, G - 100, 44, 'lamp'),
+        lamp(L + 8, G - 34, 6, LAMP_Y, null),
+        wheels([L + 46, L + 190], 22)
+      ].join('');
+    }
+  };
+
+  ART.doctorcar = {
+    label: 'ドクターカー', w: 140, h: 78,
+    draw: function (L) {
+      return [
+        rect(L, G - 68, 140, 48, { rx: 12, fill: '#ffffff', part: 'body' }),
+        rect(L, G - 32, 140, 8, { fill: '#e5544b', sw: 0 }),
+        glass(L + 8, G - 62, 28, 22),
+        glass(L + 42, G - 62, 32, 22),
+        // つんで ある きゅうきゅうバッグ
+        rect(L + 90, G - 54, 36, 26, { rx: 4, fill: '#e5544b', sw: 2, part: 'kit' }),
+        cross(L + 108, G - 41, 8, '#ffffff', 'kit'),
+        siren(L + 62, G - 68, 40, 'lamp'),
+        lamp(L + 6, G - 28, 5, LAMP_Y, null),
+        wheels([L + 30, L + 108], 16)
+      ].join('');
+    }
+  };
+
+  ART.xray = {
+    label: 'けんしん車', w: 252, h: 104,
+    draw: function (L) {
+      var body = '#8fa8d8';
+      return [
+        rect(L, G - 104, 252, 82, { rx: 12, fill: '#ffffff', part: 'body' }),
+        rect(L, G - 48, 252, 10, { fill: body, sw: 0 }),
+        glass(L + 8, G - 98, 40, 30),
+        // レントゲンを とる きかいの へや
+        rect(L + 106, G - 96, 132, 52, { rx: 5, fill: '#eef2f9', sw: 2.5, part: 'machine' }),
+        rect(L + 116, G - 88, 46, 36, { rx: 4, fill: '#c8d0dc', sw: 2, part: 'machine' }),
+        circ(L + 139, G - 70, 9, { fill: '#8f9cb0', sw: 2, part: 'machine' }),
+        rect(L + 176, G - 88, 52, 36, { rx: 4, fill: '#dfe6f1', sw: 2, part: 'machine' }),
+        line(L + 184, G - 78, L + 220, G - 78, { sw: 2, stroke: '#a9b4c4', part: 'machine' }),
+        // かいだんの ついた とびら
+        rect(L + 60, G - 98, 32, 62, { rx: 4, fill: GLASS, sw: 2.5, part: 'door' }),
+        rect(L + 56, G - 28, 36, 8, { rx: 2, fill: STEEL_D, part: 'door' }),
+        rect(L + 62, G - 17, 36, 8, { rx: 2, fill: STEEL_D, part: 'door' }),
+        lamp(L + 10, G - 36, 5.5, LAMP_Y, null),
+        wheels([L + 46, L + 204], 22)
+      ].join('');
+    }
+  };
+
   /* ---------- くらしを ささえる ---------- */
 
   ART.garbage = {
@@ -915,6 +1300,106 @@
     }
   };
 
+  ART.waterworks = {
+    label: 'すいどうこうじ車', w: 158, h: 98,
+    draw: function (L) {
+      var body = '#3f8fbf';
+      return [
+        rect(L + 36, G - 58, 108, 10, { fill: STEEL_D, rx: 3, sw: 2 }),
+        // どうぐを しまう はこ
+        '<g' + P('box') + '>' +
+        rect(L + 44, G - 84, 68, 28, { rx: 4, fill: '#e8ecf2', sw: 2.5 }) +
+        line(L + 78, G - 84, L + 78, G - 56, { sw: 2, stroke: '#a9b4c4' }) +
+        circ(L + 72, G - 70, 3, { fill: STEEL_D, sw: 1.6 }) +
+        circ(L + 84, G - 70, 3, { fill: STEEL_D, sw: 1.6 }) +
+        '</g>',
+        // 地めんを ほる ちいさな うで
+        path('M' + n(L + 118) + ' ' + n(G - 72) + 'L' + n(L + 138) + ' ' + n(G - 98) +
+          'L' + n(L + 150) + ' ' + n(G - 62), { sw: 10, stroke: '#f0b429', part: 'arm' }),
+        path('M' + n(L + 118) + ' ' + n(G - 72) + 'L' + n(L + 138) + ' ' + n(G - 98) +
+          'L' + n(L + 150) + ' ' + n(G - 62), { sw: 2.5, stroke: STROKE, part: 'arm' }),
+        poly([[L + 144, G - 64], [L + 158, G - 60], [L + 152, G - 40], [L + 138, G - 42]],
+          { fill: '#d99a1f', part: 'arm' }),
+        rect(L, G - 88, 46, 66, { rx: 10, fill: body, part: 'cab' }),
+        glass(L + 6, G - 82, 32, 20),
+        lamp(L + 8, G - 30, 5, LAMP_Y, null),
+        wheels([L + 30, L + 118], 17)
+      ].join('');
+    }
+  };
+
+  ART.shop = {
+    label: 'いどうはんばい車', w: 140, h: 96,
+    draw: function (L) {
+      var body = '#e0632f';
+      var goods = [];
+      for (var i = 0; i < 3; i++) {
+        var y = G - 78 + i * 20;
+        goods.push(rect(L + 40, y, 54, 5, { rx: 2, fill: '#d9a066', sw: 1.8, part: 'shelf' }));
+        goods.push(rect(L + 44, y - 12, 14, 12, { rx: 2, fill: ['#e5544b', '#5ab88a', '#f0b429'][i], sw: 1.6, part: 'shelf' }));
+        goods.push(rect(L + 64, y - 12, 14, 12, { rx: 2, fill: ['#5ab88a', '#f0b429', '#e5544b'][i], sw: 1.6, part: 'shelf' }));
+      }
+      return [
+        rect(L + 34, G - 84, 106, 62, { rx: 6, fill: '#fff6ec', part: 'body' }),
+        // はねあげて ひらく かべ（＝ たな）
+        rect(L + 36, G - 96, 102, 12, { rx: 4, fill: body, part: 'shelf' }),
+        goods.join(''),
+        // ひやして おく ところ
+        rect(L + 100, G - 74, 34, 44, { rx: 4, fill: '#cfe6f2', sw: 2, part: 'cooler' }),
+        line(L + 100, G - 54, L + 134, G - 54, { sw: 2, stroke: GLASS_D, part: 'cooler' }),
+        rect(L, G - 62, 36, 40, { rx: 9, fill: body, part: 'cab' }),
+        glass(L + 5, G - 56, 24, 18),
+        wheels([L + 26, L + 112], 16)
+      ].join('');
+    }
+  };
+
+  /* 軽自動車の きまり（長さ 3.4メートル 以下）に あわせて w = 95 */
+  ART.kei = {
+    label: 'けいトラック', w: 95, h: 56,
+    draw: function (L) {
+      var body = '#f5f7fa';
+      return [
+        rect(L + 34, G - 40, 61, 20, { rx: 3, fill: '#d9dfe8', part: 'nidai' }),
+        rect(L + 34, G - 40, 61, 6, { rx: 2, fill: '#b9c3d1', sw: 2, part: 'nidai' }),
+        // のせた やさいの はこ
+        rect(L + 41, G - 54, 22, 14, { rx: 2, fill: '#e0b878', sw: 2 }),
+        rect(L + 66, G - 52, 20, 12, { rx: 2, fill: '#9fc7a8', sw: 2 }),
+        rect(L, G - 54, 38, 34, { rx: 7, fill: body, part: 'body' }),
+        glass(L + 5, G - 49, 26, 16),
+        lamp(L + 4, G - 26, 4, LAMP_Y, null),
+        wheels([L + 18, L + 78], 12)
+      ].join('');
+    }
+  };
+
+  ART.gas = {
+    label: 'ガスこうじ車', w: 140, h: 92,
+    draw: function (L) {
+      var body = '#f0b429';
+      return [
+        rect(L, G - 74, 140, 54, { rx: 11, fill: '#f7f9fc', part: 'body' }),
+        rect(L, G - 40, 140, 8, { fill: body, sw: 0 }),
+        glass(L + 7, G - 68, 28, 20),
+        glass(L + 42, G - 68, 28, 20),
+        // ガスもれを しらべる きかい
+        '<g' + P('detector') + '>' +
+        rect(L + 88, G - 62, 42, 30, { rx: 4, fill: '#c8d0dc' }) +
+        circ(L + 100, G - 50, 6, { fill: '#5ab88a', sw: 2 }) +
+        line(L + 112, G - 56, L + 126, G - 44, { sw: 3, stroke: STEEL_D }) +
+        '</g>',
+        // こうじちゅうを しらせる きいろい ランプ
+        '<g' + P('lamp') + '>' +
+        rect(L + 64, G - 78, 14, 6, { rx: 2, fill: STEEL_D, sw: 2 }) +
+        circ(L + 71, G - 86, 8, { fill: LAMP_Y, sw: 2.5 }) +
+        '</g>',
+        wheels([L + 30, L + 108], 17)
+      ].join('');
+    }
+  };
+
+  /* ---------- そだてる・とる ---------- */
+
   ART.tractor = {
     label: 'トラクター', w: 134, h: 100,
     draw: function (L) {
@@ -938,6 +1423,312 @@
         line(L + 56, G - 12, L + 96, G - 52, { sw: 3, stroke: '#5a6575' }) +
         '</g>',
         wheel(L + 22, 17)
+      ].join('');
+    }
+  };
+
+  ART.combine = {
+    label: 'コンバイン', w: 158, h: 114,
+    draw: function (L) {
+      var body = '#e5544b';
+      return [
+        '<g' + P('crawler') + '>' +
+        rect(L + 34, G - 32, 110, 32, { rx: 16, fill: '#4a5568' }) +
+        circ(L + 54, G - 16, 10, { fill: '#77839a', sw: 2 }) +
+        circ(L + 124, G - 16, 10, { fill: '#77839a', sw: 2 }) +
+        '</g>',
+        rect(L + 40, G - 80, 104, 48, { rx: 7, fill: body, part: 'body' }),
+        // つぶだけを ためて おく はこ
+        rect(L + 78, G - 112, 68, 34, { rx: 6, fill: '#f0b429', part: 'tank' }),
+        path('M' + n(L + 144) + ' ' + n(G - 104) + 'L' + n(L + 158) + ' ' + n(G - 92),
+          { sw: 8, stroke: '#d99a1f', part: 'tank' }),
+        rect(L + 36, G - 112, 40, 34, { rx: 7, fill: shade(body, 1.14), part: 'cab' }),
+        glass(L + 41, G - 107, 30, 22),
+        // いねを かきこんで かりとる ところ
+        '<g' + P('reel') + '>' +
+        rect(L, G - 44, 46, 24, { rx: 4, fill: '#c8d0dc' }) +
+        line(L + 4, G - 24, L + 42, G - 24, { sw: 3.5, stroke: STEEL_D }) +
+        circ(L + 20, G - 62, 15, { fill: 'none', stroke: '#8f9cb0', sw: 3 }) +
+        line(L + 5, G - 62, L + 35, G - 62, { sw: 3, stroke: '#8f9cb0' }) +
+        line(L + 20, G - 77, L + 20, G - 47, { sw: 3, stroke: '#8f9cb0' }) +
+        '</g>'
+      ].join('');
+    }
+  };
+
+  ART.rice = {
+    label: 'たうえき', w: 108, h: 90,
+    draw: function (L) {
+      var body = '#4aa564';
+      return [
+        // なえを ならべる ななめの たな
+        '<g' + P('tray') + '>' +
+        poly([[L + 48, G - 90], [L + 104, G - 68], [L + 98, G - 56], [L + 42, G - 78]],
+          { fill: '#cfe6d6' }) +
+        line(L + 54, G - 84, L + 96, G - 68, { sw: 2.5, stroke: '#7fae90' }) +
+        line(L + 66, G - 86, L + 60, G - 72, { sw: 2, stroke: '#7fae90' }) +
+        line(L + 82, G - 80, L + 76, G - 66, { sw: 2, stroke: '#7fae90' }) +
+        '</g>',
+        rect(L + 12, G - 56, 58, 26, { rx: 6, fill: body, part: 'body' }),
+        rect(L + 22, G - 78, 24, 22, { rx: 5, fill: SEAT, sw: 2, part: 'seat' }),
+        line(L + 48, G - 60, L + 58, G - 74, { sw: 3 }),
+        // なえを 土に さしこむ つめ
+        '<g' + P('planter') + '>' +
+        rect(L + 66, G - 34, 38, 15, { rx: 3, fill: '#e0632f' }) +
+        line(L + 74, G - 19, L + 71, G - 4, { sw: 3.5, stroke: '#8f9cb0' }) +
+        line(L + 86, G - 19, L + 83, G - 4, { sw: 3.5, stroke: '#8f9cb0' }) +
+        line(L + 98, G - 19, L + 95, G - 4, { sw: 3.5, stroke: '#8f9cb0' }) +
+        '</g>',
+        wheels([L + 20, L + 56], 13)
+      ].join('');
+    }
+  };
+
+  ART.mower = {
+    label: 'くさかり車', w: 124, h: 90,
+    draw: function (L) {
+      var body = '#f0b429';
+      return [
+        rect(L + 10, G - 58, 62, 26, { rx: 6, fill: body, part: 'body' }),
+        rect(L + 24, G - 90, 42, 34, { rx: 7, fill: shade(body, 1.1), part: 'cab' }),
+        glass(L + 29, G - 85, 32, 22),
+        // よこに のびる うで
+        path('M' + n(L + 68) + ' ' + n(G - 64) + 'L' + n(L + 96) + ' ' + n(G - 60) +
+          'L' + n(L + 104) + ' ' + n(G - 42), { sw: 9, stroke: shade(body, 0.8), part: 'arm' }),
+        // かった くさが とばない ように かこう カバー
+        path('M' + n(L + 82) + ' ' + n(G - 32) + 'a20 20 0 0 1 40 0',
+          { sw: 6, stroke: '#55637a', part: 'guard' }),
+        // ぐるぐる まわる は
+        '<g' + P('cutter') + '>' +
+        circ(L + 102, G - 28, 13, { fill: '#c8d0dc' }) +
+        line(L + 89, G - 28, L + 115, G - 28, { sw: 3, stroke: STEEL_D }) +
+        line(L + 102, G - 41, L + 102, G - 15, { sw: 3, stroke: STEEL_D }) +
+        '</g>',
+        wheels([L + 22, L + 62], 16)
+      ].join('');
+    }
+  };
+
+  ART.logger = {
+    label: '木を はこぶ 車', w: 280, h: 128,
+    draw: function (L) {
+      var body = '#5a7d4a';
+      var stakes = [];
+      [L + 96, L + 152, L + 208, L + 262].forEach(function (x) {
+        stakes.push(rect(x, G - 104, 8, 46, { rx: 2, fill: '#8b98ad', part: 'stake' }));
+      });
+      return [
+        rect(L + 44, G - 60, 236, 10, { fill: STEEL_D, rx: 3, sw: 2 }),
+        // つんだ まるた
+        rect(L + 92, G - 82, 176, 24, { rx: 12, fill: '#c99a5e' }),
+        rect(L + 100, G - 100, 160, 22, { rx: 11, fill: '#d9ab72' }),
+        circ(L + 264, G - 70, 11, { fill: '#e6c79b', sw: 2 }),
+        stakes.join(''),
+        // 木を つかんで もち上げる うで
+        '<g' + P('grapple') + '>' +
+        path('M' + n(L + 74) + ' ' + n(G - 88) + 'L' + n(L + 84) + ' ' + n(G - 126) +
+          'L' + n(L + 128) + ' ' + n(G - 118), { sw: 9, stroke: '#f0b429' }) +
+        path('M' + n(L + 128) + ' ' + n(G - 118) + 'l-9 16', { sw: 5, stroke: '#8f9cb0' }) +
+        path('M' + n(L + 128) + ' ' + n(G - 118) + 'l11 13', { sw: 5, stroke: '#8f9cb0' }) +
+        '</g>',
+        bigCab(L, G - 114, 64, body),
+        wheels([L + 44, L + 194, L + 242], 24)
+      ].join('');
+    }
+  };
+
+  ART.sprayer = {
+    label: 'くすりを まく 車', w: 156, h: 94,
+    draw: function (L) {
+      var body = '#4aa564';
+      var noz = [];
+      [L + 116, L + 132, L + 148].forEach(function (x) {
+        noz.push(line(x, G - 50, x, G - 38, { sw: 2.5, stroke: STEEL_D, part: 'boom' }));
+        noz.push(path('M' + n(x) + ' ' + n(G - 38) + 'l-6 12', { sw: 2, stroke: '#9fc7d8', part: 'boom' }));
+        noz.push(path('M' + n(x) + ' ' + n(G - 38) + 'l6 12', { sw: 2, stroke: '#9fc7d8', part: 'boom' }));
+      });
+      return [
+        rect(L + 8, G - 60, 68, 26, { rx: 6, fill: body, part: 'body' }),
+        rect(L + 18, G - 94, 42, 36, { rx: 7, fill: shade(body, 1.12), part: 'cab' }),
+        glass(L + 23, G - 89, 32, 22),
+        // くすりを ためる タンク
+        rect(L + 62, G - 86, 58, 36, { rx: 15, fill: '#eef4ef', part: 'tank' }),
+        // うしろに ついた、左右へ のびる うで（ブーム）
+        rect(L + 106, G - 57, 46, 8, { rx: 3, fill: '#8b98ad', part: 'boom' }),
+        noz.join(''),
+        wheels([L + 22, L + 96], 18)
+      ].join('');
+    }
+  };
+
+  /* ---------- くうこう・みなと・えき ---------- */
+
+  ART.towing = {
+    label: 'トーイングカー', w: 140, h: 58,
+    draw: function (L) {
+      var body = '#5aa9d6';
+      return [
+        // ひこうきの 下に 入れる ひくい からだ
+        rect(L + 10, G - 36, 124, 24, { rx: 6, fill: body, part: 'body' }),
+        rect(L + 34, G - 58, 46, 24, { rx: 6, fill: shade(body, 1.1), part: 'cab' }),
+        glass(L + 39, G - 53, 36, 15),
+        // ひこうきと つなぐ かなぐ
+        '<g' + P('hitch') + '>' +
+        rect(L, G - 32, 24, 13, { rx: 3, fill: STEEL_D }) +
+        circ(L + 7, G - 25, 4, { fill: '#eef2f7', sw: 2 }) +
+        '</g>',
+        lamp(L + 126, G - 42, 5, LAMP_Y, null),
+        wheels([L + 34, L + 112], 14)
+      ].join('');
+    }
+  };
+
+  ART.fueler = {
+    label: 'きゅうゆ車', w: 252, h: 158,
+    draw: function (L) {
+      var body = '#4a7fd0';
+      return [
+        rect(L + 44, G - 58, 208, 10, { fill: STEEL_D, rx: 3, sw: 2 }),
+        // あぶらを ためる ながい タンク
+        rect(L + 74, G - 106, 178, 50, { rx: 25, fill: STEEL, part: 'tank' }),
+        line(L + 140, G - 104, L + 140, G - 58, { sw: 2, stroke: STEEL_D, part: 'tank' }),
+        line(L + 200, G - 104, L + 200, G - 58, { sw: 2, stroke: STEEL_D, part: 'tank' }),
+        // つばさまで とどく あがる 台
+        '<g' + P('lift') + '>' +
+        line(L + 190, G - 106, L + 190, G - 132, { sw: 5, stroke: STEEL_D }) +
+        line(L + 220, G - 106, L + 220, G - 132, { sw: 5, stroke: STEEL_D }) +
+        rect(L + 174, G - 136, 58, 10, { rx: 3, fill: '#b9c3d1' }) +
+        line(L + 178, G - 136, L + 178, G - 156, { sw: 3, stroke: STEEL_D }) +
+        line(L + 228, G - 136, L + 228, G - 156, { sw: 3, stroke: STEEL_D }) +
+        line(L + 178, G - 156, L + 228, G - 156, { sw: 3, stroke: STEEL_D }) +
+        '</g>',
+        bigCab(L, G - 108, 64, body),
+        wheels([L + 44, L + 178, L + 224], 24)
+      ].join('');
+    }
+  };
+
+  ART.cargoloader = {
+    label: 'ハイリフトローダー', w: 168, h: 132,
+    draw: function (L) {
+      var body = '#4e9d8c';
+      var rollers = [];
+      for (var i = 0; i < 6; i++) {
+        rollers.push(circ(L + 52 + i * 20, G - 100, 6, { fill: '#e8ecf2', sw: 2, part: 'roller' }));
+      }
+      // ひこうきに つみこむ にもつ
+      return [
+        rect(L + 66, G - 130, 78, 30, { rx: 4, fill: '#e0b878', sw: 2 }),
+        // そのまま 上へ もち上がる ゆか
+        '<g' + P('deck') + '>' +
+        rect(L + 46, G - 46, 112, 10, { rx: 3, fill: '#8b98ad' }) +
+        path('M' + n(L + 70) + ' ' + n(G - 88) + 'L' + n(L + 132) + ' ' + n(G - 46), { sw: 6, stroke: STEEL_D }) +
+        path('M' + n(L + 132) + ' ' + n(G - 88) + 'L' + n(L + 70) + ' ' + n(G - 46), { sw: 6, stroke: STEEL_D }) +
+        rect(L + 40, G - 98, 126, 12, { rx: 3, fill: '#b9c3d1' }) +
+        '</g>',
+        rollers.join(''),
+        rect(L, G - 62, 40, 40, { rx: 9, fill: body, part: 'cab' }),
+        glass(L + 5, G - 56, 26, 18),
+        wheels([L + 26, L + 140], 16)
+      ].join('');
+    }
+  };
+
+  ART.stairs = {
+    label: 'タラップ車', w: 172, h: 134,
+    draw: function (L) {
+      var body = '#5aa9d6';
+      var steps = [];
+      for (var i = 0; i < 7; i++) {
+        var x = L + 66 + i * 11;
+        var y = G - 34 - i * 10;
+        steps.push(rect(x, y - 5, 12, 5, { rx: 1.5, fill: '#b9c3d1', sw: 1.6, part: 'stairs' }));
+      }
+      return [
+        // ながい かいだん
+        poly([[L + 58, G - 26], [L + 140, G - 100], [L + 164, G - 100], [L + 164, G - 92],
+        [L + 80, G - 20], [L + 58, G - 20]], { fill: '#dfe5ee', part: 'stairs' }),
+        steps.join(''),
+        // 高さを かえられる ぶぶん
+        '<g' + P('lift') + '>' +
+        rect(L + 126, G - 130, 46, 10, { rx: 3, fill: body }) +
+        line(L + 132, G - 120, L + 142, G - 100, { sw: 3, stroke: STEEL_D }) +
+        line(L + 166, G - 120, L + 163, G - 100, { sw: 3, stroke: STEEL_D }) +
+        '</g>',
+        rect(L, G - 68, 52, 46, { rx: 10, fill: body, part: 'cab' }),
+        glass(L + 6, G - 62, 34, 20),
+        lamp(L + 6, G - 30, 5, LAMP_Y, null),
+        wheels([L + 30, L + 120], 17)
+      ].join('');
+    }
+  };
+
+  ART.stacker = {
+    label: 'リーチスタッカー', w: 280, h: 172,
+    draw: function (L) {
+      var body = '#e0632f';
+      var px = L + 110, py = G - 92;
+      var rad = -30 * Math.PI / 180;
+      var len = 140;
+      var tx = px + len * Math.cos(rad);
+      var ty = py + len * Math.sin(rad);
+      return [
+        rect(L + 20, G - 84, 182, 46, { rx: 8, fill: body, part: 'body' }),
+        rect(L + 32, G - 124, 54, 42, { rx: 8, fill: shade(body, 1.12), part: 'cab' }),
+        glass(L + 38, G - 118, 40, 26),
+        // ななめに ながく のびる うで
+        '<g' + P('arm') + ' transform="rotate(-30 ' + n(px) + ' ' + n(py) + ')">' +
+        rect(px - 8, py - 15, len, 30, { rx: 8, fill: '#f0b429' }) +
+        rect(px + 76, py - 10, len - 66, 20, { rx: 6, fill: '#f7cf6a', sw: 2.5 }) +
+        '</g>',
+        circ(px, py, 12, { fill: '#c98a2a', part: 'arm' }),
+        // コンテナの かどを つかむ ところ
+        '<g' + P('spreader') + '>' +
+        rect(tx - 42, ty - 7, 88, 15, { rx: 3, fill: '#8b98ad' }) +
+        rect(tx - 42, ty + 8, 11, 16, { rx: 2, fill: STEEL_D }) +
+        rect(tx + 35, ty + 8, 11, 16, { rx: 2, fill: STEEL_D }) +
+        '</g>',
+        rect(tx - 36, ty + 14, 76, 36, { rx: 3, fill: '#4a7fd0', sw: 2.5 }),
+        wheels([L + 62, L + 150, L + 188], 26)
+      ].join('');
+    }
+  };
+
+  ART.railcar = {
+    label: 'せんろの てんけん車', w: 168, h: 126,
+    draw: function (L) {
+      var body = '#f0b429';
+      var px = L + 100, py = G - 64;
+      var rad = -38 * Math.PI / 180;
+      var len = 80;
+      var tx = px + len * Math.cos(rad);
+      var ty = py + len * Math.sin(rad);
+      return [
+        // せんろ
+        line(L - 8, G + 2, L + 176, G + 2, { sw: 5, stroke: '#8b98ad' }),
+        // せんろの 上を はしる てつの わ
+        '<g' + P('railwheel') + '>' +
+        circ(L + 34, G - 16, 17, { fill: '#8b98ad' }) +
+        circ(L + 34, G - 16, 6, { fill: HUB, sw: 2 }) +
+        circ(L + 130, G - 16, 17, { fill: '#8b98ad' }) +
+        circ(L + 130, G - 16, 6, { fill: HUB, sw: 2 }) +
+        '</g>',
+        rect(L + 8, G - 62, 152, 42, { rx: 7, fill: body, part: 'body' }),
+        rect(L + 14, G - 96, 54, 38, { rx: 7, fill: shade(body, 1.1), part: 'cab' }),
+        glass(L + 20, G - 90, 42, 24),
+        // どうろを はしる ための タイヤ（せんろの 上では もち上げて おく）
+        circ(L + 62, G - 16, 11, { fill: TIRE }),
+        circ(L + 62, G - 16, 4.5, { fill: HUB, sw: 2 }),
+        circ(L + 104, G - 16, 11, { fill: TIRE }),
+        circ(L + 104, G - 16, 4.5, { fill: HUB, sw: 2 }),
+        // レールを とりかえる ちいさな クレーン
+        '<g' + P('arm') + ' transform="rotate(-38 ' + n(px) + ' ' + n(py) + ')">' +
+        rect(px - 6, py - 9, len, 18, { rx: 6, fill: '#8b98ad' }) +
+        '</g>',
+        circ(px, py, 9, { fill: STEEL_D, part: 'arm' }),
+        line(tx, ty, tx, ty + 26, { sw: 2.5 }),
+        poly([[tx - 7, ty + 26], [tx + 7, ty + 26], [tx + 4, ty + 38], [tx - 4, ty + 38]],
+          { fill: '#e5544b', part: 'hook' })
       ].join('');
     }
   };
@@ -968,7 +1759,8 @@
     var L = scale ? 46 : CX - a.w / 2;
     var vb, par;
     if (scale) {
-      vb = '0 20 400 198';
+      /* いちばん ながい トレーラー（やく 15メートル）まで 入る はば */
+      vb = '0 20 490 198';
       par = 'xMinYMid meet';
     } else {
       vb = n(L - 16) + ' ' + n(G - a.h - 20) + ' ' + n(a.w + 32) + ' ' + n(a.h + 40);
