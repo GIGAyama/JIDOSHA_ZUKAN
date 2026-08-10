@@ -19,7 +19,9 @@ window.carCategories = [
   { id: 'hakobu', name: 'はこぶ', icon: '📦' },
   { id: 'tsukuru', name: 'つくる・なおす', icon: '🚧' },
   { id: 'mamoru', name: 'たすける・まもる', icon: '🚑' },
-  { id: 'kurashi', name: 'くらしを ささえる', icon: '🏡' }
+  { id: 'kurashi', name: 'くらしを ささえる', icon: '🏡' },
+  { id: 'sodateru', name: 'そだてる・とる', icon: '🌾' },
+  { id: 'basho', name: 'くうこう・みなと・えき', icon: '✈️' }
 ];
 
 window.carsData = [
@@ -186,6 +188,127 @@ window.carsData = [
     hakken: '<ruby>一<rt>いち</rt></ruby>だいの キャリアカーで、<ruby>六<rt>ろく</rt></ruby>だいくらいの <ruby>車<rt>くるま</rt></ruby>を はこべます。'
   },
 
+  {
+    id: 'trailer',
+    name: 'トレーラー',
+    kana: 'トレーラー',
+    category: 'hakobu',
+    art: 'trailer',
+    photo: null,
+    shigoto: 'トレーラーは、<ruby>大<rt>おお</rt></ruby>きな はこ（コンテナ）を、みなとから とおくの まちへ はこぶ しごとを して います。',
+    tsukuri: [
+      {
+        part: 'container', label: 'コンテナ',
+        text: 'その ために、うしろが、にもつを たくさん <ruby>入<rt>い</rt></ruby>れられる ながい はこに なって います。'
+      },
+      {
+        part: 'joint', label: 'つなぎめ',
+        text: 'まがりみちでも まがれる ように、うんてんせきと にだいの <ruby>間<rt>あいだ</rt></ruby>が、くるりと うごく つなぎめに なって います。'
+      }
+    ],
+    hakken: 'にだいだけを きりはなして おいて おき、べつの うんてんせきが ひっぱって いく ことも できます。'
+  },
+  {
+    id: 'reefer',
+    name: 'れいとう<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'れいとうしゃ',
+    category: 'hakobu',
+    art: 'reefer',
+    photo: null,
+    shigoto: 'れいとう<ruby>車<rt>しゃ</rt></ruby>は、アイスや おさかなを、つめたい ままで はこぶ しごとを して います。',
+    tsukuri: [
+      {
+        part: 'cooler', label: 'ひやす きかい',
+        text: 'その ために、にだいの <ruby>前<rt>まえ</rt></ruby>に、<ruby>中<rt>なか</rt></ruby>を ひやす きかいが ついて います。'
+      },
+      {
+        part: 'wall', label: 'あつい かべ',
+        text: 'つめたい くうきが にげない ように、にだいの かべが あつく つくって あります。'
+      }
+    ],
+    hakken: '<ruby>中<rt>なか</rt></ruby>の つめたさは、うんてんせきに ある きかいで いつでも しらべられます。'
+  },
+  {
+    id: 'moving',
+    name: 'ひっこし<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'ひっこししゃ',
+    category: 'hakobu',
+    art: 'moving',
+    photo: null,
+    shigoto: 'ひっこし<ruby>車<rt>しゃ</rt></ruby>は、おうちの かぐや にもつを、あたらしい おうちへ はこぶ しごとを して います。',
+    tsukuri: [
+      {
+        part: 'nidai', label: 'にだい',
+        text: 'その ために、たんすや れいぞうこも <ruby>入<rt>はい</rt></ruby>る、せの <ruby>高<rt>たか</rt></ruby>い にだいに なって います。'
+      },
+      {
+        part: 'gate', label: 'あげさげ<ruby>台<rt>だい</rt></ruby>',
+        text: 'おもい かぐを らくに のせられる ように、うしろの <ruby>台<rt>だい</rt></ruby>が <ruby>上<rt>うえ</rt></ruby>と <ruby>下<rt>した</rt></ruby>に うごきます。'
+      }
+    ],
+    hakken: 'にもつに きずが つかない ように、あつい ぬのを かけてから はこびます。'
+  },
+  {
+    id: 'schoolbus',
+    name: 'スクールバス',
+    kana: 'スクールバス',
+    category: 'hakobu',
+    art: 'schoolbus',
+    photo: null,
+    shigoto: 'スクールバスは、<ruby>子<rt>こ</rt></ruby>どもたちを がっこうまで のせて はこぶ しごとを して います。',
+    tsukuri: [
+      {
+        part: 'seat', label: 'ざせき',
+        text: 'その ために、<ruby>子<rt>こ</rt></ruby>どもの からだに あった、ちいさめの ざせきが ならんで います。'
+      },
+      {
+        part: 'step', label: 'かいだん',
+        text: '<ruby>小<rt>ちい</rt></ruby>さい <ruby>子<rt>こ</rt></ruby>でも のりやすい ように、とびらの <ruby>下<rt>した</rt></ruby>に ひくい かいだんが ついて います。'
+      }
+    ],
+    hakken: 'まわりの <ruby>車<rt>くるま</rt></ruby>から よく <ruby>見<rt>み</rt></ruby>える ように、きいろく ぬって ある バスが おおいです。'
+  },
+  {
+    id: 'cash',
+    name: 'げんきんゆそう<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'げんきんゆそうしゃ',
+    category: 'hakobu',
+    art: 'cash',
+    photo: null,
+    shigoto: 'げんきんゆそう<ruby>車<rt>しゃ</rt></ruby>は、ぎんこうの お<ruby>金<rt>かね</rt></ruby>を、あんぜんに はこぶ しごとを して います。',
+    tsukuri: [
+      {
+        part: 'safe', label: 'かたい はこ',
+        text: 'その ために、うしろが、かんたんには あかない かたい はこに なって います。'
+      },
+      {
+        part: 'window', label: 'まど',
+        text: 'そとから <ruby>中<rt>なか</rt></ruby>が <ruby>見<rt>み</rt></ruby>えない ように、まどが とても <ruby>小<rt>ちい</rt></ruby>さく つくって あります。'
+      }
+    ],
+    hakken: 'とびらは、<ruby>中<rt>なか</rt></ruby>に いる <ruby>人<rt>ひと</rt></ruby>が よいと しらせるまで あかない しくみに なって います。'
+  },
+  {
+    id: 'welfare',
+    name: 'ふくし<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'ふくししゃ',
+    category: 'hakobu',
+    art: 'welfare',
+    photo: null,
+    shigoto: 'ふくし<ruby>車<rt>しゃ</rt></ruby>は、<ruby>車<rt>くるま</rt></ruby>いすの <ruby>人<rt>ひと</rt></ruby>を、のったまま はこぶ しごとを して います。',
+    tsukuri: [
+      {
+        part: 'slope', label: 'スロープ',
+        text: 'その ために、うしろに、<ruby>車<rt>くるま</rt></ruby>いすが のぼれる さかみち（スロープ）が ついて います。'
+      },
+      {
+        part: 'belt', label: 'とめる ベルト',
+        text: 'はしって いる あいだ うごかない ように、<ruby>車<rt>くるま</rt></ruby>いすを ゆかに とめる ベルトが ついて います。'
+      }
+    ],
+    hakken: 'スロープの かわりに、<ruby>車<rt>くるま</rt></ruby>いすごと もち<ruby>上<rt>あ</rt></ruby>げる リフトが ついた <ruby>車<rt>くるま</rt></ruby>も あります。'
+  },
+
   /* ========================= つくる・なおす ========================= */
   {
     id: 'crane',
@@ -348,6 +471,107 @@ window.carsData = [
     hakken: 'そうこでは、この フォークリフトが トラックの にだいへ にもつを つみこみます。'
   },
 
+  {
+    id: 'loader',
+    name: 'ホイールローダー',
+    kana: 'ホイールローダー',
+    category: 'tsukuru',
+    art: 'loader',
+    photo: null,
+    shigoto: 'ホイールローダーは、つみ<ruby>上<rt>あ</rt></ruby>げられた <ruby>土<rt>つち</rt></ruby>や すなを すくって、トラックに のせる しごとを して います。',
+    tsukuri: [
+      {
+        part: 'bucket', label: 'バケット',
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>に、いちどに たくさん すくえる <ruby>大<rt>おお</rt></ruby>きな バケットが ついて います。'
+      },
+      {
+        part: 'bigtire', label: '<ruby>大<rt>おお</rt></ruby>きな タイヤ',
+        text: 'でこぼこの <ruby>地<rt>じ</rt></ruby>めんでも すすめる ように、みぞの ふかい <ruby>大<rt>おお</rt></ruby>きな タイヤが ついて います。'
+      }
+    ],
+    hakken: 'まん<ruby>中<rt>なか</rt></ruby>から くの<ruby>字<rt>じ</rt></ruby>に まがるので、せまい ばしょでも むきを かえられます。'
+  },
+  {
+    id: 'paver',
+    name: 'ほそう<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'ほそうしゃ',
+    category: 'tsukuru',
+    art: 'paver',
+    photo: null,
+    shigoto: 'ほそう<ruby>車<rt>しゃ</rt></ruby>は、あつい アスファルトを <ruby>地<rt>じ</rt></ruby>めんに ひろげて、あたらしい どうろを つくる しごとを して います。',
+    tsukuri: [
+      {
+        part: 'hopper', label: 'うける ところ',
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>に、ダンプカーから アスファルトを うけとる <ruby>大<rt>おお</rt></ruby>きな <ruby>入<rt>い</rt></ruby>れものが ついて います。'
+      },
+      {
+        part: 'screed', label: 'ならす いた',
+        text: 'どうろが たいらに なる ように、うしろの ながい いたが、アスファルトを ならしながら すすみます。'
+      }
+    ],
+    hakken: 'ほそう<ruby>車<rt>しゃ</rt></ruby>の あとから ロードローラーが きて、どうろを おして かためます。'
+  },
+  {
+    id: 'pumpcar',
+    name: 'コンクリートポンプ<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'コンクリートポンプしゃ',
+    category: 'tsukuru',
+    art: 'pumpcar',
+    photo: null,
+    shigoto: 'コンクリートポンプ<ruby>車<rt>しゃ</rt></ruby>は、コンクリートを <ruby>高<rt>たか</rt></ruby>い ところや とおい ところへ おくる しごとを して います。',
+    tsukuri: [
+      {
+        part: 'boom', label: 'うで',
+        text: 'その ために、おれまがりながら のびる ながい うでが ついて います。'
+      },
+      {
+        part: 'ashi', label: 'あし',
+        text: 'うでを のばしても たおれない ように、よこに <ruby>四本<rt>よんほん</rt></ruby>の あしを <ruby>出<rt>だ</rt></ruby>して <ruby>地<rt>じ</rt></ruby>めんを おさえます。'
+      }
+    ],
+    hakken: 'うでの <ruby>中<rt>なか</rt></ruby>は くだに なって いて、その <ruby>中<rt>なか</rt></ruby>を コンクリートが とおって いきます。'
+  },
+  {
+    id: 'breaker',
+    name: 'かいたい<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'かいたいしゃ',
+    category: 'tsukuru',
+    art: 'breaker',
+    photo: null,
+    shigoto: 'かいたい<ruby>車<rt>しゃ</rt></ruby>は、ふるく なった たてものを こわして、かたづける しごとを して います。',
+    tsukuri: [
+      {
+        part: 'nipper', label: 'つかむ <ruby>手<rt>て</rt></ruby>',
+        text: 'その ために、ながい うでの さきに、かべを かみくだく <ruby>大<rt>おお</rt></ruby>きな <ruby>手<rt>て</rt></ruby>が ついて います。'
+      },
+      {
+        part: 'crawler', label: 'キャタピラ',
+        text: 'こわれた かべの <ruby>上<rt>うえ</rt></ruby>でも すすめる ように、はばの ひろい キャタピラが ついて います。'
+      }
+    ],
+    hakken: 'ほこりが とばない ように、<ruby>水<rt>みず</rt></ruby>を かけながら たてものを こわします。'
+  },
+  {
+    id: 'grader',
+    name: 'グレーダー',
+    kana: 'グレーダー',
+    category: 'tsukuru',
+    art: 'grader',
+    photo: null,
+    shigoto: 'グレーダーは、どうろの <ruby>地<rt>じ</rt></ruby>めんを けずって、たいらに ならす しごとを して います。',
+    tsukuri: [
+      {
+        part: 'blade', label: 'けずる は',
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>と うしろの タイヤの <ruby>間<rt>あいだ</rt></ruby>に、<ruby>土<rt>つち</rt></ruby>を けずる ながい はが ついて います。'
+      },
+      {
+        part: 'body', label: 'ながい からだ',
+        text: 'すこしの でこぼこも うまく けずれる ように、からだが とても ながく つくって あります。'
+      }
+    ],
+    hakken: 'はの むきを かえると、けずった <ruby>土<rt>つち</rt></ruby>を みちの はしへ よせながら すすめます。'
+  },
+
   /* ======================= たすける・まもる ======================= */
   {
     id: 'ambulance',
@@ -490,6 +714,87 @@ window.carsData = [
     hakken: '<ruby>分<rt>わ</rt></ruby>けて もらった <ruby>血<rt>ち</rt></ruby>は、けがや びょうきの <ruby>人<rt>ひと</rt></ruby>を たすける ために つかわれます。'
   },
 
+  {
+    id: 'rescue',
+    name: 'きゅうじょ<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'きゅうじょしゃ',
+    category: 'mamoru',
+    art: 'rescue',
+    photo: null,
+    shigoto: 'きゅうじょ<ruby>車<rt>しゃ</rt></ruby>は、じこや さいがいで うごけなく なった <ruby>人<rt>ひと</rt></ruby>を、たすけ<ruby>出<rt>だ</rt></ruby>す しごとを して います。',
+    tsukuri: [
+      {
+        part: 'box', label: 'どうぐばこ',
+        text: 'その ために、よこの とびらの <ruby>中<rt>なか</rt></ruby>が、たくさんの どうぐを しまう たなに なって います。'
+      },
+      {
+        part: 'winch', label: 'つなを まく きかい',
+        text: 'おもい ものを ひっぱれる ように、<ruby>前<rt>まえ</rt></ruby>に つなを まきとる きかいが ついて います。'
+      }
+    ],
+    hakken: 'てつを きる きかいや もち<ruby>上<rt>あ</rt></ruby>げる きかいなど、<ruby>百<rt>ひゃく</rt></ruby>より おおくの どうぐを つんで います。'
+  },
+  {
+    id: 'foam',
+    name: 'かがくしょうぼう<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'かがくしょうぼうしゃ',
+    category: 'mamoru',
+    art: 'foam',
+    photo: null,
+    shigoto: 'かがくしょうぼう<ruby>車<rt>しゃ</rt></ruby>は、<ruby>水<rt>みず</rt></ruby>では けせない <ruby>火<rt>ひ</rt></ruby>を、あわで けす しごとを して います。',
+    tsukuri: [
+      {
+        part: 'tank', label: 'あわの タンク',
+        text: 'その ために、あわの もとを ためて おく <ruby>大<rt>おお</rt></ruby>きな タンクを つんで います。'
+      },
+      {
+        part: 'turret', label: 'ノズル',
+        text: 'とおくまで あわを とばせる ように、やねの <ruby>上<rt>うえ</rt></ruby>に、むきを かえられる ふとい くちが ついて います。'
+      }
+    ],
+    hakken: 'ガソリンの <ruby>火事<rt>かじ</rt></ruby>に <ruby>水<rt>みず</rt></ruby>を かけると あぶないので、あわで ふたを して <ruby>火<rt>ひ</rt></ruby>を けします。'
+  },
+  {
+    id: 'doctorcar',
+    name: 'ドクターカー',
+    kana: 'ドクターカー',
+    category: 'mamoru',
+    art: 'doctorcar',
+    photo: null,
+    shigoto: 'ドクターカーは、おいしゃさんを けがの ばしょまで はやく はこぶ しごとを して います。',
+    tsukuri: [
+      {
+        part: 'kit', label: 'きゅうきゅうバッグ',
+        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>に、すぐに <ruby>手当<rt>てあ</rt></ruby>てが できる どうぐが つんで あります。'
+      },
+      {
+        part: 'lamp', label: 'ランプ',
+        text: 'いそいで すすめる ように、<ruby>上<rt>うえ</rt></ruby>に あかい ランプと サイレンが ついて います。'
+      }
+    ],
+    hakken: 'びょういんに つく <ruby>前<rt>まえ</rt></ruby>から <ruby>手当<rt>てあ</rt></ruby>てを はじめられるので、いのちを たすけやすく なります。'
+  },
+  {
+    id: 'xray',
+    name: 'けんしん<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'けんしんしゃ',
+    category: 'mamoru',
+    art: 'xray',
+    photo: null,
+    shigoto: 'けんしん<ruby>車<rt>しゃ</rt></ruby>は、まちや がっこうを まわって、からだの <ruby>中<rt>なか</rt></ruby>を しらべる しごとを して います。',
+    tsukuri: [
+      {
+        part: 'machine', label: 'しらべる きかい',
+        text: 'その ために、<ruby>車<rt>くるま</rt></ruby>の <ruby>中<rt>なか</rt></ruby>が、からだの しゃしんを とる きかいの へやに なって います。'
+      },
+      {
+        part: 'door', label: 'とびら',
+        text: 'じゅんばんに <ruby>入<rt>はい</rt></ruby>って いける ように、よこの とびらに かいだんが ついて います。'
+      }
+    ],
+    hakken: 'びょういんが とおい まちでも、この <ruby>車<rt>くるま</rt></ruby>が くれば からだを しらべて もらえます。'
+  },
+
   /* ====================== くらしを ささえる ====================== */
   {
     id: 'garbage',
@@ -612,10 +917,92 @@ window.carsData = [
     hakken: '<ruby>高<rt>たか</rt></ruby>い ところに ざせきが あるので、まどから けしきが よく <ruby>見<rt>み</rt></ruby>えます。'
   },
   {
+    id: 'waterworks',
+    name: 'すいどうこうじ<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'すいどうこうじしゃ',
+    category: 'kurashi',
+    art: 'waterworks',
+    photo: null,
+    shigoto: 'すいどうこうじ<ruby>車<rt>しゃ</rt></ruby>は、<ruby>土<rt>つち</rt></ruby>の <ruby>中<rt>なか</rt></ruby>を とおる すいどうの くだを なおす しごとを して います。',
+    tsukuri: [
+      {
+        part: 'arm', label: 'ちいさな うで',
+        text: 'その ために、うしろに、<ruby>地<rt>じ</rt></ruby>めんを ほる ちいさな うでが ついて います。'
+      },
+      {
+        part: 'box', label: 'どうぐばこ',
+        text: 'その ばで すぐに なおせる ように、よこに どうぐを しまう はこが ならんで います。'
+      }
+    ],
+    hakken: 'ほった あなは、こうじが おわると もとどおりに うめもどして いきます。'
+  },
+  {
+    id: 'shop',
+    name: 'いどうはんばい<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'いどうはんばいしゃ',
+    category: 'kurashi',
+    art: 'shop',
+    photo: null,
+    shigoto: 'いどうはんばい<ruby>車<rt>しゃ</rt></ruby>は、お<ruby>店<rt>みせ</rt></ruby>が とおい まちへ、しなものを はこんで うる しごとを して います。',
+    tsukuri: [
+      {
+        part: 'shelf', label: 'たな',
+        text: 'その ために、よこの かべが <ruby>上<rt>うえ</rt></ruby>に ひらいて、しなものを ならべる たなに なります。'
+      },
+      {
+        part: 'cooler', label: 'ひやす ところ',
+        text: 'おにくや やさいが いたまない ように、ひやして おく ところが あります。'
+      }
+    ],
+    hakken: 'かいものに <ruby>行<rt>い</rt></ruby>くのが たいへんな <ruby>人<rt>ひと</rt></ruby>の ところへ、お<ruby>店<rt>みせ</rt></ruby>の ほうから やって きます。'
+  },
+  {
+    id: 'kei',
+    name: 'けいトラック',
+    kana: 'けいトラック',
+    category: 'kurashi',
+    art: 'kei',
+    photo: null,
+    shigoto: 'けいトラックは、はたけや せまい みちで、すこしの にもつを はこぶ しごとを して います。',
+    tsukuri: [
+      {
+        part: 'nidai', label: 'にだい',
+        text: 'その ために、うしろが、やさいの はこを のせる たいらな にだいに なって います。'
+      },
+      {
+        part: 'body', label: 'ちいさい からだ',
+        text: 'せまい みちでも とおれる ように、からだが <ruby>小<rt>ちい</rt></ruby>さく つくって あります。'
+      }
+    ],
+    hakken: 'にだいの よこの いたは たおせるので、よこからでも にもつを のせられます。'
+  },
+  {
+    id: 'gas',
+    name: 'ガスこうじ<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'ガスこうじしゃ',
+    category: 'kurashi',
+    art: 'gas',
+    photo: null,
+    shigoto: 'ガスこうじ<ruby>車<rt>しゃ</rt></ruby>は、おうちへ とどく ガスの くだを しらべて なおす しごとを して います。',
+    tsukuri: [
+      {
+        part: 'detector', label: 'しらべる きかい',
+        text: 'その ために、ガスが もれて いないかを しらべる きかいを つんで います。'
+      },
+      {
+        part: 'lamp', label: 'ランプ',
+        text: 'こうじを して いる ことが とおくからでも わかる ように、<ruby>上<rt>うえ</rt></ruby>で きいろい ランプが <ruby>光<rt>ひか</rt></ruby>ります。'
+      }
+    ],
+    hakken: 'ガスの においは、もれた ことに <ruby>気<rt>き</rt></ruby>づける ように、わざと つけて あります。'
+  },
+
+  /* ======================== そだてる・とる ======================== */
+  {
     id: 'tractor',
     name: 'トラクター',
     kana: 'トラクター',
-    category: 'kurashi',
+    category: 'sodateru',
     art: 'tractor',
     photo: null,
     shigoto: 'トラクターは、はたけの かたい <ruby>土<rt>つち</rt></ruby>を たがやす しごとを して います。',
@@ -630,5 +1017,227 @@ window.carsData = [
       }
     ],
     hakken: 'うしろの きかいを とりかえると、たねまきや、しゅうかくにも つかえます。'
+  },
+  {
+    id: 'combine',
+    name: 'コンバイン',
+    kana: 'コンバイン',
+    category: 'sodateru',
+    art: 'combine',
+    photo: null,
+    shigoto: 'コンバインは、みのった いねを かりとって、おこめの つぶだけを あつめる しごとを して います。',
+    tsukuri: [
+      {
+        part: 'reel', label: 'かりとる ところ',
+        text: 'その ために、<ruby>前<rt>まえ</rt></ruby>に、いねを かきこんで かりとる はが ついて います。'
+      },
+      {
+        part: 'tank', label: 'ためる ところ',
+        text: 'つぶだけを ためて おける ように、<ruby>上<rt>うえ</rt></ruby>に <ruby>大<rt>おお</rt></ruby>きな はこが ついて います。'
+      }
+    ],
+    hakken: 'かりとる・つぶを はずす・ためる の <ruby>三<rt>みっ</rt></ruby>つの しごとを、いちどに して しまいます。'
+  },
+  {
+    id: 'rice',
+    name: 'たうえき',
+    kana: 'たうえき',
+    category: 'sodateru',
+    art: 'rice',
+    photo: null,
+    shigoto: 'たうえきは、<ruby>水<rt>みず</rt></ruby>を ためた たんぼに、いねの なえを うえて いく しごとを して います。',
+    tsukuri: [
+      {
+        part: 'planter', label: 'うえる つめ',
+        text: 'その ために、うしろに、なえを <ruby>土<rt>つち</rt></ruby>に さしこむ つめが ならんで います。'
+      },
+      {
+        part: 'tray', label: 'なえの たな',
+        text: 'たくさん うえられる ように、<ruby>上<rt>うえ</rt></ruby>に なえを ならべる ななめの たなが あります。'
+      }
+    ],
+    hakken: 'なえと なえの あいだが きれいに そろうので、あとの おせわが しやすく なります。'
+  },
+  {
+    id: 'mower',
+    name: 'くさかり<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'くさかりしゃ',
+    category: 'sodateru',
+    art: 'mower',
+    photo: null,
+    shigoto: 'くさかり<ruby>車<rt>しゃ</rt></ruby>は、どうろの わきや <ruby>土手<rt>どて</rt></ruby>の くさを かる しごとを して います。',
+    tsukuri: [
+      {
+        part: 'cutter', label: 'かる は',
+        text: 'その ために、よこに のびる うでの さきに、ぐるぐる まわる はが ついて います。'
+      },
+      {
+        part: 'guard', label: 'カバー',
+        text: 'かった くさが とんで こない ように、はの まわりが カバーで かこって あります。'
+      }
+    ],
+    hakken: '<ruby>人<rt>ひと</rt></ruby>が かまで かるより ずっと はやく、ひろい ばしょを きれいに できます。'
+  },
+  {
+    id: 'logger',
+    name: '<ruby>木<rt>き</rt></ruby>を はこぶ <ruby>車<rt>くるま</rt></ruby>',
+    kana: 'きをはこぶくるま',
+    category: 'sodateru',
+    art: 'logger',
+    photo: null,
+    shigoto: '<ruby>木<rt>き</rt></ruby>を はこぶ <ruby>車<rt>くるま</rt></ruby>は、<ruby>山<rt>やま</rt></ruby>で きりたおした <ruby>木<rt>き</rt></ruby>を、まちまで はこぶ しごとを して います。',
+    tsukuri: [
+      {
+        part: 'grapple', label: 'つかむ うで',
+        text: 'その ために、<ruby>木<rt>き</rt></ruby>を つかんで もち<ruby>上<rt>あ</rt></ruby>げる うでが ついて います。'
+      },
+      {
+        part: 'stake', label: 'とめる ぼう',
+        text: '<ruby>木<rt>き</rt></ruby>が ころがり <ruby>落<rt>お</rt></ruby>ちない ように、にだいの よこに ふとい ぼうが <ruby>立<rt>た</rt></ruby>てて あります。'
+      }
+    ],
+    hakken: 'はこばれた <ruby>木<rt>き</rt></ruby>は、いえの はしらや、かみに なります。'
+  },
+  {
+    id: 'sprayer',
+    name: 'くすりを まく <ruby>車<rt>くるま</rt></ruby>',
+    kana: 'くすりをまくくるま',
+    category: 'sodateru',
+    art: 'sprayer',
+    photo: null,
+    shigoto: 'くすりを まく <ruby>車<rt>くるま</rt></ruby>は、はたけの さくもつを <ruby>虫<rt>むし</rt></ruby>から まもる くすりを まく しごとを して います。',
+    tsukuri: [
+      {
+        part: 'boom', label: 'ながい うで',
+        text: 'その ために、よこに ながく のびる うでが ついて いて、いちどに ひろく まけます。'
+      },
+      {
+        part: 'tank', label: 'タンク',
+        text: 'なんども <ruby>入<rt>い</rt></ruby>れに もどらなくても よい ように、まん<ruby>中<rt>なか</rt></ruby>に くすりを ためる タンクが あります。'
+      }
+    ],
+    hakken: 'うでは たたんで しまえるので、みちを はしる ときは じゃまに なりません。'
+  },
+
+  /* ==================== くうこう・みなと・えき ==================== */
+  {
+    id: 'towing',
+    name: 'トーイングカー',
+    kana: 'トーイングカー',
+    category: 'basho',
+    art: 'towing',
+    photo: null,
+    shigoto: 'トーイングカーは、くうこうで ひこうきを おしたり ひっぱったり して、うごかす しごとを して います。',
+    tsukuri: [
+      {
+        part: 'body', label: 'ひくい からだ',
+        text: 'その ために、ひこうきの <ruby>下<rt>した</rt></ruby>に <ruby>入<rt>はい</rt></ruby>れる ように、からだが とても ひくく つくって あります。'
+      },
+      {
+        part: 'hitch', label: 'つなぐ ところ',
+        text: 'ひこうきと しっかり つなげる ように、<ruby>前<rt>まえ</rt></ruby>に ふとい かなぐが ついて います。'
+      }
+    ],
+    hakken: 'ひこうきは じぶんで うしろへ さがれないので、この <ruby>車<rt>くるま</rt></ruby>が おして あげます。'
+  },
+  {
+    id: 'fueler',
+    name: 'きゅうゆ<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'きゅうゆしゃ',
+    category: 'basho',
+    art: 'fueler',
+    photo: null,
+    shigoto: 'きゅうゆ<ruby>車<rt>しゃ</rt></ruby>は、くうこうで、ひこうきに あぶらを <ruby>入<rt>い</rt></ruby>れる しごとを して います。',
+    tsukuri: [
+      {
+        part: 'tank', label: 'タンク',
+        text: 'その ために、たくさんの あぶらを ためて おける ながい タンクが ついて います。'
+      },
+      {
+        part: 'lift', label: 'あがる <ruby>台<rt>だい</rt></ruby>',
+        text: 'ひこうきの つばさまで とどく ように、<ruby>人<rt>ひと</rt></ruby>が のる <ruby>台<rt>だい</rt></ruby>が <ruby>上<rt>うえ</rt></ruby>へ あがります。'
+      }
+    ],
+    hakken: 'ひこうきの あぶらは つばさの <ruby>中<rt>なか</rt></ruby>に <ruby>入<rt>い</rt></ruby>れるので、つばさに くだを つなぎます。'
+  },
+  {
+    id: 'cargoloader',
+    name: 'ハイリフトローダー',
+    kana: 'ハイリフトローダー',
+    category: 'basho',
+    art: 'cargoloader',
+    photo: null,
+    shigoto: 'ハイリフトローダーは、ひこうきの <ruby>中<rt>なか</rt></ruby>へ にもつを つみこむ しごとを して います。',
+    tsukuri: [
+      {
+        part: 'deck', label: 'あがる ゆか',
+        text: 'その ために、にもつを のせる ゆかが、そのまま <ruby>上<rt>うえ</rt></ruby>へ もち<ruby>上<rt>あ</rt></ruby>がります。'
+      },
+      {
+        part: 'roller', label: 'ころ',
+        text: 'おもい にもつを かるく うごかせる ように、ゆかに まるい ころが ならんで います。'
+      }
+    ],
+    hakken: 'ひこうきの ゆかと おなじ <ruby>高<rt>たか</rt></ruby>さに ぴったり あわせてから、にもつを おしこみます。'
+  },
+  {
+    id: 'stairs',
+    name: 'タラップ<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'タラップしゃ',
+    category: 'basho',
+    art: 'stairs',
+    photo: null,
+    shigoto: 'タラップ<ruby>車<rt>しゃ</rt></ruby>は、ひこうきの <ruby>入口<rt>いりぐち</rt></ruby>まで、のりおりする <ruby>人<rt>ひと</rt></ruby>の かいだんを はこぶ しごとを して います。',
+    tsukuri: [
+      {
+        part: 'stairs', label: 'かいだん',
+        text: 'その ために、うしろが、ながい かいだんに なって います。'
+      },
+      {
+        part: 'lift', label: 'のびる ところ',
+        text: 'いろいろな <ruby>大<rt>おお</rt></ruby>きさの ひこうきに あう ように、かいだんの <ruby>高<rt>たか</rt></ruby>さを かえられます。'
+      }
+    ],
+    hakken: 'かいだんの <ruby>上<rt>うえ</rt></ruby>には やねが ついて いて、あめの <ruby>日<rt>ひ</rt></ruby>でも ぬれずに のれます。'
+  },
+  {
+    id: 'stacker',
+    name: 'リーチスタッカー',
+    kana: 'リーチスタッカー',
+    category: 'basho',
+    art: 'stacker',
+    photo: null,
+    shigoto: 'リーチスタッカーは、みなとで、おもい コンテナを つみ<ruby>上<rt>あ</rt></ruby>げる しごとを して います。',
+    tsukuri: [
+      {
+        part: 'arm', label: 'のびる うで',
+        text: 'その ために、ななめに ながく のびる じょうぶな うでが ついて います。'
+      },
+      {
+        part: 'spreader', label: 'つかむ ところ',
+        text: 'コンテナを おとさない ように、うでの さきが かどを がっちり つかみます。'
+      }
+    ],
+    hakken: 'コンテナを <ruby>四<rt>よっ</rt></ruby>つも <ruby>五<rt>いつ</rt></ruby>つも かさねて つみ<ruby>上<rt>あ</rt></ruby>げられます。'
+  },
+  {
+    id: 'railcar',
+    name: 'せんろの てんけん<ruby>車<rt>しゃ</rt></ruby>',
+    kana: 'せんろのてんけんしゃ',
+    category: 'basho',
+    art: 'railcar',
+    photo: null,
+    shigoto: 'せんろの てんけん<ruby>車<rt>しゃ</rt></ruby>は、でんしゃが とまった よるに、せんろを しらべて なおす しごとを して います。',
+    tsukuri: [
+      {
+        part: 'railwheel', label: 'てつの わ',
+        text: 'その ために、せんろの <ruby>上<rt>うえ</rt></ruby>を はしれる てつの わが ついて います。'
+      },
+      {
+        part: 'arm', label: 'クレーン',
+        text: 'おもい レールを とりかえられる ように、ちいさな クレーンが ついて います。'
+      }
+    ],
+    hakken: 'ひるまは タイヤで どうろを はしり、よるは せんろの <ruby>上<rt>うえ</rt></ruby>に のって しごとを します。'
   }
 ];
