@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>selftest</title>
+  <style>
+    #tap {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #fff;
+      font: 13px/1.5 monospace;
+      padding: 10px;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+
+    .ok {
+      color: #157a3b;
+    }
+
+    .ng {
+      color: #c0242c;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="tap">running…</div>
+  <iframe id="fr" src="index.html" style="width:1100px;height:900px;border:0"></iframe>
+
+  <script>
+    var out = [], fails = 0;
+    function ok(cond, msg) {
+      if (!cond) fails++;
+      out.push((cond ? '<span class="ok">ok  </span>' : '<span class="ng">NG  </span>') + msg);
+    }
+    function flush() {
+      document.getElementById('tap').innerHTML =
+        (fails ? '<span class="ng">FAILURES: ' + fails + '</span>' : '<span class="ok">ALL PASS</span>') +
+        '  (' + out.length + ' checks)\n\n' + out.join('\n');
+    }
+    function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+    var fr = document.getElementById('fr');
+    fr.addEventListener('load', function () { run().catch(function (e) { ok(false, 'EXCEPTION ' + e); flush(); }); });
+
+    async function go(hash) {
+      fr.contentWindow.location.hash = hash;
+      await wait(60);
+    }
+
+    async function run() {
+      var W = fr.contentWindow, D = fr.contentDocument;
+      var $ = function (s) { return D.querySelector(s); };
+      var $$ = function (s) { return Array.prototype.slice.call(D.querySelectorAll(s)); };
+      var cars = W.carsData;
+
+      W.localStorage.clear();
+
+      /* ---- 1. ルーティング ---- */
+      await go('#/');
+      ok(!$('#view-list').hidden, 'ルート #/ で 一覧が 出る');
+      ok($('#view-detail').hidden && $('#view-compare').hidden, '一覧のとき 他の 画面は 出ない');
+      ok($('#topbar').hidden, '一覧では もどるバーを 出さない');
+      ok($$('#grid .card').length === cars.length, '一覧に ' + cars.length + 'だい ならぶ');
+
+      await go('#/kurabe');
+      ok(!$('#view-compare').hidden && $('#view-list').hidden, '#/kurabe で 大きさくらべ');
+      ok($$('.crow').length === cars.length, '大きさくらべに ' + cars.length + 'だい ならぶ');
+
+      await go('#/car/does-not-exist');
+      ok(!$('#view-list').hidden, 'しらない id は 一覧に もどす');
+
+      /* ---- 2. 30だい ぜんぶ：じゅんばん展開と 部位ハイライト ---- */
+      var badStep = [], badLit = [], badLabel = [];
+      for (var i = 0; i < cars.length; i++) {
+        var car = cars[i];
+        await go('#/car/' + car.id);
+
+        if ($('#step-job').hidden !== true) badStep.push(car.id + ':しごとが 最初から 見えている');
+        var makes = $$('.js-make');
+        if (makes.length !== car.tsukuri.length) badStep.push(car.id + ':つくりの 数');
+        if (!makes.every(function (m) { return m.hidden; })) badStep.push(car.id + ':つくりが 最初から 見えている');
+
+        $('#btn-next').click();
+        if ($('#step-job').hidden) badStep.push(car.id + ':しごとが ひらかない');
+        if (!$$('.js-make').every(function (m) { return m.hidden; })) badStep.push(car.id + ':つくりが 早く 出る');
+
+        for (var k = 0; k < car.tsukuri.length; k++) {
+          $('#btn-next').click();
+          if ($$('.js-make')[k].hidden) badStep.push(car.id + ':つくり' + (k + 1) + 'が ひらかない');
+        }
+        if (!$('#btn-next').hidden) badStep.push(car.id + ':さいごで ボタンが のこる');
+
+        /* 部位ハイライト */
+        for (var k2 = 0; k2 < car.tsukuri.length; k2++) {
+          var m2 = $$('.js-make')[k2];
+          m2.click();
+          var lit = $$('#art-stage svg .is-lit');
+          if (!lit.length) badLit.push(car.id + '/' + car.tsukuri[k2].part);
+          if ($('#callout').hidden) badLabel.push(car.id + '/' + car.tsukuri[k2].part + ':ふきだし 出ない');
+          var L = $('#callout').offsetLeft, T = $('#callout').offsetTop;
+          var W2 = $('#art-stage').clientWidth, H2 = $('#art-stage').clientHeight;
+          if (L < 0 || L > W2 || T < 0 || T > H2) {
+            badLabel.push(car.id + ':ふきだしが 絵の そとに 出た (' + Math.round(L) + ',' + Math.round(T) + ')');
+          }
+          m2.click();
+          if ($$('#art-stage svg .is-lit').length) badLit.push(car.id + ':もう一度 おしても きえない');
+        }
+      }
+      ok(badStep.length === 0, 'じゅんばんに しか ひらかない ' + (badStep.join(' / ') || ''));
+      ok(badLit.length === 0, '30だい ぜんぶ 絵の ぶぶんが 光る ' + (badLit.join(' / ') || ''));
+      ok(badLabel.length === 0, 'ふきだしが 絵の 中に 出る ' + (badLabel.join(' / ') || ''));
+
+      /* ---- 3. えらんだ 車（★） ---- */
+      await go('#/car/truck');
+      $('#btn-star').click();
+      ok($('#btn-star').getAttribute('aria-pressed') === 'true', '★を おすと えらんだ じょうたいに なる');
+      await go('#/');
+      var starTab = $$('#tabs .tab').filter(function (t) { return t.getAttribute('data-filter') === 'star'; })[0];
+      starTab.click();
+      ok($$('#grid .card').length === 1, '★タブに えらんだ 1だいだけ 出る');
+      ok($('#empty').hidden, '1だい あるので からっぽの おしらせは 出さない');
+      $('#grid .js-star').click();
+      ok($$('#grid .card').length === 0 && !$('#empty').hidden, '★を はずすと からっぽの おしらせが 出る');
+      var allTab = $$('#tabs .tab').filter(function (t) { return t.getAttribute('data-filter') === 'all'; })[0];
+      allTab.click();
+
+      /* ---- 4. かきうつしシート（ほぞんと よみこみ） ---- */
+      await go('#/car/bus');
+      var ta = $('.js-slot');
+      ta.value = 'テスト の ぶん';
+      ta.dispatchEvent(new W.Event('input', { bubbles: true }));
+      await wait(30);
+      ok(/テスト の ぶん/.test($('.sheet__print').textContent), '入力が いんさつ用に うつる');
+      await go('#/car/truck');
+      await go('#/car/bus');
+      ok($('.js-slot').value === 'テスト の ぶん', 'ページを 行き来しても 入力が のこる');
+      await go('#/car/truck');
+      ok($('.js-slot').value === '', 'ちがう 車の シートは べつに ほぞんされる');
+
+      /* ---- 5. 読み上げテキスト（ルビの よみに なるか） ---- */
+      await go('#/car/crane');
+      var p = $('.step--q .js-read');
+      var clone = p.cloneNode(true);
+      Array.prototype.forEach.call(clone.querySelectorAll('ruby'), function (r) {
+        var rt = r.querySelector('rt');
+        if (rt) r.parentNode.replaceChild(D.createTextNode(rt.textContent.trim()), r);
+      });
+      var read = clone.textContent.replace(/\s+/g, ' ').trim();
+      ok(read.indexOf('クレーンしゃは') === 0, '読み上げが「クレーンしゃ」に なる → ' + read.slice(0, 24));
+      ok(!/[一-鿿]/.test(read), '読み上げテキストに 漢字が のこらない');
+
+      /* ---- 6. 写真さしかえの しくみ ---- */
+      ok(W.carsData.every(function (c) { return 'photo' in c; }), 'ぜんぶの 車に photo 欄が ある');
+
+      flush();
+      document.title = fails ? 'FAIL' : 'PASS';
+    }
+  </script>
+</body>
+
+</html>

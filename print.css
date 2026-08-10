@@ -1,0 +1,159 @@
+/* =========================================================================
+   print.css — 詳細ページを A4たて 1まいの ワークシートとして いんさつする
+   ・とい／しごと／つくり の 文は のせない（じぶんで 書く ための 紙）
+   ・かきうつしシートに 入力して あれば、その 文を いんさつする
+   ========================================================================= */
+
+@page {
+  size: A4 portrait;
+  margin: 12mm;
+}
+
+body {
+  background: #fff !important;
+  color: #000;
+  padding: 0 !important;
+  font-size: 11pt;
+  line-height: 1.9;
+}
+
+/* いんさつでは いらない ところ */
+.skip-link,
+.site-header,
+.topbar,
+#view-list,
+#view-compare,
+.site-footer,
+.steps,
+.art-hint,
+.callout,
+.more,
+.sheet__lead,
+.sheet__foot,
+.slot textarea,
+.slot label {
+  display: none !important;
+}
+
+.view[hidden] {
+  display: none !important;
+}
+
+/* 見出し */
+.detail::before {
+  content: 'じどう車ずかん　　1年　　組　　なまえ（　　　　　　　　　　）';
+  display: block;
+  font-size: 10pt;
+  text-align: right;
+  border-bottom: .6pt solid #666;
+  padding-bottom: 2mm;
+  margin-bottom: 4mm;
+}
+
+.detail__head {
+  display: block;
+  margin-bottom: 3mm;
+}
+
+.detail__name {
+  font-size: 20pt;
+  line-height: 1.4;
+  color: #000;
+}
+
+.cat-chip,
+.detail__len {
+  display: inline;
+  font-size: 9.5pt;
+  color: #333;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  margin-right: 8px;
+}
+
+/* 絵 */
+.detail__body {
+  display: block;
+}
+
+.art-panel {
+  box-shadow: none;
+  padding: 0;
+  position: static;
+  border: 1pt solid #888;
+  border-radius: 3mm;
+  overflow: hidden;
+  margin-bottom: 5mm;
+}
+
+.art-stage {
+  height: 50mm;
+  background: #fff;
+  border-radius: 0;
+}
+
+.car-art.has-lit>*:not(.is-lit) {
+  opacity: 1;
+}
+
+.car-art .art-part.is-lit {
+  filter: none;
+}
+
+/* かきうつしシート */
+.sheet {
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sheet h2 {
+  font-size: 12pt;
+  margin-bottom: 2mm;
+}
+
+.slot {
+  border-top: none;
+  padding: 0 0 4mm;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.slot__tmpl {
+  font-size: 11pt;
+  margin-bottom: 1.5mm;
+}
+
+.slot__num {
+  background: #000;
+  color: #fff;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  font-size: 11pt;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.slot__blank {
+  background: none;
+  border-bottom: 1pt solid #000;
+  padding: 0 22px;
+}
+
+/* 書きこむ ところ（入力して あれば その 文が 出る） */
+.sheet__print {
+  display: block !important;
+  min-height: 26mm;
+  border: 1pt solid #555;
+  border-radius: 2mm;
+  padding: 1mm 3mm;
+  font-size: 12pt;
+  line-height: 11mm;
+  white-space: pre-wrap;
+  background-image: repeating-linear-gradient(to bottom,
+      transparent 0, transparent 10.4mm, #c9c9c9 10.4mm, #c9c9c9 10.6mm);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>じどう車ずかん - しごとと つくりを しらべよう</title>
+  <meta name="description" content="小学1年生 国語「じどう車ずかんをつくろう」のための しらべ学習サイト。はたらく じどう車の しごとと つくりを、教科書と おなじ じゅんじょで よめます。">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9A%9A%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Kosugi+Maru&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="print.css" media="print">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">ほんぶんへ すすむ</a>
+
+  <!-- ============ 一覧のときの 大きな ヘッダー ============ -->
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner">
+      <span class="badge">こくご「じどう車ずかんを つくろう」</span>
+      <h1>じどう<ruby>車<rt>しゃ</rt></ruby>ずかん</h1>
+      <p class="site-header__lead">
+        しらべたい <ruby>車<rt>くるま</rt></ruby>を えらんで、<br>
+        <b>①どんな しごとを して いるか</b> → <b>②その ために どんな つくりに なって いるか</b><br>
+        の じゅんばんに よんで みよう。
+      </p>
+    </div>
+  </header>
+
+  <!-- ============ 詳細のときの ほそい バー ============ -->
+  <div class="topbar" id="topbar" hidden>
+    <button class="btn btn--ghost" id="btn-back" type="button">
+      <span aria-hidden="true">←</span> ずかんに もどる
+    </button>
+    <button class="btn btn--star" id="btn-star" type="button" aria-pressed="false">
+      <span class="star" aria-hidden="true">☆</span><span class="btn-star__text">えらんだ 車に する</span>
+    </button>
+  </div>
+
+  <main id="main">
+
+    <!-- ==================== 一覧 ==================== -->
+    <section class="view" id="view-list">
+      <nav class="tabs" id="tabs" aria-label="しごとで えらぶ"></nav>
+      <p class="list-count" id="list-count" aria-live="polite"></p>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="empty" hidden>
+        まだ ★の ついた <ruby>車<rt>くるま</rt></ruby>が ありません。<br>
+        きに なった <ruby>車<rt>くるま</rt></ruby>の ページで「★ えらんだ <ruby>車<rt>くるま</rt></ruby>に する」を おして みよう。
+      </p>
+
+      <section class="note">
+        <h2>💡 がくしゅうの ポイント</h2>
+        <p>
+          どの ページも <b>おなじ じゅんじょ</b>で かいて あります。<br>
+          ①「どんな しごとを して いますか。」 →
+          ②「〜する しごとを して います。」 →
+          ③「<b>その ために</b>、〜」<br>
+          この じゅんばんで かくと、じぶんの 「じどう<ruby>車<rt>しゃ</rt></ruby>ずかん」の <ruby>文<rt>ぶん</rt></ruby>に なります。
+        </p>
+      </section>
+    </section>
+
+    <!-- ==================== 詳細 ==================== -->
+    <section class="view" id="view-detail" hidden></section>
+
+    <!-- ================= 大きさくらべ ================= -->
+    <section class="view" id="view-compare" hidden></section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      イラストは この サイトで かいた ものです。
+      せつめいの <ruby>文<rt>ぶん</rt></ruby>は、<ruby>教科書<rt>きょうかしょ</rt></ruby>と おなじ じゅんじょで あたらしく かきました。
+    </p>
+  </footer>
+
+  <script src="car-art.js"></script>
+  <script src="cars-data.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
