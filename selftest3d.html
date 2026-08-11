@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>selftest3d — 3Dモデルの たしかめ</title>
+  <style>
+    body { margin: 0; font: 13px/1.6 monospace; }
+    #tap { padding: 12px; white-space: pre-wrap; }
+    .ok { color: #157a3b; }
+    .ng { color: #c0242c; font-weight: bold; }
+    .h { color: #1e2b45; font-weight: bold; }
+    #stage { width: 640px; height: 420px; margin: 8px 12px; border: 1px solid #ccc; }
+  </style>
+</head>
+
+<body>
+  <div id="tap">running…</div>
+  <div id="stage"></div>
+
+  <script src="cars-data.js"></script>
+  <script src="parts-data.js"></script>
+  <script type="module">
+    import { createViewer, MODEL3D } from './car3d.js';
+
+    const out = [];
+    let fails = 0, checks = 0;
+    function ok(cond, msg) {
+      checks++;
+      if (!cond) fails++;
+      out.push((cond ? '<span class="ok">ok  </span>' : '<span class="ng">NG  </span>') + msg);
+    }
+    function head(t) { out.push('\n<span class="h">' + t + '</span>'); }
+    function flush() {
+      document.getElementById('tap').innerHTML =
+        (fails ? '<span class="ng">FAILURES: ' + fails + '</span>' : '<span class="ok">ALL PASS</span>') +
+        '  (' + checks + ' checks)\n\n' +
+        out.join('\n');
+    }
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+
+    (async function () {
+      const stage = document.getElementById('stage');
+      const keys = Object.keys(MODEL3D);
+      const usedParts = new Set();
+
+      head('■ 3Dモデルの ある じどう車');
+      const cars = window.carsData.filter(c => MODEL3D[c.art]);
+      ok(cars.length === keys.length,
+        '3Dモデル ' + keys.length + '件 が すべて cars-data.js の art と つながって いる（' + cars.length + '件）');
+      out.push('    ' + cars.map(c => c.art).join(', '));
+
+      for (const car of cars) {
+        head('■ ' + car.art + '（' + car.name.replace(/<[^>]+>/g, '') + '）');
+        let v = null;
+        try {
+          v = createViewer(stage, car.art, { autoRotate: false });
+        } catch (e) {
+          ok(false, 'モデルが つくれる — ' + e.message);
+          continue;
+        }
+        ok(true, 'モデルが つくれる');
+
+        /* 1. つくりの 文で 光らせる 部分が モデルに ある */
+        car.tsukuri.forEach((t, i) => {
+          ok(v.builder.parts.has(t.part),
+            '③つくり' + (i + 1) + ' の part「' + t.part + '」が モデルに ある');
+          ok(v.highlight(t.part), '　→ じっさいに 光らせられる');
+          ok(v.focusPart(t.part), '　→ カメラが そこへ 飛べる');
+        });
+        v.clearHighlight();
+
+        /* 2. モデルの part が parts-data.js に そろって いる */
+        v.parts().forEach(p => {
+          usedParts.add(p);
+          ok(!!window.partInfo[p], 'part「' + p + '」の せつめいが parts-data.js に ある');
+        });
+
+        /* 3. 大きさが おかしくない */
+        const m = v.meters();
+        ok(m.length > 1 && m.length < 22, 'ながさ ' + m.length.toFixed(1) + 'm が 1〜22mの 中');
+        ok(m.height > 0.8 && m.height < 16, 'たかさ ' + m.height.toFixed(1) + 'm が 0.8〜16mの 中');
+        ok(m.width > 0.8 && m.width < 9, 'はば ' + m.width.toFixed(1) + 'm が 0.8〜8mの 中');
+
+        /* 4. ①②③の しるしが 画面の 中に おさまる */
+        await wait(300);
+        v.resetView();
+        v.orbit.snap();
+        await wait(300);
+        car.tsukuri.forEach((t, i) => {
+          const p = v.screenPos(t.part);
+          ok(p && p.visible && p.x > -40 && p.x < stage.clientWidth + 40 && p.y > -40 && p.y < stage.clientHeight + 40,
+            'しるし' + (i + 1) + '（' + t.part + '）が 画面の 中に ある' +
+            (p ? '  [x=' + Math.round(p.x) + ' y=' + Math.round(p.y) + ' / ' + stage.clientWidth + 'x' + stage.clientHeight +
+              ' dist=' + v.orbit.dist.toFixed(1) + ']' : ' [screenPos=null]'));
+        });
+
+        /* 5. うごかす しかけ */
+        const anims = v.animations();
+        anims.forEach(a => {
+          ok(!!a.label, 'うごき「' + a.key + '」に 名まえが ついて いる（' + a.label + '）');
+          ok(v.setAnim(a.key, 1) && v.setAnim(a.key, 0), '　→ 0〜1で うごかせる');
+        });
+        if (!anims.length) out.push('    （うごく しかけ なし）');
+
+        /* 6. さわった ところが 分かる */
+        const cx = stage.getBoundingClientRect();
+        ok(typeof v.pick(cx.left + stage.clientWidth / 2, cx.top + stage.clientHeight / 2) !== 'undefined',
+          'さわった ところの part が しらべられる');
+
+        v.dispose();
+      }
+
+      head('■ ぜんたい');
+      const unused = Object.keys(window.partInfo).filter(k => !usedParts.has(k));
+      out.push('    3Dで つかって いる part: ' + [...usedParts].sort().join(' '));
+      out.push('    まだ 3Dに 出て こない part（' + unused.length + '件）: ' + unused.join(' '));
+      ok(usedParts.size > 0, 'part が 1つ いじょう つかわれて いる');
+
+      flush();
+      window.__selftestDone = true;
+      window.__fails = fails;
+    })().catch(e => {
+      ok(false, 'とちゅうで とまった: ' + e.message);
+      flush();
+      window.__selftestDone = true;
+      window.__fails = fails;
+    });
+  </script>
+</body>
+
+</html>

@@ -31,7 +31,8 @@
     <h1>3Dの じどう車ずかん</h1>
     <p class="lead">
       ゆびで ドラッグすると 車が まわります。2本の ゆびで 大きさを かえられます。<br>
-      「つくり」の 文を おすと、3Dの その ぶぶんだけが 光ります。まわしながら たしかめられます。
+      「つくり」の 文を おすと、3Dの その ぶぶんだけが 光ります。まわしながら たしかめられます。<br>
+      <b>▶ の ボタン</b>を おすと、にだいが かたむいたり、はしごが のびたり します。
     </p>
 
     <div class="cars" id="cars"></div>
@@ -43,6 +44,8 @@
         </div>
 
         <div class="d3-views" id="views"></div>
+
+        <div class="d3-bar" id="anims"></div>
 
         <div class="d3-bar">
           <button class="d3-btn" id="btn-reset">⟲ もとに もどす</button>
@@ -197,6 +200,22 @@
         '<span>ながさ <b>やく' + m.length.toFixed(1) + 'メートル</b></span>' +
         '<span>たかさ <b>やく' + m.height.toFixed(1) + 'メートル</b></span>' +
         '<span>はば <b>やく' + m.width.toFixed(1) + 'メートル</b></span>';
+
+      /* うごかす ボタン（3Dだから できる こと）*/
+      const animsEl = document.getElementById('anims');
+      animsEl.innerHTML = '';
+      viewer.animations().forEach(a => {
+        const b = document.createElement('button');
+        b.className = 'd3-btn d3-btn--anim' + (a.value > 0.5 ? ' is-on' : '');
+        b.textContent = '▶ ' + a.label;
+        b.addEventListener('click', () => {
+          const on = viewer.toggleAnim(a.key);
+          b.classList.toggle('is-on', on);
+          viewer.setAutoRotate(false);
+          document.getElementById('btn-spin').classList.remove('is-on');
+        });
+        animsEl.appendChild(b);
+      });
 
       hint.hidden = false;
       setTimeout(() => { hint.hidden = true; }, 6000);

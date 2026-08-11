@@ -150,6 +150,9 @@
 
 .d3-btn:hover { background: #f3f7fc; }
 .d3-btn.is-on { background: #2a4a80; border-color: #2a4a80; color: #fff; }
+.d3-btn--anim { border-color: #b8dcc6; background: #f2fbf5; color: #1c6b45; }
+.d3-btn--anim:hover { background: #e6f6ec; }
+.d3-btn--anim.is-on { background: #2b9c68; border-color: #2b9c68; color: #fff; }
 
 .d3-views {
   display: flex;
@@ -219,4 +222,92 @@
   .d3-split { display: grid; grid-template-columns: 1.35fr 1fr; gap: 20px; align-items: start; }
   .d3-stage { aspect-ratio: 4 / 3; }
   .d3-callout { max-width: 58%; right: auto; }
+}
+
+/* =========================================================================
+   ずかん本体に 組みこんだ ときの スタイル
+   （index.css / kansatsu.css の 上に 足す）
+   ========================================================================= */
+
+/* ---------- 詳細ページ ---------- */
+.art-stage.is-3d { background: linear-gradient(180deg, #dbe6f2 0%, #eef3f9 100%); }
+/* 3Dの ときは イラスト／写真を かくす（SVGは hidden 属性が きかないので ここで）*/
+.art-stage.is-3d>svg,
+.art-stage.is-3d>img { display: none !important; }
+.art-stage.is-3d canvas { border-radius: inherit; }
+
+.art-tools {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.art-tools .btn { flex: 1 1 auto; justify-content: center; }
+
+.btn--3d {
+  background: #eaf1fb;
+  border-color: #b8cbe8;
+  color: #24406f;
+}
+.btn--3d[aria-pressed="true"] {
+  background: #2a4a80;
+  border-color: #2a4a80;
+  color: #fff;
+}
+
+.art-anim {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.art-anim:empty { display: none; }
+
+.btn--anim3d {
+  flex: 0 1 auto;
+  background: #f2fbf5;
+  border-color: #b8dcc6;
+  color: #1c6b45;
+  font-size: 16px;
+}
+.btn--anim3d.is-on { background: #2b9c68; border-color: #2b9c68; color: #fff; }
+
+/* ---------- ものすごい かんさつ（3D版） ---------- */
+.kz--3d .kz__stage { cursor: grab; }
+.kz--3d .kz__stage canvas { position: absolute; inset: 0; }
+
+/* 見る むき ＋ ▶うごかす */
+.kz__turn {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 4;
+  max-width: 44%;
+}
+
+.kz-tbtn {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 2px solid rgba(255, 255, 255, .28);
+  border-radius: 12px;
+  background: rgba(16, 26, 44, .72);
+  color: #eef3f9;
+  font: 700 15px/1 'BIZ UDPGothic', sans-serif;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  text-align: left;
+}
+.kz-tbtn:hover { background: rgba(40, 60, 96, .85); }
+.kz-tbtn--anim { border-color: rgba(96, 214, 156, .55); color: #b8f0d2; }
+.kz-tbtn--anim.is-on { background: #2b9c68; border-color: #2b9c68; color: #fff; }
+
+/* 絵の ない チップ（3Dにしか ない ぶぶん） */
+.kz-chip--noimg .kz-chip__name { padding-left: 4px; }
+
+@media (max-width: 700px) {
+  .kz__turn { flex-direction: row; flex-wrap: wrap; max-width: calc(100% - 24px); }
+  .kz-tbtn { min-height: 36px; padding: 0 10px; font-size: 13px; }
 }

@@ -52,6 +52,17 @@
       await wait(60);
     }
 
+    /* おそい たんまつでは 150ms では まにあわない ことが ある。
+       「出るまで まつ」に して、時間で こけないように する。 */
+    async function until(fn, ms) {
+      var t0 = Date.now();
+      while (Date.now() - t0 < (ms || 2000)) {
+        try { if (fn()) return true; } catch (e) { }
+        await wait(30);
+      }
+      return false;
+    }
+
     async function run() {
       var W = fr.contentWindow, D = fr.contentDocument;
       var $ = function (s) { return D.querySelector(s); };
@@ -59,6 +70,9 @@
       var cars = W.carsData;
 
       W.localStorage.clear();
+      /* このテストは イラスト（SVG）の 動きを たしかめる もの。
+         3Dの 動きは selftest3d.html が べつに たしかめます。 */
+      W.localStorage.setItem('jz.use3d', 'false');
 
       /* ---- 1. ルーティング ---- */
       await go('#/');
@@ -185,7 +199,8 @@
       for (var n = 0; n < cars.length; n++) {
         var c7 = cars[n];
         await go('#/kansatsu/' + c7.id);
-        await wait(150);
+        await until(function () { return $$('.kz-mark').length > 0; }, 2500);
+        await wait(60);
         var kinds = {};
         $$('#kz-stage svg [data-part]').forEach(function (e) { kinds[e.getAttribute('data-part')] = true; });
         var want = Object.keys(kinds).length;
@@ -210,7 +225,8 @@
       /* 7-3. ◯マークを おすと 光って、せつめいが 出て、✓が つく */
       W.localStorage.removeItem('jz.kz.crane');
       await go('#/kansatsu/crane');
-      await wait(180);
+      await until(function () { return $$('.kz-mark').length > 0; }, 2500);
+      await wait(60);
       ok($('#kz-count').textContent.indexOf('0 /') > 0, 'はじめは みつけた 0こ');
       $$('.kz-mark')[0].click();
       await wait(80);
@@ -243,7 +259,8 @@
       /* 7-5. ✓は ほぞんされ、ずかんに もどれる */
       await go('#/');
       await go('#/kansatsu/crane');
-      await wait(180);
+      await until(function () { return $$('.kz-mark').length > 0; }, 2500);
+      await wait(60);
       ok($('#kz-count').textContent.indexOf('2 /') > 0, 'みつけた ✓が ほぞんされる');
       $('#kz-back').click();
       await wait(80);

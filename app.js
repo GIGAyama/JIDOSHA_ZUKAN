@@ -96,6 +96,77 @@
   }
 
   /* ------------------------------------------------------------------
+     3Dモデル（car3d.js）— ある 車だけ「3Dで 見る」が 出る
+     ------------------------------------------------------------------ */
+  var view3d = null;                                   /* いま 出て いる ビューア */
+
+  function has3d(car) {
+    return !!(car && window.jz3d && window.jz3d.MODEL3D[car.art]);
+  }
+  function want3d() { return store.get('use3d', true) !== false; }
+  function setWant3d(v) { store.set('use3d', !!v); }
+
+  function drop3d() {
+    if (view3d) { try { view3d.dispose(); } catch (e) { } view3d = null; }
+  }
+
+  /* 詳細ページの 絵を 3Dに する（できなければ false）*/
+  function mount3d(car) {
+    var stage = $('#art-stage');
+    if (!stage || !has3d(car)) return false;
+    drop3d();
+    var svg = stage.querySelector('svg'), img = stage.querySelector('img');
+    try {
+      view3d = window.jz3d.createViewer(stage, car.art, { autoRotate: true });
+    } catch (e) {
+      return false;                                    /* WebGLが ない → イラストの まま */
+    }
+    if (svg) svg.style.display = 'none';
+    if (img) img.style.display = 'none';
+    stage.classList.add('is-3d');
+    build3dBar(car);
+    return true;
+  }
+
+  function unmount3d() {
+    drop3d();
+    var stage = $('#art-stage');
+    if (!stage) return;
+    stage.classList.remove('is-3d');
+    var svg = stage.querySelector('svg'), img = stage.querySelector('img');
+    if (svg) svg.style.display = '';
+    if (img) img.style.display = '';
+    var bar = $('#art-anim');
+    if (bar) bar.innerHTML = '';
+  }
+
+  /* ▶ うごかす ボタン（にだいが かたむく など）*/
+  function build3dBar(car) {
+    var bar = $('#art-anim');
+    if (!bar || !view3d) return;
+    bar.innerHTML = '';
+    view3d.animations().forEach(function (a) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'btn btn--anim3d' + (a.value > 0.5 ? ' is-on' : '');
+      b.setAttribute('data-anim', a.key);
+      b.textContent = '▶ ' + a.label;
+      bar.appendChild(b);
+    });
+  }
+
+  function sync3dToggle(car) {
+    var t = $('#btn-3d');
+    if (!t) return;
+    t.hidden = !has3d(car);
+    var on = !!view3d;
+    t.innerHTML = on
+      ? '🖼️ イラストで <ruby>見<rt>み</rt></ruby>る'
+      : '🧊 3Dで まわして <ruby>見<rt>み</rt></ruby>る';
+    t.setAttribute('aria-pressed', String(on));
+  }
+
+  /* ------------------------------------------------------------------
      こえで きく
      ------------------------------------------------------------------ */
   var playing = null;
@@ -273,9 +344,16 @@
       '<div class="art-stage" id="art-stage">' + artHTML(car, 'fit') +
       '<div class="callout" id="callout" hidden></div>' +
       '</div>' +
+      '<div class="art-tools">' +
+      '<button type="button" class="btn btn--3d" id="btn-3d" aria-pressed="false" hidden>' +
+      '🧊 3Dで まわして <ruby>見<rt>み</rt></ruby>る</button>' +
       '<a class="btn btn--zoom" href="#/kansatsu/' + car.id + '">' +
       '🔬 ものすごく <ruby>大<rt>おお</rt></ruby>きく <ruby>見<rt>み</rt></ruby>る</a>' +
-      '<p class="art-hint">「つくり」の <b>ぶん</b>を おすと、その ぶぶんが <b>光ります</b>。<br>' +
+      '</div>' +
+      '<div class="art-anim" id="art-anim"></div>' +
+      '<p class="art-hint">「つくり」の <b>ぶん</b>を おすと、その ぶぶんが <b>光ります</b>。' +
+      (has3d(car) ? '<br>3Dの ときは、<b>ゆびで まわしながら</b> たしかめられます。' : '') + '<br>' +
+
       'ぜんぶの ぶぶんを しらべる ときは、<b>ものすごく <ruby>大<rt>おお</rt></ruby>きく</b> して みよう。</p>' +
       '</div>' +
 
@@ -356,6 +434,7 @@
   function clearPin() {
     var stage = $('#art-stage');
     if (!stage) return;
+    if (view3d) { view3d.clearHighlight(); }
     var svg = stage.querySelector('svg');
     if (svg) {
       svg.classList.remove('has-lit');
@@ -378,6 +457,24 @@
     clearPin();
 
     var stage = $('#art-stage');
+    var callout = $('#callout');
+
+    /* --- 3Dの とき --- */
+    if (view3d) {
+      if (!view3d.highlight(part)) return;
+      view3d.focusPart(part);
+      view3d.setAutoRotate(false);
+      makeEl.classList.add('is-active');
+      var b3 = $('.js-pin', makeEl);
+      if (b3) b3.innerHTML = '✕ もどす';
+      callout.innerHTML = state.car.tsukuri[i].label;
+      callout.hidden = false;
+      state.pin = part;
+      place3dCallout();
+      return;
+    }
+
+    /* --- イラストの とき（これまで どおり）--- */
     var svg = stage.querySelector('svg');
     if (!svg) return;                       /* 写真の ときは 光らせない */
     var els = $$('[data-part="' + part + '"]', svg);
@@ -389,11 +486,24 @@
     var b = $('.js-pin', makeEl);
     if (b) b.innerHTML = '✕ もどす';
 
-    var callout = $('#callout');
     callout.innerHTML = state.car.tsukuri[i].label;
     callout.hidden = false;
     state.pin = part;
     placeCallout(svg, els, callout, stage);
+  }
+
+  /* 3Dの ふきだしは 車を まわしても ついてくる */
+  function place3dCallout() {
+    if (!view3d || !state.pin) return;
+    var stage = $('#art-stage');
+    var callout = $('#callout');
+    if (!stage || !callout || callout.hidden) return;
+    var p = view3d.screenPos(state.pin);
+    if (!p) return;
+    var half = callout.offsetWidth / 2 + 6;
+    callout.style.opacity = p.visible ? '1' : '0.25';
+    callout.style.left = Math.max(half, Math.min(stage.clientWidth - half, p.x)) + 'px';
+    callout.style.top = Math.max(callout.offsetHeight + 10, p.y - 14) + 'px';
   }
 
   function placeCallout(svg, els, callout, stage) {
@@ -425,6 +535,7 @@
 
   function repositionCallout() {
     if (!state.pin) return;
+    if (view3d) { place3dCallout(); return; }
     var stage = $('#art-stage');
     if (!stage) return;
     var svg = stage.querySelector('svg');
@@ -461,7 +572,11 @@
 
   function showDetail(car) {
     state = { car: car, step: 0, pin: null };
+    unmount3d();
     viewDetail.innerHTML = detailHTML(car);
+    if (has3d(car) && want3d()) { mount3d(car); }
+    sync3dToggle(car);
+    if (view3d) { view3d.onFrame(place3dCallout); }
 
     /* ほぞんして あった 文を もどす */
     var saved = store.get('sheet.' + car.id, {}) || {};
@@ -498,6 +613,21 @@
       return;
     }
     if (e.target.closest('#btn-print')) { window.print(); return; }
+
+    if (e.target.closest('#btn-3d')) {
+      clearPin();
+      if (view3d) { unmount3d(); setWant3d(false); }
+      else if (mount3d(state.car)) { setWant3d(true); view3d.onFrame(place3dCallout); }
+      sync3dToggle(state.car);
+      return;
+    }
+    var anim = e.target.closest('[data-anim]');
+    if (anim && view3d) {
+      anim.classList.toggle('is-on', view3d.toggleAnim(anim.getAttribute('data-anim')));
+      view3d.setAutoRotate(false);
+      return;
+    }
+
     var make = e.target.closest('.js-make');
     if (make) { showPin(make); }
   });
@@ -552,7 +682,11 @@
      ================================================================== */
   function setView(name) {
     stopSpeech();
-    if (name !== 'kansatsu' && window.kansatsu) { window.kansatsu.unmount(); }
+    if (name !== 'kansatsu') {
+      if (window.kansatsu) { window.kansatsu.unmount(); }
+      if (window.kansatsu3d) { window.kansatsu3d.unmount(); }
+    }
+    if (name !== 'detail') { unmount3d(); }
     viewList.hidden = name !== 'list';
     viewDetail.hidden = name !== 'detail';
     viewCompare.hidden = name !== 'compare';
@@ -574,6 +708,12 @@
   function showKansatsu(car) {
     setView('kansatsu');
     document.title = plain(car.name) + 'を ものすごく 大きく - じどう車ずかん';
+    /* まえの かんさつを かならず 片づけてから 出す（3D↔イラストの 行き来の ため）*/
+    if (window.kansatsu) { window.kansatsu.unmount(); }
+    if (window.kansatsu3d) { window.kansatsu3d.unmount(); }
+    /* 3Dモデルが あれば まわせる ほうを つかう。だめなら イラスト版に もどす */
+    if (has3d(car) && want3d() && window.kansatsu3d &&
+      window.kansatsu3d.mount(car, viewKansatsu)) { return; }
     window.kansatsu.mount(car, viewKansatsu);
   }
 
@@ -582,7 +722,8 @@
     clearPin();
     if (h.indexOf('#/kansatsu/') === 0) {
       var kcar = carById(h.slice('#/kansatsu/'.length));
-      if (kcar && window.kansatsu && window.carArt.has(kcar.art)) { showKansatsu(kcar); return; }
+      if (kcar && window.kansatsu &&
+        (window.carArt.has(kcar.art) || has3d(kcar))) { showKansatsu(kcar); return; }
     }
     if (h.indexOf('#/car/') === 0) {
       var car = carById(h.slice('#/car/'.length));
@@ -596,5 +737,26 @@
   }
 
   window.addEventListener('hashchange', route);
+
+  /* car3d.js は あとから 読みこまれる。来た ときに 詳細ページを 出して いたら、
+     画面を 作りなおさずに（かきうつしシートを 消さずに）3Dを のせる */
+  window.addEventListener('jz3d-ready', function () {
+    /* かんさつを 見て いる とちゅうなら、まわせる ほうに 入れかえる
+       （✓は localStorage に 入って いるので 消えません）*/
+    if (!viewKansatsu.hidden) {
+      var h3 = location.hash;
+      if (h3.indexOf('#/kansatsu/') === 0) {
+        var kc = carById(h3.slice('#/kansatsu/'.length));
+        if (kc && has3d(kc) && want3d()) { showKansatsu(kc); }
+      }
+      return;
+    }
+    if (!state || !state.car || viewDetail.hidden) { return; }
+    if (!view3d && has3d(state.car) && want3d() && mount3d(state.car)) {
+      view3d.onFrame(place3dCallout);
+    }
+    sync3dToggle(state.car);
+  });
+
   route();
 })();
