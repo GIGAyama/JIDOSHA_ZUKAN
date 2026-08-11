@@ -1483,6 +1483,14 @@ function sideProfileGeom(pts, depth, round) {
   return g;
 }
 
+/* こい スモークガラス（中を 見せない ガラス。とうめいに しない ぶん かるい）*/
+function darkGlassMat() {
+  return new THREE.MeshPhysicalMaterial({
+    color: 0x141c26, metalness: 0.25, roughness: 0.05,
+    clearcoat: 1, clearcoatRoughness: 0.03, envMapIntensity: 2.6
+  });
+}
+
 /* すきとおりの つよい ガラス（中の ざせきを 見せたい ときに つかう）*/
 function clearGlassMat() {
   return new THREE.MeshPhysicalMaterial({
@@ -3122,15 +3130,26 @@ MODEL3D.police = {
   label: 'パトカー',
   build: function (B) {
     const W = 1.76, L = 4.70;
-    /* よこ顔（ボンネット → まえガラス → やね → うしろガラス → トランク）*/
+    /* よこ顔（ボンネット → ベルトライン → トランク）。まどの ところは あける */
     const body = [
       [-L / 2, 0.30], [-L / 2 + 0.06, 0.72], [-L / 2 + 0.30, 0.92],
-      [-1.30, 1.02], [-0.80, 1.44], [0.42, 1.48], [0.98, 1.06],
+      [-1.30, 1.02], [0.98, 1.06],
       [1.90, 0.92], [L / 2 - 0.10, 0.80], [L / 2, 0.44], [L / 2 - 0.20, 0.26],
       [1.05, 0.22], [-1.15, 0.22], [-L / 2 + 0.20, 0.26]
     ];
     B.mesh(sideProfileGeom(body, W, 0.16), paint(0xf2f5f9, { metal: 0.25, rough: 0.22, clear: 1.0 }),
       { x: 0, y: 0, z: 0, part: 'cab' });
+    /* やねと はしら */
+    B.mesh(sideProfileGeom([
+      [-1.12, 1.00], [-0.82, 1.44], [0.42, 1.48], [1.02, 1.02],
+      [0.85, 1.02], [0.32, 1.36], [-0.70, 1.32], [-0.92, 1.00]
+    ], W - 0.05, 0.045), paint(0xf2f5f9, { metal: 0.25, rough: 0.22, clear: 1.0 }), { x: 0, y: 0, z: 0, part: 'cab' });
+    /* 中の ゆか・ダッシュボード・ざせき */
+    B.box({ x: -0.16, y: 1.035, z: 0, w: 2.15, h: 0.05, d: W - 0.24, r: 0.03, mat: matte(0x232830, 0.85), part: 'cab' });
+    B.box({ x: 0.82, y: 1.10, z: 0, w: 0.30, h: 0.10, d: W - 0.30, r: 0.04, mat: matte(0x2a2f38, 0.7), part: 'cab' });
+    [[0.45, 1], [0.45, -1], [-0.55, 1], [-0.55, -1]].forEach(([sx, sz]) => {
+      B.box({ x: sx - 0.20, y: 1.22, z: sz * 0.40, w: 0.10, h: 0.34, d: 0.40, r: 0.04, mat: matte(0x2f3d52, 0.8), part: 'cab' });
+    });
     /* パトカーの くろい ぶぶん（ドアの あたり）*/
     [1, -1].forEach(sz => {
       B.box({ x: -0.15, y: 0.62, z: sz * (W / 2 + 0.008), w: 2.55, h: 0.62, d: 0.02, r: 0.06, mat: paint(0x1b2028, { rough: 0.24, clear: 1.0 }) });
@@ -3771,7 +3790,7 @@ function miniCar(B, o) {
     [2.10, 0.72], [2.10, 0.36], [1.90, 0.24], [-1.90, 0.24]
   ], W, 0.16), paint(o.color, { metal: 0.25, rough: 0.22, clear: 1.0 }), { parent: g, part: o.part });
   B.mesh(sideProfileGeom([[-0.92, 0.98], [-0.68, 1.30], [0.30, 1.33], [0.84, 0.98]], W + 0.015, 0.07),
-    glassMat(B.quality), { parent: g, part: o.part });
+    darkGlassMat(), { parent: g, part: o.part });
   [1.30, -1.35].forEach(ax => {
     [1, -1].forEach(sz => {
       B.cyl({ parent: g, x: ax, y: 0.30, z: sz * (W / 2 - 0.10), r: 0.30, h: 0.20, axis: 'z', seg: 18, mat: matte(0x1a1c20, 0.75), part: o.part });
@@ -5744,10 +5763,10 @@ MODEL3D.doctorcar = {
     ];
     B.mesh(sideProfileGeom(body, W, 0.16), paint(0xf2f5f9, { metal: 0.25, rough: 0.22, clear: 1.0 }),
       { x: 0, y: 0, z: 0, part: 'cab' });
-    /* まど（よこ顔の かたちで 一気に）*/
+    /* まど（よこ顔の かたちで 一気に。中が すけない こい スモークガラス）*/
     B.mesh(sideProfileGeom([
       [-2.30, 1.10], [-2.26, 1.58], [-0.26, 1.64], [0.58, 1.52], [1.00, 1.08]
-    ], W + 0.015, 0.08), glassMat(B.quality), { x: 0, y: 0, z: 0, part: 'window' });
+    ], W + 0.015, 0.08), darkGlassMat(), { x: 0, y: 0, z: 0, part: 'window' });
     [1, -1].forEach(sz => {
       B.box({ x: -0.20, y: 0.64, z: sz * (W / 2 + 0.008), w: 2.70, h: 0.20, d: 0.02, r: 0.01, mat: paint(0xe5544b, { rough: 0.3 }) });
       B.seam({ x: -0.70, y: 0.76, z: sz * (W / 2 + 0.018), w: 0.026, h: 0.90, d: 0.03, color: 0x8d97a5, part: 'door' });
@@ -5894,12 +5913,21 @@ MODEL3D.xray = {
 /* ---------------- じょうよう車の からだ（じょうよう車・タクシー 共通）---- */
 function sedanBody(B, o) {
   const W = o.w || 1.76, L = o.len || 4.70;
+  /* からだは まどの 下（ベルトライン）まで。まどの ところは あけて おく */
   B.mesh(sideProfileGeom([
     [-L / 2, 0.30], [-L / 2 + 0.06, 0.72], [-L / 2 + 0.30, 0.92],
-    [-1.30, 1.02], [-0.80, 1.44], [0.42, 1.48], [0.98, 1.06],
+    [-1.30, 1.02], [0.98, 1.06],
     [1.90, 0.92], [L / 2 - 0.10, 0.80], [L / 2, 0.44], [L / 2 - 0.20, 0.26],
     [1.05, 0.22], [-1.15, 0.22], [-L / 2 + 0.20, 0.26]
   ], W, 0.16), paint(o.color, { metal: 0.28, rough: 0.20, clear: 1.0 }), { x: 0, y: 0, z: 0, part: o.part });
+  /* やねと はしら（まどの わく だけ のこして 中を あける） */
+  B.mesh(sideProfileGeom([
+    [-1.12, 1.00], [-0.82, 1.44], [0.42, 1.48], [1.02, 1.02],
+    [0.85, 1.02], [0.32, 1.36], [-0.70, 1.32], [-0.92, 1.00]
+  ], W - 0.05, 0.045), paint(o.color, { metal: 0.28, rough: 0.20, clear: 1.0 }), { x: 0, y: 0, z: 0, part: o.part });
+  /* 中の ゆか（こい 色）と ダッシュボード */
+  B.box({ x: -0.16, y: 1.035, z: 0, w: 2.15, h: 0.05, d: W - 0.24, r: 0.03, mat: matte(0x232830, 0.85), part: o.part });
+  B.box({ x: 0.82, y: 1.10, z: 0, w: 0.30, h: 0.10, d: W - 0.30, r: 0.04, mat: matte(0x2a2f38, 0.7), part: o.part });
   /* まどが ぐるりと つく（中が 見えるように うすい ガラス）*/
   B.mesh(sideProfileGeom([
     [-1.02, 1.06], [-0.78, 1.42], [0.40, 1.46], [0.94, 1.06]
