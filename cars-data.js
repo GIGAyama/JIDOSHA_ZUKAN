@@ -173,7 +173,7 @@ window.carsData = [
     kana: 'キャリアカー',
     category: 'hakobu',
     art: 'carrier',
-    photo: null,
+    photo: 'assets/carrier.png',
     shigoto: 'キャリアカーは、できたばかりの じどう<ruby>車<rt>しゃ</rt></ruby>を、お<ruby>店<rt>みせ</rt></ruby>まで はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -194,7 +194,7 @@ window.carsData = [
     kana: 'トレーラー',
     category: 'hakobu',
     art: 'trailer',
-    photo: null,
+    photo: 'assets/trailer.png',
     shigoto: 'トレーラーは、<ruby>大<rt>おお</rt></ruby>きな はこ（コンテナ）を、みなとから とおくの まちへ はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -214,7 +214,7 @@ window.carsData = [
     kana: 'れいとうしゃ',
     category: 'hakobu',
     art: 'reefer',
-    photo: null,
+    photo: 'assets/reefer.png',
     shigoto: 'れいとう<ruby>車<rt>しゃ</rt></ruby>は、アイスや おさかなを、つめたい ままで はこぶ しごとを して います。',
     tsukuri: [
       {
