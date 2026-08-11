@@ -5036,6 +5036,15 @@ MODEL3D.cargoloader = {
     B.box({ x: -2.05, y: 2.06, z: -1.05, w: 1.16, h: 0.10, d: 0.88, r: 0.05, color: COL, part: 'deck', rough: 0.4 });
     B.mesh(new THREE.TorusGeometry(0.18, 0.026, 8, 20), matte(0x22262d, 0.6),
       { x: -1.68, y: 1.42, z: -1.05, ry: Math.PI / 2, rz: -0.5 });
+    wipers(B, { x: -1.49, y: 1.30, z: -1.05, len: 0.30, n: 1, a: 0.7 });
+    B.lamp({ x: -2.05, y: 2.18, z: -1.05, w: 0.14, h: 0.13, d: 0.14, color: 0xffa63d, strength: 1.5, aux: true });
+    /* まえと うしろの ライト・てすり */
+    [1, -1].forEach(sx => {
+      [1, -1].forEach(sz => {
+        B.lamp({ x: sx * 3.06, y: 0.52, z: sz * (W / 2 - 0.30), w: 0.05, h: 0.12, d: 0.20, color: sx > 0 ? 0xfff2cf : PAL.lampR, strength: 1.1, part: 'lamp' });
+      });
+    });
+    B.cyl({ x: -2.62, y: 1.10, z: -1.05, r: 0.022, h: 0.85, axis: 'y', seg: 8, mat: metalMat(0xd8dee6, 0.3), aux: true });
 
     /* ==== ころ の ならんだ ゆか（2まい）==== */
     const decks = [];
@@ -5111,6 +5120,26 @@ MODEL3D.stacker = {
     B.glass({ x: -0.60, y: (ctop + cbot) / 2 + 0.10, z: 1.15 + 0.62, w: 1.25, h: (ctop - cbot) * 0.62, d: 0.07, r: 0.06, part: 'window' });
     B.glass({ x: -0.60, y: (ctop + cbot) / 2 + 0.10, z: 1.15 - 0.62, w: 1.25, h: (ctop - cbot) * 0.62, d: 0.07, r: 0.06, part: 'window' });
     B.box({ x: -0.55, y: ctop + 0.08, z: 1.15, w: 1.68, h: 0.11, d: 1.44, r: 0.06, color: 0xe8ecf1, part: 'cab', rough: 0.4 });
+    /* とびら・ハンドル・ミラー・ワイパー・かいてんとう */
+    B.seam({ x: -1.10, y: (ctop + cbot) / 2 - 0.10, z: 1.828, w: 0.024, h: (ctop - cbot) * 0.68, d: 0.03, part: 'cab' });
+    doorHandle(B, { x: -0.90, y: (ctop + cbot) / 2 - 0.30, z: 1.833, s: 1, len: 0.20 });
+    B.cyl({ x: 0.24, y: ctop - 0.28, z: 1.95, r: 0.016, h: 0.26, axis: 'z', seg: 8, mat: metalMat(0x9aa3ae, 0.35), aux: true });
+    B.box({ x: 0.24, y: ctop - 0.38, z: 2.10, w: 0.07, h: 0.26, d: 0.11, r: 0.03, mat: matte(0x2a2f38, 0.5), aux: true });
+    wipers(B, { x: 0.27, y: (ctop + cbot) / 2 - 0.26, z: 1.15, rz: -0.10, len: 0.45, n: 1, a: 0.8 });
+    B.lamp({ x: -1.20, y: ctop + 0.18, z: 1.15, w: 0.13, h: 0.13, d: 0.13, color: 0xffa63d, strength: 1.3, aux: true });
+    /* のぼる かいだん・マフラー・カウンターウェイトの みぞ */
+    [0.55, 1.05, 1.55].forEach((sy, i) => {
+      B.box({ x: -0.40 - i * 0.10, y: sy, z: 1.55, w: 0.38, h: 0.05, d: 0.28, r: 0.02, mat: matte(0x30363f, 0.62) });
+    });
+    B.cyl({ x: -0.42, y: 1.30, z: 1.68, r: 0.022, h: 1.50, axis: 'y', seg: 8, mat: metalMat(0xd8dee6, 0.3), aux: true });
+    B.cyl({ x: -3.30, y: 2.25, z: -1.10, r: 0.09, h: 0.75, axis: 'y', seg: 12, mat: metalMat(0x9aa3ae, 0.35), part: 'body' });
+    B.seam({ x: -4.05, y: 1.55, z: 1.46, w: 0.7, h: 0.03, d: 0.03, color: 0x7d2a1d });
+    B.seam({ x: -4.05, y: 1.55, z: -1.46, w: 0.7, h: 0.03, d: 0.03, color: 0x7d2a1d });
+    /* まえと うしろの ライト */
+    [1, -1].forEach(sz => {
+      B.lamp({ x: 1.48, y: 1.20, z: sz * (W / 2 - 0.35), w: 0.06, h: 0.14, d: 0.22, color: 0xfff2cf, strength: 1.3, part: 'lamp' });
+      B.lamp({ x: -4.56, y: 1.35, z: sz * (W / 2 - 0.40), w: 0.05, h: 0.16, d: 0.24, color: PAL.lampR, strength: 1.0, aux: true });
+    });
 
     /* ==== ななめに のびる じょうぶな うで ==== */
     const pivot = new THREE.Group();
@@ -5225,9 +5254,17 @@ MODEL3D.fueler = {
     [1, -1].forEach(sz => {
       B.box({ x: 1.05, y: 3.05, z: sz * 0.66, w: 0.34, h: 1.60, d: 0.32, r: 0.06, color: ACC, part: 'lift', rough: 0.3 });
     });
-    /* ホース */
+    /* ホース と アースの リール（せいでんきを にがす） */
     B.mesh(new THREE.TorusGeometry(0.44, 0.10, 12, 28), matte(0x2b3038, 0.75),
       { x: -3.30, y: 1.50, z: W / 2 - 0.10, ry: Math.PI / 2, part: 'tank' });
+    B.cyl({ x: -2.35, y: 1.42, z: W / 2 - 0.05, r: 0.16, h: 0.14, axis: 'z', seg: 16, mat: matte(0xd97f14, 0.5), part: 'tank' });
+    /* あぶないの しるし・しょうかき・ランプ・ナンバー・どろよけ */
+    B.box({ x: -4.50, y: 2.30, z: 0, w: 0.03, h: 0.34, d: 0.42, r: 0.02, mat: paint(0xf07818, { rough: 0.35 }), aux: true });
+    B.box({ x: 1.90, y: 1.24, z: -(W / 2 - 0.14), w: 0.38, h: 0.48, d: 0.24, r: 0.05, mat: paint(0xd8342c, { rough: 0.3 }), part: 'tank' });
+    tailLamps(B, { x: -4.50, y: 0.84, zOff: W / 2 - 0.42 });
+    plate(B, { x: -4.50, y: 0.84, z: 0, axis: 'x-' });
+    wheelArch(B, { x: -2.30, r: 0.56, spread: 1.04, w: 0.66 });
+    wheelArch(B, { x: -3.65, r: 0.56, spread: 1.04, w: 0.66, flap: true });
 
     B.anim('lift', '台を 上げる', v => {
       plat.position.y = 3.50 + v * 2.10;
@@ -5308,6 +5345,11 @@ MODEL3D.railcar = {
       rw.forEach(g => { g.position.y = -v * 0.64; });
     });
 
+    /* クレーンの さぎょうとう・うしろの ランプ・ナンバー */
+    B.lamp({ parent: post, x: 0.20, y: 1.02, z: 0, w: 0.10, h: 0.09, d: 0.11, color: 0xfff2cf, strength: 1.2, aux: true });
+    tailLamps(B, { x: -3.06, y: 1.12, zOff: W / 2 - 0.38 });
+    plate(B, { x: -3.06, y: 1.12, z: 0, axis: 'x-' });
+
     B.wheel({ x: 1.95, r: 0.48, w: 0.28, spread: 0.88 });
     B.wheel({ x: -1.85, r: 0.48, w: 0.26, z: 0.78 });
     B.wheel({ x: -1.85, r: 0.48, w: 0.26, z: 1.02 });
@@ -5386,6 +5428,24 @@ MODEL3D.fire = {
       });
     });
     B.box({ x: -1.65, y: 2.36, z: 0, w: 4.20, h: 0.14, d: W + 0.04, r: 0.05, mat: matte(0x3c434e, 0.6), part: 'hose' });
+    /* やねの 上の ぎんいろの はしご（かならず つんで ある） */
+    [1, -1].forEach(sz => {
+      B.box({ x: -1.55, y: 2.56, z: sz * 0.42, w: 3.60, h: 0.07, d: 0.07, r: 0.02, mat: metalMat(0xd6dce4, 0.25), part: 'hose' });
+    });
+    for (let i = 0; i < 8; i++) {
+      B.cyl({ x: -3.15 + i * 0.46, y: 2.56, z: 0, r: 0.024, h: 0.84, axis: 'z', seg: 8, mat: metalMat(0xc3cad3, 0.3), part: 'hose' });
+    }
+    [[-3.35], [0.25]].forEach(([rx]) => {
+      B.box({ x: rx, y: 2.47, z: 0.42, w: 0.06, h: 0.12, d: 0.07, r: 0.02, mat: metalMat(0x9aa3ae, 0.4), part: 'hose' });
+      B.box({ x: rx, y: 2.47, z: -0.42, w: 0.06, h: 0.12, d: 0.07, r: 0.02, mat: metalMat(0x9aa3ae, 0.4), part: 'hose' });
+    });
+    /* うしろの ステップ・ランプ・ナンバー・どろよけ */
+    B.box({ x: -3.72, y: 0.68, z: 0, w: 0.42, h: 0.07, d: W - 0.40, r: 0.03, mat: metalMat(0xb9c0ca, 0.3), part: 'step' });
+    tailLamps(B, { x: -3.66, y: 1.02, zOff: W / 2 - 0.40 });
+    plate(B, { x: -3.66, y: 1.32, z: 0, axis: 'x-' });
+    [1, -1].forEach(sz => {
+      B.box({ x: -3.42, y: 0.36, z: sz * 1.00, w: 0.045, h: 0.52, d: 0.52, r: 0.02, mat: matte(0x1d2127, 0.85) });
+    });
     /* のばした ホース */
     const laid = new THREE.Group();
     B.root.add(laid);
@@ -5463,6 +5523,19 @@ MODEL3D.foam = {
     B.anim('turret', 'ノズルを むける', v => {
       base.rotation.y = -v * 1.15;
       gun.rotation.z = 0.30 + v * 0.36;
+    });
+
+    /* タンクの 上の あるく ところ と てすり */
+    B.box({ x: -1.55, y: 3.22, z: 0.72, w: 3.9, h: 0.05, d: 0.34, r: 0.02, mat: metalMat(0xb9c0ca, 0.35), part: 'tank' });
+    [1, -1].forEach(e => {
+      B.cyl({ x: -1.55 + e * 1.9, y: 3.48, z: 0.86, r: 0.020, h: 0.5, axis: 'y', seg: 8, mat: metalMat(0xd8dee6, 0.3), part: 'tank' });
+    });
+    B.cyl({ x: -1.55, y: 3.72, z: 0.86, r: 0.020, h: 3.8, axis: 'x', seg: 8, mat: metalMat(0xd8dee6, 0.3), part: 'tank' });
+    /* うしろの ランプ・ナンバー・どろよけ */
+    tailLamps(B, { x: -4.44, y: 0.84, zOff: W / 2 - 0.42 });
+    plate(B, { x: -4.44, y: 0.84, z: 0, axis: 'x-' });
+    [1, -1].forEach(sz => {
+      B.box({ x: -3.35, y: 0.36, z: sz * 1.04, w: 0.045, h: 0.56, d: 0.55, r: 0.02, mat: matte(0x1d2127, 0.85) });
     });
 
     B.wheel({ x: 2.85, r: 0.56, w: 0.34, spread: 1.02 });
