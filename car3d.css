@@ -1,0 +1,222 @@
+/* =========================================================================
+   car3d.css — 3Dの ずかん（まわして 見る）
+   ========================================================================= */
+
+.d3 {
+  --d3-ink: #1e2b45;
+  --d3-sub: #58678a;
+  --d3-line: #d8e0ed;
+  --d3-lit: #ff8a00;
+  --d3-t: #2b9c68;
+  font-family: 'BIZ UDPGothic', 'Hiragino Maru Gothic ProN', 'Yu Gothic Medium', Meiryo, sans-serif;
+  color: var(--d3-ink);
+}
+
+/* ---------- ステージ ---------- */
+.d3-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  min-height: 260px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(#dbe6f2, #eef3f9);
+  box-shadow: 0 10px 26px rgba(30, 43, 69, .10);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.d3-stage canvas { display: block; }
+
+/* さいしょの あんない */
+.d3-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  background: rgba(30, 43, 69, .78);
+  color: #fff;
+  font-size: 15px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  pointer-events: none;
+  transition: opacity .5s;
+  white-space: nowrap;
+}
+
+.d3-hint[hidden] { opacity: 0; }
+
+/* ---------- ①②③の しるし（回すと いっしょに 動く）---------- */
+.d3-marker {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background: #2a4a80;
+  color: #fff;
+  font: 700 18px/32px 'Kosugi Maru', sans-serif;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .35);
+  transition: background .2s, transform .2s;
+  z-index: 3;
+}
+
+.d3-marker:hover { transform: scale(1.12); }
+.d3-marker.is-on { background: var(--d3-lit); transform: scale(1.16); }
+.d3-marker.is-seen::after {
+  content: '✓';
+  position: absolute;
+  right: -4px;
+  top: -6px;
+  width: 18px;
+  height: 18px;
+  background: var(--d3-t);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  font: 700 11px/15px sans-serif;
+}
+.d3-marker[hidden] { display: none; }
+
+/* ---------- ふきだし ---------- */
+.d3-callout {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  max-width: 420px;
+  background: rgba(255, 255, 255, .96);
+  border: 2px solid var(--d3-line);
+  border-radius: 16px;
+  padding: 12px 44px 12px 16px;
+  box-shadow: 0 8px 22px rgba(30, 43, 69, .18);
+  z-index: 4;
+  animation: d3pop .18s ease-out;
+}
+
+@keyframes d3pop { from { opacity: 0; transform: translateY(8px); } }
+
+.d3-callout__name {
+  font: 700 19px/1.4 'Kosugi Maru', sans-serif;
+  color: var(--d3-lit);
+  margin-bottom: 2px;
+}
+.d3-callout__text { font-size: 16px; line-height: 1.7; }
+.d3-callout__tsukuri {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--d3-line);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--d3-t);
+}
+.d3-callout__close {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: #eef2f8;
+  font-size: 17px;
+  cursor: pointer;
+}
+.d3-callout[hidden] { display: none; }
+
+/* ---------- そうさボタン ---------- */
+.d3-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.d3-btn {
+  flex: 0 0 auto;
+  min-height: 46px;
+  padding: 0 16px;
+  border: 2px solid var(--d3-line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--d3-ink);
+  font: 700 16px/1 'BIZ UDPGothic', sans-serif;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+
+.d3-btn:hover { background: #f3f7fc; }
+.d3-btn.is-on { background: #2a4a80; border-color: #2a4a80; color: #fff; }
+
+.d3-views {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.d3-views .d3-btn { min-height: 42px; padding: 0 13px; font-size: 15px; }
+
+/* ---------- つくりの 文 ---------- */
+.d3-list { margin-top: 14px; display: grid; gap: 10px; }
+
+.d3-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  width: 100%;
+  text-align: left;
+  padding: 13px 15px;
+  border: 2px solid var(--d3-line);
+  border-radius: 16px;
+  background: #fff;
+  font: 400 17px/1.75 'BIZ UDPGothic', sans-serif;
+  color: var(--d3-ink);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+
+.d3-item:hover { background: #f6faf7; }
+.d3-item.is-on { border-color: var(--d3-lit); background: #fff6ec; }
+
+.d3-item__no {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--d3-t);
+  color: #fff;
+  font: 700 15px/30px 'Kosugi Maru', sans-serif;
+  text-align: center;
+}
+.d3-item.is-on .d3-item__no { background: var(--d3-lit); }
+
+.d3-note {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--d3-sub);
+}
+
+.d3-meters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 10px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: #eef2f8;
+  font-size: 15px;
+  color: var(--d3-sub);
+}
+.d3-meters span { white-space: nowrap; }
+.d3-meters b { color: var(--d3-ink); }
+
+/* よこむきの タブレットでは 左右に ならべる */
+@media (min-width: 900px) {
+  .d3-split { display: grid; grid-template-columns: 1.35fr 1fr; gap: 20px; align-items: start; }
+  .d3-stage { aspect-ratio: 4 / 3; }
+  .d3-callout { max-width: 58%; right: auto; }
+}

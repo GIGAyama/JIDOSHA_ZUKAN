@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>3Dの じどう車ずかん（ためしに つくった もの）</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Kosugi+Maru&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="car3d.css">
+  <style>
+    body { margin: 0; background: #eef2f8; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 18px 16px 60px; }
+    h1 { font: 700 24px/1.5 'Kosugi Maru', sans-serif; color: #1e2b45; margin: 0 0 4px; }
+    .lead { font-size: 15px; line-height: 1.8; color: #58678a; margin: 0 0 16px; }
+    .cars { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .car-chip {
+      min-height: 50px; padding: 0 20px; border: 2px solid #d8e0ed; border-radius: 16px;
+      background: #fff; font: 700 17px/1 'Kosugi Maru', sans-serif; color: #1e2b45; cursor: pointer;
+    }
+    .car-chip.is-on { background: #ffc233; border-color: #d99500; }
+    h2 { font: 700 18px/1.5 'Kosugi Maru', sans-serif; color: #2b9c68; margin: 18px 0 6px; }
+    .loading { padding: 40px; text-align: center; color: #58678a; }
+  </style>
+</head>
+
+<body class="d3">
+  <div class="wrap">
+    <h1>3Dの じどう車ずかん</h1>
+    <p class="lead">
+      ゆびで ドラッグすると 車が まわります。2本の ゆびで 大きさを かえられます。<br>
+      「つくり」の 文を おすと、3Dの その ぶぶんだけが 光ります。まわしながら たしかめられます。
+    </p>
+
+    <div class="cars" id="cars"></div>
+
+    <div class="d3-split">
+      <div>
+        <div class="d3-stage" id="stage">
+          <p class="d3-hint" id="hint">ゆびで ドラッグして まわしてみよう</p>
+        </div>
+
+        <div class="d3-views" id="views"></div>
+
+        <div class="d3-bar">
+          <button class="d3-btn" id="btn-reset">⟲ もとに もどす</button>
+          <button class="d3-btn" id="btn-ruler">📏 ものさし</button>
+          <button class="d3-btn" id="btn-spin">🔄 じどうで まわる</button>
+          <button class="d3-btn" id="btn-marks">①②③ を 出す</button>
+        </div>
+
+        <div class="d3-meters" id="meters"></div>
+      </div>
+
+      <div>
+        <h2 id="shigoto-h">② しごと</h2>
+        <p id="shigoto" style="font-size:17px;line-height:1.85"></p>
+        <h2>③ つくり — おすと 3Dが 光ります</h2>
+        <div class="d3-list" id="list"></div>
+        <p class="d3-note">
+          ★ 車の どこかを 直せつ さわると、その ぶぶんの 名まえと せつめいが 出ます。<br>
+          ★ ①②③の しるしは 車を まわしても ついてきます。うら がわに いくと きえます。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="cars-data.js"></script>
+  <script src="parts-data.js"></script>
+  <script type="module">
+    import { createViewer, MODEL3D } from './car3d.js';
+
+    const stage = document.getElementById('stage');
+    const listEl = document.getElementById('list');
+    const carsEl = document.getElementById('cars');
+    const viewsEl = document.getElementById('views');
+    const hint = document.getElementById('hint');
+    const metersEl = document.getElementById('meters');
+    const plain = s => String(s).replace(/<rt>.*?<\/rt>/g, '').replace(/<[^>]+>/g, '');
+
+    /* 3Dモデルの ある 車だけ ならべる */
+    const cars = window.carsData.filter(c => MODEL3D[c.art]);
+
+    const VIEWS = [
+      { name: 'ななめ', az: -0.62, pl: 1.24 },
+      { name: 'よこ', az: -Math.PI / 2, pl: 1.40 },
+      { name: 'まえ', az: Math.PI / 2 - Math.PI, pl: 1.36 },
+      { name: 'うしろ', az: Math.PI / 2, pl: 1.36 },
+      { name: '上から', az: -0.62, pl: 0.42 },
+      { name: 'ぐるり', spin: true }
+    ];
+
+    let viewer = null, current = null, markers = [], callout = null, seen = new Set();
+
+    function makeCallout() {
+      const el = document.createElement('div');
+      el.className = 'd3-callout';
+      el.hidden = true;
+      el.innerHTML = '<button class="d3-callout__close" aria-label="とじる">✕</button>' +
+        '<p class="d3-callout__name"></p><p class="d3-callout__text"></p><p class="d3-callout__tsukuri"></p>';
+      el.querySelector('.d3-callout__close').addEventListener('click', () => {
+        el.hidden = true; viewer.clearHighlight();
+        listEl.querySelectorAll('.d3-item').forEach(b => b.classList.remove('is-on'));
+        markers.forEach(m => m.el.classList.remove('is-on'));
+      });
+      stage.appendChild(el);
+      return el;
+    }
+
+    function showPart(part, tsukuriText) {
+      const info = window.partInfo[part];
+      callout.hidden = false;
+      callout.querySelector('.d3-callout__name').innerHTML = info ? info.name : part;
+      callout.querySelector('.d3-callout__text').innerHTML = info ? info.text : '';
+      const t = callout.querySelector('.d3-callout__tsukuri');
+      if (tsukuriText) { t.hidden = false; t.innerHTML = '③ ' + tsukuriText; }
+      else t.hidden = true;
+      seen.add(part);
+      markers.forEach(m => {
+        m.el.classList.toggle('is-on', m.part === part);
+        m.el.classList.toggle('is-seen', seen.has(m.part));
+      });
+    }
+
+    function pick(part, tsukuriText, focus) {
+      viewer.highlight(part);
+      if (focus) viewer.focusPart(part);
+      showPart(part, tsukuriText);
+      hint.hidden = true;
+    }
+
+    function load(car) {
+      if (viewer) viewer.dispose();
+      stage.querySelectorAll('.d3-marker, .d3-callout').forEach(e => e.remove());
+      markers = []; seen = new Set(); current = car;
+
+      viewer = createViewer(stage, car.art, { autoRotate: true });
+      window.V = viewer;
+      callout = makeCallout();
+
+      /* ①②③の しるし — つくりで せつめいする ぶぶんに つける */
+      car.tsukuri.forEach((t, i) => {
+        if (!viewer.builder.parts.has(t.part)) return;
+        const el = document.createElement('div');
+        el.className = 'd3-marker';
+        el.textContent = '①②③④⑤'[i] || (i + 1);
+        el.addEventListener('click', () => pick(t.part, t.text, true));
+        stage.appendChild(el);
+        markers.push({ part: t.part, el: el });
+      });
+
+      viewer.onFrame(() => {
+        markers.forEach(m => {
+          const p = viewer.screenPos(m.part);
+          if (!p || !p.visible) { m.el.hidden = true; return; }
+          m.el.hidden = false;
+          m.el.style.left = p.x + 'px';
+          m.el.style.top = p.y + 'px';
+        });
+      });
+
+      /* 車を 直せつ さわる → その ぶぶんの 名まえ */
+      let downXY = null;
+      stage.addEventListener('pointerdown', e => { downXY = [e.clientX, e.clientY]; });
+      stage.addEventListener('pointerup', e => {
+        if (!downXY) return;
+        const moved = Math.hypot(e.clientX - downXY[0], e.clientY - downXY[1]);
+        downXY = null;
+        if (moved > 8) return;
+        const part = viewer.pick(e.clientX, e.clientY);
+        if (!part) return;
+        const t = current.tsukuri.find(x => x.part === part);
+        pick(part, t ? t.text : null, false);
+        listEl.querySelectorAll('.d3-item').forEach(b => b.classList.toggle('is-on', b.dataset.part === part));
+      });
+
+      /* ② しごと・③ つくり */
+      document.getElementById('shigoto').innerHTML = car.shigoto;
+      listEl.innerHTML = '';
+      car.tsukuri.forEach((t, i) => {
+        const b = document.createElement('button');
+        b.className = 'd3-item';
+        b.dataset.part = t.part;
+        b.innerHTML = '<span class="d3-item__no">' + ('①②③④⑤'[i] || (i + 1)) + '</span><span>' + t.text + '</span>';
+        b.addEventListener('click', () => {
+          listEl.querySelectorAll('.d3-item').forEach(x => x.classList.remove('is-on'));
+          b.classList.add('is-on');
+          pick(t.part, t.text, true);
+        });
+        listEl.appendChild(b);
+      });
+
+      const m = viewer.meters();
+      metersEl.innerHTML =
+        '<span>ながさ <b>やく' + m.length.toFixed(1) + 'メートル</b></span>' +
+        '<span>たかさ <b>やく' + m.height.toFixed(1) + 'メートル</b></span>' +
+        '<span>はば <b>やく' + m.width.toFixed(1) + 'メートル</b></span>';
+
+      hint.hidden = false;
+      setTimeout(() => { hint.hidden = true; }, 6000);
+      document.getElementById('btn-spin').classList.add('is-on');
+      document.getElementById('btn-ruler').classList.remove('is-on');
+    }
+
+    /* 車えらび */
+    cars.forEach((c, i) => {
+      const b = document.createElement('button');
+      b.className = 'car-chip' + (i === 0 ? ' is-on' : '');
+      b.innerHTML = c.name;
+      b.addEventListener('click', () => {
+        carsEl.querySelectorAll('.car-chip').forEach(x => x.classList.remove('is-on'));
+        b.classList.add('is-on');
+        load(c);
+      });
+      carsEl.appendChild(b);
+    });
+
+    /* 見る むき */
+    VIEWS.forEach(v => {
+      const b = document.createElement('button');
+      b.className = 'd3-btn';
+      b.textContent = v.name;
+      b.addEventListener('click', () => {
+        if (v.spin) { viewer.setAutoRotate(true); document.getElementById('btn-spin').classList.add('is-on'); return; }
+        viewer.setView(v.az, v.pl);
+        document.getElementById('btn-spin').classList.remove('is-on');
+      });
+      viewsEl.appendChild(b);
+    });
+
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      viewer.resetView(); viewer.clearHighlight();
+      callout.hidden = true;
+      listEl.querySelectorAll('.d3-item').forEach(b => b.classList.remove('is-on'));
+      markers.forEach(m => m.el.classList.remove('is-on'));
+    });
+    let ruler = false;
+    document.getElementById('btn-ruler').addEventListener('click', e => {
+      ruler = !ruler; viewer.showRuler(ruler); e.currentTarget.classList.toggle('is-on', ruler);
+    });
+    let spin = true;
+    document.getElementById('btn-spin').addEventListener('click', e => {
+      spin = !spin; viewer.setAutoRotate(spin); e.currentTarget.classList.toggle('is-on', spin);
+    });
+    let marksOn = true;
+    document.getElementById('btn-marks').addEventListener('click', e => {
+      marksOn = !marksOn;
+      markers.forEach(m => { m.el.style.display = marksOn ? '' : 'none'; });
+      e.currentTarget.classList.toggle('is-on', !marksOn);
+      e.currentTarget.textContent = marksOn ? '①②③ を 出す' : '①②③ を けす';
+    });
+
+    load(cars[0]);
+    window.__demoReady = true;
+  </script>
+</body>
+
+</html>
