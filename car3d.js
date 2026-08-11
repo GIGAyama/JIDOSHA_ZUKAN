@@ -60,7 +60,52 @@ function grain() {
   grainTex = new THREE.CanvasTexture(c);
   grainTex.wrapS = grainTex.wrapT = THREE.RepeatWrapping;
   grainTex.repeat.set(9, 9);
+  grainTex.anisotropy = 8;
   return grainTex;
+}
+
+/* 「ゆず肌」— 本物の 車の 塗装に ある、ごく 小さな 波うち。
+   クリアコートの 法線を すこしだけ ゆがめると、うつりこみが
+   本物の 塗装の ように ゆらいで 見える */
+let peelTex = null;
+function orangePeelTexture() {
+  if (peelTex) return peelTex;
+  const N = 128;
+  let seed = 987654321;
+  const rnd = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+  /* たかさの マップを つくって、2回 ならして なだらかに する */
+  let h = new Float32Array(N * N);
+  for (let i = 0; i < h.length; i++) h[i] = rnd();
+  for (let pass = 0; pass < 2; pass++) {
+    const s = new Float32Array(N * N);
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      let sum = 0;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+        sum += h[((y + dy + N) % N) * N + ((x + dx + N) % N)];
+      }
+      s[y * N + x] = sum / 9;
+    }
+    h = s;
+  }
+  /* たかさの さから 法線を つくる */
+  const c = document.createElement('canvas');
+  c.width = c.height = N;
+  const g = c.getContext('2d');
+  const img = g.createImageData(N, N);
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const dx = h[y * N + ((x + 1) % N)] - h[y * N + ((x - 1 + N) % N)];
+    const dy = h[((y + 1) % N) * N + x] - h[((y - 1 + N) % N) * N + x];
+    const i = (y * N + x) * 4;
+    img.data[i]     = 128 + Math.max(-127, Math.min(127, dx * 900));
+    img.data[i + 1] = 128 + Math.max(-127, Math.min(127, dy * 900));
+    img.data[i + 2] = 255;
+    img.data[i + 3] = 255;
+  }
+  g.putImageData(img, 0, 0);
+  peelTex = new THREE.CanvasTexture(c);
+  peelTex.wrapS = peelTex.wrapT = THREE.RepeatWrapping;
+  peelTex.repeat.set(5, 5);
+  return peelTex;
 }
 
 /* 車の 塗装（クリアコートで つやを 出す） */
@@ -73,6 +118,8 @@ function paint(color, opt) {
     roughnessMap: grain(),
     clearcoat: opt.clear !== undefined ? opt.clear : 0.85,
     clearcoatRoughness: 0.08,
+    clearcoatNormalMap: orangePeelTexture(),
+    clearcoatNormalScale: new THREE.Vector2(0.10, 0.10),
     envMapIntensity: 1.05
   });
 }
@@ -84,6 +131,7 @@ function metalMat(color, rough) {
     metalness: 0.85,
     roughness: rough !== undefined ? rough : 0.35,
     roughnessMap: grain(),
+    anisotropy: 0.35,          /* ひきのばした ような うつりこみ（ヘアライン仕上げ） */
     envMapIntensity: 1.2
   });
 }
@@ -204,7 +252,24 @@ function treadTexture() {
   treadTex = new THREE.CanvasTexture(c);
   treadTex.wrapS = treadTex.wrapT = THREE.RepeatWrapping;
   treadTex.repeat.set(6, 1);
+  treadTex.anisotropy = 8;
   return treadTex;
+}
+
+/* タイヤの 下の ちいさな 影（せっち した ところが いちばん 暗い） */
+let wheelShadowTex = null;
+function wheelShadowTexture() {
+  if (wheelShadowTex) return wheelShadowTex;
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const g = c.getContext('2d');
+  const grd = g.createRadialGradient(64, 64, 4, 64, 64, 62);
+  grd.addColorStop(0, 'rgba(10,14,22,0.55)');
+  grd.addColorStop(0.4, 'rgba(14,18,28,0.28)');
+  grd.addColorStop(1, 'rgba(14,18,28,0)');
+  g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
+  wheelShadowTex = new THREE.CanvasTexture(c);
+  return wheelShadowTex;
 }
 
 /* =========================================================================
@@ -285,6 +350,8 @@ class Builder {
         const mm = matte(PAL.tire, 0.72);
         mm.map = treadTexture();
         mm.roughnessMap = treadTexture();
+        mm.bumpMap = treadTexture();          /* みぞが 立体に 見える */
+        mm.bumpScale = 0.9;
         return mm;
       })());
       tire.rotation.x = Math.PI / 2;
@@ -321,6 +388,21 @@ class Builder {
       g.add(this._register(cap, part));
 
       (o.parent || this.root).add(g);
+
+      /* せっち した ところの 影（うかせて ある タイヤには つけない） */
+      if (!o.lift) {
+        const blob = new THREE.Mesh(
+          new THREE.PlaneGeometry(r * 2.3, Math.max(w * 2.3, r * 1.2)),
+          new THREE.MeshBasicMaterial({ map: wheelShadowTexture(), transparent: true, depthWrite: false })
+        );
+        blob.rotation.x = -Math.PI / 2;
+        blob.position.set(o.x, 0.012, z);
+        blob.renderOrder = -1;
+        blob.userData.aux = true;
+        blob.userData.jzGroundFx = true;   /* 床の うつりこみには 入れない */
+        blob.castShadow = blob.receiveShadow = false;
+        (o.parent || this.root).add(blob);
+      }
       made.push(g);
     });
     return made;
@@ -446,6 +528,68 @@ function darkBackdropTexture() {
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
   return t;
+}
+
+/* スタジオの 床 — みがいた コンクリート。
+   ほんの すこしの シミ・つぶつぶ・みがきムラを 入れると、
+   のっぺりした CGの 床では なく なる */
+let concreteTex = null;
+function concreteTextures() {
+  if (concreteTex) return concreteTex;
+  let seed = 424243;
+  const rnd = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+
+  const c = document.createElement('canvas');
+  c.width = c.height = 512;
+  const g = c.getContext('2d');
+  const grd = g.createRadialGradient(256, 256, 40, 256, 256, 256);
+  grd.addColorStop(0, '#bcc7d5');
+  grd.addColorStop(0.55, '#a8b5c6');
+  grd.addColorStop(1, '#8593a6');
+  g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+
+  /* 大きな うすい シミ */
+  for (let i = 0; i < 26; i++) {
+    const x = rnd() * 512, y = rnd() * 512, r = 30 + rnd() * 90;
+    const s = g.createRadialGradient(x, y, 2, x, y, r);
+    const dark = rnd() > 0.45;
+    s.addColorStop(0, dark ? 'rgba(70,82,100,0.055)' : 'rgba(235,240,248,0.05)');
+    s.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = s;
+    g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+  }
+  /* 骨材の つぶつぶ */
+  for (let i = 0; i < 7000; i++) {
+    const x = rnd() * 512, y = rnd() * 512;
+    const dark = rnd() > 0.5;
+    g.fillStyle = dark
+      ? 'rgba(58,68,84,' + (0.04 + rnd() * 0.09).toFixed(3) + ')'
+      : 'rgba(240,244,250,' + (0.04 + rnd() * 0.08).toFixed(3) + ')';
+    g.fillRect(x, y, 1 + rnd() * 1.4, 1 + rnd() * 1.4);
+  }
+  const map = new THREE.CanvasTexture(c);
+  map.colorSpace = THREE.SRGBColorSpace;
+  map.anisotropy = 8;
+
+  /* みがきムラ（つやの ちがい）— roughness マップ */
+  const rc = document.createElement('canvas');
+  rc.width = rc.height = 256;
+  const rg = rc.getContext('2d');
+  rg.fillStyle = '#9a9a9a'; rg.fillRect(0, 0, 256, 256);
+  for (let i = 0; i < 40; i++) {
+    const x = rnd() * 256, y = rnd() * 256, r = 20 + rnd() * 60;
+    const s = rg.createRadialGradient(x, y, 2, x, y, r);
+    const v = 120 + Math.floor(rnd() * 90);
+    s.addColorStop(0, 'rgba(' + v + ',' + v + ',' + v + ',0.5)');
+    s.addColorStop(1, 'rgba(0,0,0,0)');
+    rg.fillStyle = s;
+    rg.beginPath(); rg.arc(x, y, r, 0, Math.PI * 2); rg.fill();
+  }
+  const rough = new THREE.CanvasTexture(rc);
+  rough.anisotropy = 8;
+
+  concreteTex = { map: map, rough: rough };
+  return concreteTex;
 }
 
 /* 車の 下の やわらかい 影（接地感を 出す） */
@@ -640,6 +784,7 @@ function createViewer(container, artKey, options) {
   renderer.toneMappingExposure = 0.85;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.autoUpdate = false;   /* うつりこみ用の 2回目の えがきで 影を 焼きなおさない */
   renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;touch-action:none;';
   container.appendChild(renderer.domElement);
 
@@ -663,29 +808,91 @@ function createViewer(container, artKey, options) {
   const span = Math.max(size.x, size.z, size.y * 1.6);
 
   /* --- 地面・影 --- */
-  const gc = document.createElement('canvas');
-  gc.width = gc.height = 256;
-  {
-    const g2 = gc.getContext('2d');
-    const grd = g2.createRadialGradient(128, 128, 20, 128, 128, 128);
-    grd.addColorStop(0, '#bcc7d5');
-    grd.addColorStop(0.55, '#a8b5c6');
-    grd.addColorStop(1, '#8593a6');
-    g2.fillStyle = grd; g2.fillRect(0, 0, 256, 256);
-  }
-  const groundTex = new THREE.CanvasTexture(gc);
-  groundTex.colorSpace = THREE.SRGBColorSpace;
+  const groundTex = concreteTextures();
   const ground = new THREE.Mesh(
     new THREE.CircleGeometry(Math.max(20, span * 2.2), 64),
-    new THREE.MeshStandardMaterial({ map: groundTex, color: 0xffffff, roughness: 0.9, metalness: 0.0, envMapIntensity: 0.28 })
+    new THREE.MeshStandardMaterial({
+      map: groundTex.map, color: 0xffffff,
+      roughness: 0.62, roughnessMap: groundTex.rough,
+      metalness: 0.0, envMapIntensity: 0.45
+    })
   );
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
   scene.add(ground);
-  scene.add(contactShadow(size.x * 1.45, size.z * 2.0));
+  const contact = contactShadow(size.x * 1.45, size.z * 2.0);
+  scene.add(contact);
+
+  /* --- 床の うつりこみ ---
+     車を 床(y=0)で 鏡うつしに した ところから もう一度 えがき、
+     その 絵を 床に うっすら まぜる。みがいた ゆかに 車が うつって、
+     ショールームの 写真の ように 見える */
+  const groundFx = [];
+  car.traverse(o => { if (o.userData.jzGroundFx) groundFx.push(o); });
+  const reflRT = new THREE.WebGLRenderTarget(1024, 1024, {
+    generateMipmaps: true,
+    minFilter: THREE.LinearMipmapLinearFilter,
+    magFilter: THREE.LinearFilter
+  });
+  const reflCam = new THREE.PerspectiveCamera();
+  const reflMat4 = new THREE.Matrix4();
+
+  ground.material.onBeforeCompile = shader => {
+    shader.uniforms.tJzReflect = { value: reflRT.texture };
+    shader.uniforms.jzRefMat = { value: reflMat4 };
+    shader.vertexShader = shader.vertexShader
+      .replace('#include <common>', '#include <common>\nuniform mat4 jzRefMat;\nvarying vec4 vJzRefUv;')
+      .replace('#include <project_vertex>', '#include <project_vertex>\nvJzRefUv = jzRefMat * (modelMatrix * vec4(transformed, 1.0));');
+    shader.fragmentShader = shader.fragmentShader
+      .replace('#include <common>', '#include <common>\nuniform sampler2D tJzReflect;\nvarying vec4 vJzRefUv;')
+      .replace('#include <opaque_fragment>',
+        'vec4 jzRef = textureLod(tJzReflect, vJzRefUv.xy / vJzRefUv.w, 1.5);\n' +
+        'float jzNoV = clamp(dot(normal, normalize(vViewPosition)), 0.0, 1.0);\n' +
+        'float jzW = (0.45 + 0.50 * pow(1.0 - jzNoV, 3.0)) * (1.0 - 0.8 * roughnessFactor);\n' +
+        'outgoingLight = mix(outgoingLight, jzRef.rgb, clamp(jzW, 0.0, 0.65) * jzRef.a);\n' +
+        '#include <opaque_fragment>');
+  };
+  ground.material.needsUpdate = true;
+
+  function renderReflection() {
+    /* 主カメラを 床で うら返した カメラを つくる */
+    reflCam.position.set(camera.position.x, -camera.position.y, camera.position.z);
+    reflCam.up.set(0, -1, 0);
+    const t = orbit.target;
+    reflCam.lookAt(t.x, -t.y, t.z);
+    reflCam.updateMatrixWorld();
+    reflCam.projectionMatrix.copy(camera.projectionMatrix);
+    reflMat4.set(
+      0.5, 0, 0, 0.5,
+      0, 0.5, 0, 0.5,
+      0, 0, 0.5, 0.5,
+      0, 0, 0, 1
+    ).multiply(reflCam.projectionMatrix).multiply(reflCam.matrixWorldInverse);
+
+    /* 床じしん・床の 上の 影・背景は うつりこみに 入れない。
+       背景まで まぜると 床ぜんたいが 白っぽく なって、影が きえて しまう。
+       とうめいで えがいて、車の うつった ところだけ（アルファ）を まぜる */
+    ground.visible = false; contact.visible = false; grid.visible = false;
+    groundFx.forEach(m => { m.visible = false; });
+    const prevBg = scene.background;
+    const prevColor = new THREE.Color();
+    renderer.getClearColor(prevColor);
+    const prevAlpha = renderer.getClearAlpha();
+    scene.background = null;
+    renderer.setClearColor(0x000000, 0);
+    const prevRT = renderer.getRenderTarget();
+    renderer.setRenderTarget(reflRT);
+    renderer.render(scene, reflCam);
+    renderer.setRenderTarget(prevRT);
+    renderer.setClearColor(prevColor, prevAlpha);
+    scene.background = prevBg;
+    ground.visible = true; contact.visible = true; grid.visible = gridOn;
+    groundFx.forEach(m => { m.visible = true; });
+  }
 
   const grid = meterGrid(Math.ceil(Math.max(16, span * 1.6)));
   scene.add(grid);
+  let gridOn = false;
   const kid = kidFigure();
   kid.position.set(-size.x / 2 - 0.95, 0, size.z / 2 + 0.15);
   scene.add(kid);
@@ -743,6 +950,22 @@ function createViewer(container, artKey, options) {
     o.userData.baseEmissive = o.material.emissive ? o.material.emissive.clone() : new THREE.Color(0);
     o.userData.baseEmissiveI = o.material.emissiveIntensity || 0;
     o.userData.baseEnv = o.material.envMapIntensity === undefined ? 1 : o.material.envMapIntensity;
+
+    /* 地面に ちかい ところほど 光が まわりこみにくい（かんきょう遮蔽）。
+       車の 下が ほんのり 暗くなり、ういて 見えなく なる。
+       光る ライトと 影用の 板には かけない */
+    const isLamp = (o.material.emissiveIntensity || 0) > 0.5;
+    if (!isLamp && !o.material.isMeshBasicMaterial) {
+      o.material.onBeforeCompile = shader => {
+        shader.vertexShader = shader.vertexShader
+          .replace('#include <common>', '#include <common>\nvarying float vJzY;')
+          .replace('#include <project_vertex>', 'vJzY = (modelMatrix * vec4(transformed, 1.0)).y;\n#include <project_vertex>');
+        shader.fragmentShader = shader.fragmentShader
+          .replace('#include <common>', '#include <common>\nvarying float vJzY;')
+          .replace('#include <dithering_fragment>', 'gl_FragColor.rgb *= 0.80 + 0.20 * smoothstep(0.02, 1.25, vJzY);\n#include <dithering_fragment>');
+      };
+      o.material.needsUpdate = true;
+    }
     meshes.push(o);
   });
 
@@ -830,6 +1053,8 @@ function createViewer(container, artKey, options) {
     });
     if (litPart) applyHighlight();
     orbit.update(dt);
+    renderer.shadowMap.needsUpdate = true;   /* 影は 1フレームに 1回だけ 焼く */
+    renderReflection();
     renderer.render(scene, camera);
     if (onFrame) onFrame(camera, renderer.domElement);
   }
@@ -929,12 +1154,12 @@ function createViewer(container, artKey, options) {
     setTheme(name) {
       dark = (name === 'dark');
       scene.background = dark ? darkBackdropTexture() : backdropTexture();
-      ground.material.envMapIntensity = dark ? 0.12 : 0.28;
+      ground.material.envMapIntensity = dark ? 0.16 : 0.45;
       renderer.toneMappingExposure = dark ? 0.80 : 0.85;
       applyHighlight();
     },
 
-    showRuler(on) { grid.visible = !!on; kid.visible = !!on; },
+    showRuler(on) { gridOn = !!on; grid.visible = gridOn; kid.visible = !!on; },
     setAutoRotate(on) { orbit.autoRotate = !!on; orbit.idle = 0; },
     onFrame(fn) { onFrame = fn; },
     pause() { running = false; },
@@ -954,6 +1179,7 @@ function createViewer(container, artKey, options) {
     dispose() {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      reflRT.dispose();
       scene.traverse(o => {
         if (o.isMesh) { o.geometry.dispose && o.geometry.dispose(); o.material.dispose && o.material.dispose(); }
       });
