@@ -93,7 +93,7 @@ window.carsData = [
     kana: 'タクシー',
     category: 'hakobu',
     art: 'taxi',
-    photo: null,
+    photo: 'assets/taxi.png',
     shigoto: 'タクシーは、<ruby>行<rt>い</rt></ruby>きたい ところまで <ruby>人<rt>ひと</rt></ruby>を のせて はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -113,7 +113,7 @@ window.carsData = [
     kana: 'ゆうびんしゃ',
     category: 'hakobu',
     art: 'post',
-    photo: null,
+    photo: 'assets/post.png',
     shigoto: 'ゆうびん<ruby>車<rt>しゃ</rt></ruby>は、てがみや はがきを、みんなの おうちへ とどける しごとを して います。',
     tsukuri: [
       {
@@ -133,7 +133,7 @@ window.carsData = [
     kana: 'たくはいしゃ',
     category: 'hakobu',
     art: 'delivery',
-    photo: null,
+    photo: 'assets/delivery.png',
     shigoto: 'たくはい<ruby>車<rt>しゃ</rt></ruby>は、たのまれた にもつを、おうちや お<ruby>店<rt>みせ</rt></ruby>まで とどける しごとを して います。',
     tsukuri: [
       {
@@ -153,7 +153,7 @@ window.carsData = [
     kana: 'タンクローリー',
     category: 'hakobu',
     art: 'tanker',
-    photo: null,
+    photo: 'assets/tanker.png',
     shigoto: 'タンクローリーは、ガソリンや <ruby>水<rt>みず</rt></ruby>のような、ながれる ものを はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -376,7 +376,7 @@ window.carsData = [
     kana: 'ミキサーしゃ',
     category: 'tsukuru',
     art: 'mixer',
-    photo: null,
+    photo: 'assets/mixer.png',
     shigoto: 'ミキサー<ruby>車<rt>しゃ</rt></ruby>は、こうじの ばしょまで、コンクリートを はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -822,7 +822,7 @@ window.carsData = [
     kana: 'そうじしゃ',
     category: 'kurashi',
     art: 'sweeper',
-    photo: null,
+    photo: 'assets/sweeper.png',
     shigoto: 'そうじ<ruby>車<rt>しゃ</rt></ruby>は、どうろの すなや ごみを あつめて、まちを きれいに する しごとを して います。',
     tsukuri: [
       {
@@ -842,7 +842,7 @@ window.carsData = [
     kana: 'きゅうすいしゃ',
     category: 'kurashi',
     art: 'water',
-    photo: null,
+    photo: 'assets/water.png',
     shigoto: 'きゅうすい<ruby>車<rt>しゃ</rt></ruby>は、<ruby>水<rt>みず</rt></ruby>が <ruby>出<rt>で</rt></ruby>なく なった まちへ、のみ<ruby>水<rt>みず</rt></ruby>を はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -862,7 +862,7 @@ window.carsData = [
     kana: 'キッチンカー',
     category: 'kurashi',
     art: 'kitchen',
-    photo: null,
+    photo: 'assets/kitchen.png',
     shigoto: 'キッチンカーは、まちへ <ruby>出<rt>で</rt></ruby>かけて いって、りょうりを つくって うる しごとを して います。',
     tsukuri: [
       {
@@ -1024,7 +1024,7 @@ window.carsData = [
     kana: 'コンバイン',
     category: 'sodateru',
     art: 'combine',
-    photo: null,
+    photo: 'assets/combine.png',
     shigoto: 'コンバインは、みのった いねを かりとって、おこめの つぶだけを あつめる しごとを して います。',
     tsukuri: [
       {
@@ -1044,7 +1044,7 @@ window.carsData = [
     kana: 'たうえき',
     category: 'sodateru',
     art: 'rice',
-    photo: null,
+    photo: 'assets/rice.png',
     shigoto: 'たうえきは、<ruby>水<rt>みず</rt></ruby>を ためた たんぼに、いねの なえを うえて いく しごとを して います。',
     tsukuri: [
       {
