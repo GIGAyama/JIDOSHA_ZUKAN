@@ -125,6 +125,7 @@ b {
   left: 0;
 }
 
+<<<<<<< HEAD
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -135,6 +136,9 @@ b {
   white-space: nowrap;
 }
 
+=======
+/* assets に 写真を おいた ときの 見せかた */
+>>>>>>> 3c84f8e4489265e72ad62e526e1879d1b82095a5
 .card__art img,
 .art-stage img {
   width: 100%;
@@ -1031,17 +1035,6 @@ b {
   margin-top: 0;
 }
 
-.btn--sheet {
-  background: var(--t);
-  color: #fff;
-  min-height: 58px;
-  box-shadow: 0 6px 14px rgba(43, 156, 104, .3);
-}
-
-.btn--sheet:hover {
-  background: #238156;
-}
-
 /* --- もっと しりたい --- */
 .more {
   background: #fffaec;
@@ -1069,103 +1062,6 @@ b {
   color: #6b4a08;
   padding-top: 8px;
 }
-
-/* ========================= かきうつしシート ========================= */
-
-.sheet {
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 22px 24px 26px;
-  margin-top: 18px;
-}
-
-.sheet h2 {
-  font-family: var(--font-title);
-  font-size: 22px;
-  line-height: 1.6;
-  color: var(--navy-d);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.sheet__lead {
-  font-size: 16px;
-  color: var(--ink-sub);
-  margin-bottom: 16px;
-  line-height: 1.9;
-}
-
-.slot {
-  border-top: 2px dashed var(--line);
-  padding: 16px 0 4px;
-}
-
-.slot__tmpl {
-  font-size: 18px;
-  line-height: 1.95;
-  margin-bottom: 8px;
-}
-
-.slot__num {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  border-radius: 50%;
-  background: var(--navy);
-  color: #fff;
-  font-weight: 700;
-  font-size: 15px;
-  margin-right: 8px;
-}
-
-.slot__blank {
-  background: #fff6d8;
-  border-bottom: 3px solid var(--yellow-d);
-  padding: 0 26px;
-  font-style: normal;
-}
-
-.slot textarea {
-  width: 100%;
-  min-height: 92px;
-  font-family: var(--font);
-  font-size: 18px;
-  line-height: 1.9;
-  color: var(--ink);
-  background: #fbfcfe;
-  border: 2px solid var(--line);
-  border-radius: var(--radius-s);
-  padding: 12px 14px;
-  resize: vertical;
-}
-
-.slot textarea:focus {
-  border-color: var(--navy);
-  outline: none;
-  background: #fff;
-}
-
-.sheet__foot {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 18px;
-}
-
-.sheet__saved {
-  font-size: var(--fs-small);
-  color: var(--t);
-  align-self: center;
-}
-
-.sheet__print {
-  display: none;
-}
-
 /* ========================= 大きさくらべ ========================= */
 
 .compare {
@@ -1375,10 +1271,6 @@ b {
   .card__art {
     height: 170px;
   }
-
-  .done__acts {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 @media (max-width: 900px) {
@@ -1523,7 +1415,6 @@ b {
     height: 96px;
   }
 
-  .sheet,
   .note {
     padding: 18px 16px;
   }

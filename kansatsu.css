@@ -79,23 +79,6 @@ body.kz-open {
   white-space: nowrap;
 }
 
-.kz__count.is-done {
-  background: var(--lit);
-  border-color: var(--lit);
-  color: #2a1600;
-  animation: kzPop .5s var(--ease) both;
-}
-
-@keyframes kzPop {
-  from {
-    transform: scale(.7);
-  }
-
-  60% {
-    transform: scale(1.12);
-  }
-}
-
 .kz-btn {
   font-family: var(--font);
   font-size: 15px;
@@ -117,12 +100,6 @@ body.kz-open {
 
 .kz-btn:active {
   transform: scale(.96);
-}
-
-.kz-btn.is-on {
-  background: var(--lit);
-  border-color: var(--lit);
-  color: #2a1600;
 }
 
 .kz-btn--back {
@@ -173,33 +150,6 @@ body.kz-open {
   inset: 0;
   pointer-events: none;
   background: radial-gradient(90% 60% at 50% 50%, transparent 40%, rgba(4, 8, 16, .55) 100%);
-}
-
-/* ものさしの めもり（1メートルごと） */
-.kz-grid line {
-  stroke: #7ea8dd;
-  stroke-opacity: .3;
-  vector-effect: non-scaling-stroke;
-}
-
-/* ものさしの 線と 文字（じかの 子どもだけ。1年生の 絵には かけない） */
-.kz-ruler>line {
-  stroke: var(--yellow);
-  fill: none;
-  stroke-linecap: round;
-}
-
-.kz-ruler>text {
-  fill: var(--yellow);
-  font-family: var(--font);
-  font-weight: 700;
-  text-anchor: middle;
-  paint-order: stroke;
-  stroke: rgba(8, 14, 26, .85);
-}
-
-.kz-person {
-  opacity: .85;
 }
 
 /* ============================== ◯マーク ============================== */
@@ -299,7 +249,7 @@ body.kz-open {
 
 /* ============================ ズームの バー ============================ */
 
-/* ものさしの 文字と かさならない ように、みぎ下に おく */
+/* 絵の じゃまに ならない ように、みぎ下に おく */
 .kz__zoom {
   position: absolute;
   right: 14px;
@@ -591,50 +541,6 @@ body.kz-open {
   color: #5ddba0;
 }
 
-/* ============================ ぜんぶ みつけた ============================ */
-
-.kz__done {
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-  display: grid;
-  place-items: center;
-  background: rgba(6, 11, 20, .72);
-  animation: kzIn .3s var(--ease) both;
-}
-
-.kz__done-card {
-  background: #fff;
-  color: var(--ink);
-  border-radius: var(--radius);
-  padding: 26px 30px;
-  text-align: center;
-  box-shadow: var(--shadow-lg);
-  animation: kzPop .5s var(--ease) both;
-  max-width: min(92%, 420px);
-}
-
-.kz__done-card h2 {
-  font-family: var(--font-title);
-  font-size: 28px;
-  color: var(--lit);
-  margin-bottom: 8px;
-}
-
-.kz__done-card p {
-  font-size: 16px;
-  line-height: 1.9;
-  margin-bottom: 16px;
-}
-
-.kz__done-card .btn,
-.kz__done-card .btn--next {
-  width: auto;
-  margin: 4px;
-  min-height: 54px;
-  font-size: 17px;
-}
-
 /* ============================== ちいさい がめん ============================== */
 
 @media (max-width: 760px) {
@@ -674,11 +580,6 @@ body.kz-open {
     height: 74px;
   }
 
-  /* スマホの ブラウザでは ぜんがめんに できない ことが おおい */
-  #kz-full {
-    display: none;
-  }
-
   /* パネルが 出て いる ときは、ズームバーを 上に よける */
   .kz__main.has-panel .kz__zoom {
     display: none;
@@ -707,10 +608,7 @@ body.kz-open {
 @media (prefers-reduced-motion: reduce) {
 
   .kz,
-  .kz__panel,
-  .kz__done,
-  .kz__done-card,
-  .kz__count.is-done {
+  .kz__panel {
     animation: none;
   }
 

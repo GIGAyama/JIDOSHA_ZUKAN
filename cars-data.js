@@ -33,7 +33,7 @@ window.carsData = [
     kana: 'トラック',
     category: 'hakobu',
     art: 'truck',
-    photo: 'assets/truck.png',
+    photo: 'assets/truck.webp',
     shigoto: 'トラックは、たくさんの にもつを とおくまで はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -53,7 +53,7 @@ window.carsData = [
     kana: 'バス',
     category: 'hakobu',
     art: 'bus',
-    photo: 'assets/bus.png',
+    photo: 'assets/bus.webp',
     shigoto: 'バスは、たくさんの <ruby>人<rt>ひと</rt></ruby>を のせて はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -73,7 +73,7 @@ window.carsData = [
     kana: 'じょうようしゃ',
     category: 'hakobu',
     art: 'car',
-    photo: 'assets/car.png',
+    photo: 'assets/car.webp',
     shigoto: 'じょうよう<ruby>車<rt>しゃ</rt></ruby>は、かぞくや <ruby>友<rt>とも</rt></ruby>だちなど、すこしの <ruby>人<rt>ひと</rt></ruby>を のせて はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -93,7 +93,7 @@ window.carsData = [
     kana: 'タクシー',
     category: 'hakobu',
     art: 'taxi',
-    photo: 'assets/taxi.png',
+    photo: 'assets/taxi.webp',
     shigoto: 'タクシーは、<ruby>行<rt>い</rt></ruby>きたい ところまで <ruby>人<rt>ひと</rt></ruby>を のせて はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -113,7 +113,7 @@ window.carsData = [
     kana: 'ゆうびんしゃ',
     category: 'hakobu',
     art: 'post',
-    photo: 'assets/post.png',
+    photo: 'assets/post.webp',
     shigoto: 'ゆうびん<ruby>車<rt>しゃ</rt></ruby>は、てがみや はがきを、みんなの おうちへ とどける しごとを して います。',
     tsukuri: [
       {
@@ -133,7 +133,7 @@ window.carsData = [
     kana: 'たくはいしゃ',
     category: 'hakobu',
     art: 'delivery',
-    photo: 'assets/delivery.png',
+    photo: 'assets/delivery.webp',
     shigoto: 'たくはい<ruby>車<rt>しゃ</rt></ruby>は、たのまれた にもつを、おうちや お<ruby>店<rt>みせ</rt></ruby>まで とどける しごとを して います。',
     tsukuri: [
       {
@@ -153,7 +153,7 @@ window.carsData = [
     kana: 'タンクローリー',
     category: 'hakobu',
     art: 'tanker',
-    photo: 'assets/tanker.png',
+    photo: 'assets/tanker.webp',
     shigoto: 'タンクローリーは、ガソリンや <ruby>水<rt>みず</rt></ruby>のような、ながれる ものを はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -173,7 +173,7 @@ window.carsData = [
     kana: 'キャリアカー',
     category: 'hakobu',
     art: 'carrier',
-    photo: 'assets/carrier.png',
+    photo: 'assets/carrier.webp',
     shigoto: 'キャリアカーは、できたばかりの じどう<ruby>車<rt>しゃ</rt></ruby>を、お<ruby>店<rt>みせ</rt></ruby>まで はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -194,7 +194,7 @@ window.carsData = [
     kana: 'トレーラー',
     category: 'hakobu',
     art: 'trailer',
-    photo: 'assets/trailer.png',
+    photo: 'assets/trailer.webp',
     shigoto: 'トレーラーは、<ruby>大<rt>おお</rt></ruby>きな はこ（コンテナ）を、みなとから とおくの まちへ はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -214,7 +214,7 @@ window.carsData = [
     kana: 'れいとうしゃ',
     category: 'hakobu',
     art: 'reefer',
-    photo: 'assets/reefer.png',
+    photo: 'assets/reefer.webp',
     shigoto: 'れいとう<ruby>車<rt>しゃ</rt></ruby>は、アイスや おさかなを、つめたい ままで はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -234,7 +234,7 @@ window.carsData = [
     kana: 'ひっこししゃ',
     category: 'hakobu',
     art: 'moving',
-    photo: 'assets/moving.png',
+    photo: 'assets/moving.webp',
     shigoto: 'ひっこし<ruby>車<rt>しゃ</rt></ruby>は、おうちの かぐや にもつを、あたらしい おうちへ はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -254,7 +254,7 @@ window.carsData = [
     kana: 'スクールバス',
     category: 'hakobu',
     art: 'schoolbus',
-    photo: 'assets/schoolbus.png',
+    photo: 'assets/schoolbus.webp',
     shigoto: 'スクールバスは、<ruby>子<rt>こ</rt></ruby>どもたちを がっこうまで のせて はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -274,7 +274,7 @@ window.carsData = [
     kana: 'げんきんゆそうしゃ',
     category: 'hakobu',
     art: 'cash',
-    photo: 'assets/cash.png',
+    photo: 'assets/cash.webp',
     shigoto: 'げんきんゆそう<ruby>車<rt>しゃ</rt></ruby>は、ぎんこうの お<ruby>金<rt>かね</rt></ruby>を、あんぜんに はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -294,7 +294,7 @@ window.carsData = [
     kana: 'ふくししゃ',
     category: 'hakobu',
     art: 'welfare',
-    photo: 'assets/welfare.png',
+    photo: 'assets/welfare.webp',
     shigoto: 'ふくし<ruby>車<rt>しゃ</rt></ruby>は、<ruby>車<rt>くるま</rt></ruby>いすの <ruby>人<rt>ひと</rt></ruby>を、のったまま はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -316,7 +316,7 @@ window.carsData = [
     kana: 'クレーンしゃ',
     category: 'tsukuru',
     art: 'crane',
-    photo: 'assets/crane.png',
+    photo: 'assets/crane.webp',
     shigoto: 'クレーン<ruby>車<rt>しゃ</rt></ruby>は、<ruby>人<rt>ひと</rt></ruby>の <ruby>手<rt>て</rt></ruby>では もてない おもい ものを、<ruby>高<rt>たか</rt></ruby>い ところまで つり<ruby>上<rt>あ</rt></ruby>げる しごとを して います。',
     tsukuri: [
       {
@@ -336,7 +336,7 @@ window.carsData = [
     kana: 'ショベルカー',
     category: 'tsukuru',
     art: 'shovel',
-    photo: 'assets/shovel.png',
+    photo: 'assets/shovel.webp',
     shigoto: 'ショベルカーは、かたい <ruby>土<rt>つち</rt></ruby>を ほったり、すくって はこんだり する しごとを して います。',
     tsukuri: [
       {
@@ -356,7 +356,7 @@ window.carsData = [
     kana: 'ブルドーザー',
     category: 'tsukuru',
     art: 'bulldozer',
-    photo: 'assets/bulldozer.png',
+    photo: 'assets/bulldozer.webp',
     shigoto: 'ブルドーザーは、でこぼこの <ruby>土<rt>つち</rt></ruby>を おして、たいらな <ruby>地<rt>じ</rt></ruby>めんに する しごとを して います。',
     tsukuri: [
       {
@@ -376,7 +376,7 @@ window.carsData = [
     kana: 'ミキサーしゃ',
     category: 'tsukuru',
     art: 'mixer',
-    photo: 'assets/mixer.png',
+    photo: 'assets/mixer.webp',
     shigoto: 'ミキサー<ruby>車<rt>しゃ</rt></ruby>は、こうじの ばしょまで、コンクリートを はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -396,7 +396,7 @@ window.carsData = [
     kana: 'ロードローラー',
     category: 'tsukuru',
     art: 'roller',
-    photo: 'assets/roller.png',
+    photo: 'assets/roller.webp',
     shigoto: 'ロードローラーは、あたらしい どうろを おして かためる しごとを して います。',
     tsukuri: [
       {
@@ -416,7 +416,7 @@ window.carsData = [
     kana: 'ダンプカー',
     category: 'tsukuru',
     art: 'dump',
-    photo: 'assets/dump.png',
+    photo: 'assets/dump.webp',
     shigoto: 'ダンプカーは、<ruby>土<rt>つち</rt></ruby>や すなを たくさん はこんで、いっきに おろす しごとを して います。',
     tsukuri: [
       {
@@ -436,7 +436,7 @@ window.carsData = [
     kana: 'こうしょさぎょうしゃ',
     category: 'tsukuru',
     art: 'aerial',
-    photo: 'assets/aerial.png',
+    photo: 'assets/aerial.webp',
     shigoto: '<ruby>高<rt>こう</rt></ruby>しょさぎょう<ruby>車<rt>しゃ</rt></ruby>は、はたらく <ruby>人<rt>ひと</rt></ruby>を <ruby>高<rt>たか</rt></ruby>い ところまで はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -456,7 +456,7 @@ window.carsData = [
     kana: 'フォークリフト',
     category: 'tsukuru',
     art: 'forklift',
-    photo: 'assets/forklift.png',
+    photo: 'assets/forklift.webp',
     shigoto: 'フォークリフトは、そうこの <ruby>中<rt>なか</rt></ruby>で、おもい にもつを もち<ruby>上<rt>あ</rt></ruby>げて はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -477,7 +477,7 @@ window.carsData = [
     kana: 'ホイールローダー',
     category: 'tsukuru',
     art: 'loader',
-    photo: 'assets/loader.png',
+    photo: 'assets/loader.webp',
     shigoto: 'ホイールローダーは、つみ<ruby>上<rt>あ</rt></ruby>げられた <ruby>土<rt>つち</rt></ruby>や すなを すくって、トラックに のせる しごとを して います。',
     tsukuri: [
       {
@@ -497,7 +497,7 @@ window.carsData = [
     kana: 'ほそうしゃ',
     category: 'tsukuru',
     art: 'paver',
-    photo: 'assets/paver.png',
+    photo: 'assets/paver.webp',
     shigoto: 'ほそう<ruby>車<rt>しゃ</rt></ruby>は、あつい アスファルトを <ruby>地<rt>じ</rt></ruby>めんに ひろげて、あたらしい どうろを つくる しごとを して います。',
     tsukuri: [
       {
@@ -517,7 +517,7 @@ window.carsData = [
     kana: 'コンクリートポンプしゃ',
     category: 'tsukuru',
     art: 'pumpcar',
-    photo: 'assets/pumpcar.png',
+    photo: 'assets/pumpcar.webp',
     shigoto: 'コンクリートポンプ<ruby>車<rt>しゃ</rt></ruby>は、コンクリートを <ruby>高<rt>たか</rt></ruby>い ところや とおい ところへ おくる しごとを して います。',
     tsukuri: [
       {
@@ -537,7 +537,7 @@ window.carsData = [
     kana: 'かいたいしゃ',
     category: 'tsukuru',
     art: 'breaker',
-    photo: 'assets/breaker.png',
+    photo: 'assets/breaker.webp',
     shigoto: 'かいたい<ruby>車<rt>しゃ</rt></ruby>は、ふるく なった たてものを こわして、かたづける しごとを して います。',
     tsukuri: [
       {
@@ -557,7 +557,7 @@ window.carsData = [
     kana: 'グレーダー',
     category: 'tsukuru',
     art: 'grader',
-    photo: 'assets/grader.png',
+    photo: 'assets/grader.webp',
     shigoto: 'グレーダーは、どうろの <ruby>地<rt>じ</rt></ruby>めんを けずって、たいらに ならす しごとを して います。',
     tsukuri: [
       {
@@ -579,7 +579,7 @@ window.carsData = [
     kana: 'きゅうきゅうしゃ',
     category: 'mamoru',
     art: 'ambulance',
-    photo: 'assets/ambulance.png',
+    photo: 'assets/ambulance.webp',
     shigoto: 'きゅうきゅう<ruby>車<rt>しゃ</rt></ruby>は、けがや びょうきの <ruby>人<rt>ひと</rt></ruby>を、びょういんまで はやく はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -599,7 +599,7 @@ window.carsData = [
     kana: 'しょうぼうしゃ',
     category: 'mamoru',
     art: 'fire',
-    photo: 'assets/pump.png',
+    photo: 'assets/pump.webp',
     shigoto: 'しょうぼう<ruby>車<rt>しゃ</rt></ruby>は、<ruby>火事<rt>かじ</rt></ruby>を けす ために、<ruby>水<rt>みず</rt></ruby>を かける しごとを して います。',
     tsukuri: [
       {
@@ -619,7 +619,7 @@ window.carsData = [
     kana: 'はしごしゃ',
     category: 'mamoru',
     art: 'ladder',
-    photo: 'assets/ladder.png',
+    photo: 'assets/ladder.webp',
     shigoto: 'はしご<ruby>車<rt>しゃ</rt></ruby>は、<ruby>高<rt>たか</rt></ruby>い ビルに いる <ruby>人<rt>ひと</rt></ruby>を、たすけ<ruby>出<rt>だ</rt></ruby>す しごとを して います。',
     tsukuri: [
       {
@@ -639,7 +639,7 @@ window.carsData = [
     kana: 'パトカー',
     category: 'mamoru',
     art: 'police',
-    photo: 'assets/police.png',
+    photo: 'assets/police.webp',
     shigoto: 'パトカーは、まちを まわって、みんなの あんぜんを まもる しごとを して います。',
     tsukuri: [
       {
@@ -659,7 +659,7 @@ window.carsData = [
     kana: 'レッカーしゃ',
     category: 'mamoru',
     art: 'wrecker',
-    photo: 'assets/wrecker.png',
+    photo: 'assets/wrecker.webp',
     shigoto: 'レッカー<ruby>車<rt>しゃ</rt></ruby>は、うごかなく なった <ruby>車<rt>くるま</rt></ruby>を、なおす ところまで はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -679,7 +679,7 @@ window.carsData = [
     kana: 'じょせつしゃ',
     category: 'mamoru',
     art: 'snowplow',
-    photo: 'assets/snowplow.png',
+    photo: 'assets/snowplow.webp',
     shigoto: 'じょせつ<ruby>車<rt>しゃ</rt></ruby>は、ふりつもった <ruby>雪<rt>ゆき</rt></ruby>を どけて、<ruby>車<rt>くるま</rt></ruby>が とおれる ように する しごとを して います。',
     tsukuri: [
       {
@@ -699,7 +699,7 @@ window.carsData = [
     kana: 'けんけつしゃ',
     category: 'mamoru',
     art: 'blood',
-    photo: 'assets/blood.png',
+    photo: 'assets/blood.webp',
     shigoto: 'けんけつ<ruby>車<rt>しゃ</rt></ruby>は、まちを まわって、みんなから <ruby>血<rt>ち</rt></ruby>を <ruby>分<rt>わ</rt></ruby>けて もらう しごとを して います。',
     tsukuri: [
       {
@@ -720,7 +720,7 @@ window.carsData = [
     kana: 'きゅうじょしゃ',
     category: 'mamoru',
     art: 'rescue',
-    photo: 'assets/rescue.png',
+    photo: 'assets/rescue.webp',
     shigoto: 'きゅうじょ<ruby>車<rt>しゃ</rt></ruby>は、じこや さいがいで うごけなく なった <ruby>人<rt>ひと</rt></ruby>を、たすけ<ruby>出<rt>だ</rt></ruby>す しごとを して います。',
     tsukuri: [
       {
@@ -740,7 +740,7 @@ window.carsData = [
     kana: 'かがくしょうぼうしゃ',
     category: 'mamoru',
     art: 'foam',
-    photo: 'assets/foam.png',
+    photo: 'assets/foam.webp',
     shigoto: 'かがくしょうぼう<ruby>車<rt>しゃ</rt></ruby>は、<ruby>水<rt>みず</rt></ruby>では けせない <ruby>火<rt>ひ</rt></ruby>を、あわで けす しごとを して います。',
     tsukuri: [
       {
@@ -760,7 +760,7 @@ window.carsData = [
     kana: 'ドクターカー',
     category: 'mamoru',
     art: 'doctorcar',
-    photo: 'assets/doctorcar.png',
+    photo: 'assets/doctorcar.webp',
     shigoto: 'ドクターカーは、おいしゃさんを けがの ばしょまで はやく はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -780,7 +780,7 @@ window.carsData = [
     kana: 'けんしんしゃ',
     category: 'mamoru',
     art: 'xray',
-    photo: 'assets/xray.png',
+    photo: 'assets/xray.webp',
     shigoto: 'けんしん<ruby>車<rt>しゃ</rt></ruby>は、まちや がっこうを まわって、からだの <ruby>中<rt>なか</rt></ruby>を しらべる しごとを して います。',
     tsukuri: [
       {
@@ -802,7 +802,7 @@ window.carsData = [
     kana: 'ごみしゅうしゅうしゃ',
     category: 'kurashi',
     art: 'garbage',
-    photo: 'assets/garbage.png',
+    photo: 'assets/garbage.webp',
     shigoto: 'ごみしゅうしゅう<ruby>車<rt>しゃ</rt></ruby>は、まちの ごみを あつめて、もやす ところまで はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -822,7 +822,7 @@ window.carsData = [
     kana: 'そうじしゃ',
     category: 'kurashi',
     art: 'sweeper',
-    photo: 'assets/sweeper.png',
+    photo: 'assets/sweeper.webp',
     shigoto: 'そうじ<ruby>車<rt>しゃ</rt></ruby>は、どうろの すなや ごみを あつめて、まちを きれいに する しごとを して います。',
     tsukuri: [
       {
@@ -842,7 +842,7 @@ window.carsData = [
     kana: 'きゅうすいしゃ',
     category: 'kurashi',
     art: 'water',
-    photo: 'assets/water.png',
+    photo: 'assets/water.webp',
     shigoto: 'きゅうすい<ruby>車<rt>しゃ</rt></ruby>は、<ruby>水<rt>みず</rt></ruby>が <ruby>出<rt>で</rt></ruby>なく なった まちへ、のみ<ruby>水<rt>みず</rt></ruby>を はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -862,7 +862,7 @@ window.carsData = [
     kana: 'キッチンカー',
     category: 'kurashi',
     art: 'kitchen',
-    photo: 'assets/kitchen.png',
+    photo: 'assets/kitchen.webp',
     shigoto: 'キッチンカーは、まちへ <ruby>出<rt>で</rt></ruby>かけて いって、りょうりを つくって うる しごとを して います。',
     tsukuri: [
       {
@@ -882,7 +882,7 @@ window.carsData = [
     kana: 'としょかんしゃ',
     category: 'kurashi',
     art: 'library',
-    photo: 'assets/library.png',
+    photo: 'assets/library.webp',
     shigoto: 'としょかん<ruby>車<rt>しゃ</rt></ruby>は、としょかんから とおい まちへ、<ruby>本<rt>ほん</rt></ruby>を はこんで かす しごとを して います。',
     tsukuri: [
       {
@@ -902,7 +902,7 @@ window.carsData = [
     kana: 'かんこうバス',
     category: 'kurashi',
     art: 'sightseeing',
-    photo: 'assets/sightseeing.png',
+    photo: 'assets/sightseeing.webp',
     shigoto: 'かんこうバスは、たくさんの <ruby>人<rt>ひと</rt></ruby>を、とおくの まちまで はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -922,7 +922,7 @@ window.carsData = [
     kana: 'すいどうこうじしゃ',
     category: 'kurashi',
     art: 'waterworks',
-    photo: 'assets/waterworks.png',
+    photo: 'assets/waterworks.webp',
     shigoto: 'すいどうこうじ<ruby>車<rt>しゃ</rt></ruby>は、<ruby>土<rt>つち</rt></ruby>の <ruby>中<rt>なか</rt></ruby>を とおる すいどうの くだを なおす しごとを して います。',
     tsukuri: [
       {
@@ -942,7 +942,7 @@ window.carsData = [
     kana: 'いどうはんばいしゃ',
     category: 'kurashi',
     art: 'shop',
-    photo: 'assets/shop.png',
+    photo: 'assets/shop.webp',
     shigoto: 'いどうはんばい<ruby>車<rt>しゃ</rt></ruby>は、お<ruby>店<rt>みせ</rt></ruby>が とおい まちへ、しなものを はこんで うる しごとを して います。',
     tsukuri: [
       {
@@ -962,7 +962,7 @@ window.carsData = [
     kana: 'けいトラック',
     category: 'kurashi',
     art: 'kei',
-    photo: 'assets/kei.png',
+    photo: 'assets/kei.webp',
     shigoto: 'けいトラックは、はたけや せまい みちで、すこしの にもつを はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -982,7 +982,7 @@ window.carsData = [
     kana: 'ガスこうじしゃ',
     category: 'kurashi',
     art: 'gas',
-    photo: 'assets/gas.png',
+    photo: 'assets/gas.webp',
     shigoto: 'ガスこうじ<ruby>車<rt>しゃ</rt></ruby>は、おうちへ とどく ガスの くだを しらべて なおす しごとを して います。',
     tsukuri: [
       {
@@ -1004,7 +1004,7 @@ window.carsData = [
     kana: 'トラクター',
     category: 'sodateru',
     art: 'tractor',
-    photo: 'assets/tractor.png',
+    photo: 'assets/tractor.webp',
     shigoto: 'トラクターは、はたけの かたい <ruby>土<rt>つち</rt></ruby>を たがやす しごとを して います。',
     tsukuri: [
       {
@@ -1024,7 +1024,7 @@ window.carsData = [
     kana: 'コンバイン',
     category: 'sodateru',
     art: 'combine',
-    photo: 'assets/combine.png',
+    photo: 'assets/combine.webp',
     shigoto: 'コンバインは、みのった いねを かりとって、おこめの つぶだけを あつめる しごとを して います。',
     tsukuri: [
       {
@@ -1044,7 +1044,7 @@ window.carsData = [
     kana: 'たうえき',
     category: 'sodateru',
     art: 'rice',
-    photo: 'assets/rice.png',
+    photo: 'assets/rice.webp',
     shigoto: 'たうえきは、<ruby>水<rt>みず</rt></ruby>を ためた たんぼに、いねの なえを うえて いく しごとを して います。',
     tsukuri: [
       {
@@ -1064,7 +1064,7 @@ window.carsData = [
     kana: 'くさかりしゃ',
     category: 'sodateru',
     art: 'mower',
-    photo: 'assets/mower.png',
+    photo: 'assets/mower.webp',
     shigoto: 'くさかり<ruby>車<rt>しゃ</rt></ruby>は、どうろの わきや <ruby>土手<rt>どて</rt></ruby>の くさを かる しごとを して います。',
     tsukuri: [
       {
@@ -1084,7 +1084,7 @@ window.carsData = [
     kana: 'きをはこぶくるま',
     category: 'sodateru',
     art: 'logger',
-    photo: 'assets/logger.png',
+    photo: 'assets/logger.webp',
     shigoto: '<ruby>木<rt>き</rt></ruby>を はこぶ <ruby>車<rt>くるま</rt></ruby>は、<ruby>山<rt>やま</rt></ruby>で きりたおした <ruby>木<rt>き</rt></ruby>を、まちまで はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -1104,7 +1104,7 @@ window.carsData = [
     kana: 'くすりをまくくるま',
     category: 'sodateru',
     art: 'sprayer',
-    photo: 'assets/sprayer.png',
+    photo: 'assets/sprayer.webp',
     shigoto: 'くすりを まく <ruby>車<rt>くるま</rt></ruby>は、はたけの さくもつを <ruby>虫<rt>むし</rt></ruby>から まもる くすりを まく しごとを して います。',
     tsukuri: [
       {
@@ -1126,7 +1126,7 @@ window.carsData = [
     kana: 'トーイングカー',
     category: 'basho',
     art: 'towing',
-    photo: 'assets/towing.png',
+    photo: 'assets/towing.webp',
     shigoto: 'トーイングカーは、くうこうで ひこうきを おしたり ひっぱったり して、うごかす しごとを して います。',
     tsukuri: [
       {
@@ -1146,7 +1146,7 @@ window.carsData = [
     kana: 'きゅうゆしゃ',
     category: 'basho',
     art: 'fueler',
-    photo: 'assets/fueler.png',
+    photo: 'assets/fueler.webp',
     shigoto: 'きゅうゆ<ruby>車<rt>しゃ</rt></ruby>は、くうこうで、ひこうきに あぶらを <ruby>入<rt>い</rt></ruby>れる しごとを して います。',
     tsukuri: [
       {
@@ -1166,7 +1166,7 @@ window.carsData = [
     kana: 'ハイリフトローダー',
     category: 'basho',
     art: 'cargoloader',
-    photo: 'assets/cargoloader.png',
+    photo: 'assets/cargoloader.webp',
     shigoto: 'ハイリフトローダーは、ひこうきの <ruby>中<rt>なか</rt></ruby>へ にもつを つみこむ しごとを して います。',
     tsukuri: [
       {
@@ -1186,7 +1186,7 @@ window.carsData = [
     kana: 'タラップしゃ',
     category: 'basho',
     art: 'stairs',
-    photo: 'assets/stairs.png',
+    photo: 'assets/stairs.webp',
     shigoto: 'タラップ<ruby>車<rt>しゃ</rt></ruby>は、ひこうきの <ruby>入口<rt>いりぐち</rt></ruby>まで、のりおりする <ruby>人<rt>ひと</rt></ruby>の かいだんを はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -1206,7 +1206,7 @@ window.carsData = [
     kana: 'リーチスタッカー',
     category: 'basho',
     art: 'stacker',
-    photo: 'assets/stacker.png',
+    photo: 'assets/stacker.webp',
     shigoto: 'リーチスタッカーは、みなとで、おもい コンテナを つみ<ruby>上<rt>あ</rt></ruby>げる しごとを して います。',
     tsukuri: [
       {
@@ -1226,7 +1226,7 @@ window.carsData = [
     kana: 'せんろのてんけんしゃ',
     category: 'basho',
     art: 'railcar',
-    photo: 'assets/railcar.png',
+    photo: 'assets/railcar.webp',
     shigoto: 'せんろの てんけん<ruby>車<rt>しゃ</rt></ruby>は、でんしゃが とまった よるに、せんろを しらべて なおす しごとを して います。',
     tsukuri: [
       {
