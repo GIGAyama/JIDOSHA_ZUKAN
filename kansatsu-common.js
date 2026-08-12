@@ -6,11 +6,11 @@
    ・◯マークの おきかた
    が まったく ちがうので、そこは わけた ままに して あります。
 
-   けれど「どの ぶぶんを 見た か」を おぼえて、かぞえて、ぜんぶ 見つけたら
-   おいわいを 出す ところは、2Dでも 3Dでも おなじです。
+   けれど「どの ぶぶんを 見た か」を おぼえて、かぞえる ところは
+   2Dでも 3Dでも おなじです。
    おなじ コードが 2つの ファイルに あると、直す ときに かたほうを 忘れます。
-   （じっさい「ぜんぶ みつけた！」の ボタンの 文が、
-     もう ない かきうつしシートを さした まま 両方に のこって いました。）
+   （じっさい 3D版だけ ちがう キーに ほぞんして いて、2Dと 3Dを 行き来すると
+     ✓が 消えて 見えて いました。）
    そういう ことが おきない ように、ここに まとめて あります。
 
    つかいかた: window.jzKz.〇〇 で よびます。
@@ -53,7 +53,14 @@
     return Array.isArray(saved) ? saved : [];
   }
 
-  /* かぞえて、うえの バーに 出す */
+  /* かぞえて、うえの バーに 出す。
+
+     「みつけた n / N」と 分母を 出して いた ころは、ぜんぶ 集める ことが
+     ゴールに 見えて しまい、この 単元の ねらい（書く ざいりょうを
+     1つ2つ えらぶ）と ずれて いました。
+     しかも 分母は 3Dと イラストで ちがいます
+     （トラックは 3D=8こ / イラスト=5こ）。
+     いまは 見た かずだけを しずかに 出します。 */
   function syncFound(S) {
     var n = 0;
     S.parts.forEach(function (p, i) {
@@ -62,11 +69,7 @@
       if (S.markEls && S.markEls[i]) { S.markEls[i].classList.toggle('is-found', on); }
       if (S.chipEls && S.chipEls[i]) { S.chipEls[i].classList.toggle('is-found', on); }
     });
-    var all = n >= S.parts.length && S.parts.length > 0;
-    S.count.innerHTML = all
-      ? '🎉 ぜんぶ みつけた！'
-      : 'みつけた ' + n + ' / ' + S.parts.length;
-    S.count.classList.toggle('is-done', all);
+    S.count.innerHTML = '<ruby>見<rt>み</rt></ruby>た ぶぶん ' + n + 'こ';
   }
 
   function markFound(S, key) {
@@ -74,24 +77,6 @@
     S.found.push(key);
     store.set(foundKey(S), S.found);
     syncFound(S);
-    if (S.found.length >= S.parts.length) { celebrate(S); }
-  }
-
-  /* ------------------------------------------------------------------
-     ぜんぶ 見つけた ときの おいわい
-     ------------------------------------------------------------------ */
-  function celebrate(S) {
-    if (S.celebrated) { return; }
-    S.celebrated = true;
-    S.main.insertAdjacentHTML('beforeend',
-      '<div class="kz__done" id="kz-done"><div class="kz__done-card">' +
-      '<h2>🎉 ぜんぶ みつけた！</h2>' +
-      '<p>' + S.car.name + 'の ぶぶんを ' + S.parts.length + 'こ ぜんぶ かんさつ しました。<br>' +
-      'どの ぶぶんが いちばん おどろいたか、ノートに かいて みよう。</p>' +
-      '<button type="button" class="btn" id="kz-done-stay">もっと かんさつ する</button> ' +
-      '<button type="button" class="btn btn--next" id="kz-done-go">' +
-      '← この <ruby>車<rt>くるま</rt></ruby>の ページに もどる</button>' +
-      '</div></div>');
   }
 
   window.jzKz = {
@@ -100,7 +85,6 @@
     foundKey: foundKey,
     loadFound: loadFound,
     syncFound: syncFound,
-    markFound: markFound,
-    celebrate: celebrate
+    markFound: markFound
   };
 })();

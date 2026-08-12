@@ -210,8 +210,12 @@
     if (!t) return;
     t.hidden = !has3d(car);
     var on = !!view3d;
+    /* 3Dを 出して いる ときは「しゃしん」に もどす ボタンに なる。
+       写真の ない 車では イラストに もどるので、そう 書く */
     t.innerHTML = on
-      ? '🖼️ イラストで <ruby>見<rt>み</rt></ruby>る'
+      ? (car && car.photo
+        ? '📷 しゃしんで <ruby>見<rt>み</rt></ruby>る'
+        : '🖼️ イラストで <ruby>見<rt>み</rt></ruby>る')
       : '🧊 3Dで まわして <ruby>見<rt>み</rt></ruby>る';
     t.setAttribute('aria-pressed', String(on));
   }
@@ -398,11 +402,14 @@
       '🔬 ものすごく <ruby>大<rt>おお</rt></ruby>きく <ruby>見<rt>み</rt></ruby>る</a>' +
       '</div>' +
       '<div class="art-anim" id="art-anim"></div>' +
-      '<p class="art-hint">「つくり」の <b>ぶん</b>を おすと、その ぶぶんが <b>光ります</b>。' +
-      (has3d(car) ? '<br>3Dの ときは、<b>ゆびで まわしながら</b> たしかめられます。' : '') +
-      (hasArtSwap(car) ? '<br>しゃしんの ときは、<b>えに かわって</b> 光ります。' : '') + '<br>' +
-
-      'ぜんぶの ぶぶんを しらべる ときは、<b>ものすごく <ruby>大<rt>おお</rt></ruby>きく</b> して みよう。</p>' +
+      /* 3つの 見せかたは、それぞれ やくわりが ちがう。
+         しゃしん＝ほんものを 見る／3D＝まわして つくりを 見る／え＝ぶぶんを 光らせて 見る */
+      '<p class="art-hint">' +
+      (car.photo ? '<b>📷 しゃしん</b>は ほんものの すがた。' : '') +
+      (has3d(car) ? '<b>🧊 3D</b>は <b>ゆびで まわして</b> つくりを たしかめられます。' : '') + '<br>' +
+      '「つくり」の <b>ぶん</b>を おすと、その ぶぶんが <b>光ります</b>' +
+      (hasArtSwap(car) ? '（しゃしんの ときは <b>えに かわって</b> 光ります）' : '') + '。<br>' +
+      'もっと よく 見る ときは、<b>ものすごく <ruby>大<rt>おお</rt></ruby>きく</b> して みよう。</p>' +
       '</div>' +
 
       '<div class="steps">' +
