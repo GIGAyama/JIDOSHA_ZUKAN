@@ -6,12 +6,12 @@
    かんさつ画面を つくって います。
 
    ■ できること
-     ・ゆびや マウスで、うごかす／大きくする（ピンチ・ホイール・ボタン・キー）
+     ・ゆびや マウスで、うごかす／大きくする（ピンチ・ホイール・ボタン）
      ・絵の 上の ◯マークを おすと、そこへ カメラが とんで いって 光る
      ・その ぶぶんの 名まえと せつめい（parts-data.js）が 出る
      ・その 車の「③ つくり」の 文が あれば、いっしょに ならぶ
-     ・ものさしを 出すと、1メートルの ますめと 1年生が ならんで 大きさが 分かる
      ・見た ぶぶんには ✓が つく。ぜんぶ 見つけると おいわいが 出る
+     ・Esc で とじる（ぶぶんを えらんで いる ときは、まず えらぶのを やめる）
 
    ■ しくみ（さわる ときの めやす）
      ・カメラ = SVG の viewBox。view（いま）→ target（いきたい ところ）へ
@@ -68,9 +68,6 @@
       '<h2 class="kz__title">' + car.name +
       '<span class="kz__len" id="kz-len"></span></h2>' +
       '<span class="kz__count" id="kz-count"></span>' +
-      '<button type="button" class="kz-btn" id="kz-ruler" aria-pressed="false">' +
-      '📏 ものさし</button>' +
-      '<button type="button" class="kz-btn" id="kz-full">⛶ ぜんがめん</button>' +
       '</div>' +
 
       '<div class="kz__main" id="kz-main">' +
@@ -108,14 +105,6 @@
     var h = S.view.w * r.height / r.width;
     S.svg.setAttribute('viewBox',
       (S.view.cx - S.view.w / 2) + ' ' + (S.view.cy - h / 2) + ' ' + S.view.w + ' ' + h);
-
-    /* ものさしの 文字と 線は、がめんの 上では いつも おなじ 大きさに 見せる
-       （1ピクセル = S.view.w / stage の はば） */
-    if (S.rulerG) {
-      var px = S.view.w / r.width;
-      S.rulerG.setAttribute('font-size', (18 * px).toFixed(2));
-      S.rulerG.setAttribute('stroke-width', (3 * px).toFixed(2));
-    }
     placeMarks(r);
     updateZoomUI();
   }
@@ -335,8 +324,6 @@
       (b.x - m) + ' ' + (b.y - m) + ' ' + (b.w + m * 2) + ' ' + (b.h + m * 2));
     clone.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     clone.classList.add('has-lit');
-    var g = clone.querySelector('.kz-ruler');
-    if (g) { g.remove(); }
     $$('[data-part="' + part.key + '"]', clone).forEach(function (e) {
       e.classList.add('is-lit');
     });
@@ -488,90 +475,6 @@
   }
 
   /* ==================================================================
-     ものさし（1メートルの ますめ・1年生）
-     ================================================================== */
-
-  function buildRuler() {
-    var g = S.base, M = window.carArt.METER;
-    var L = g.x + 16, W = g.w - 32;           /* 車の 左はしと はば */
-    var ground = g.y + g.h - 20;              /* じめんの line */
-    var top = ground - (g.h - 40);
-    var mW = W / M, mH = (ground - top) / M;
-
-    var grid = '';
-    for (var i = 0; i <= Math.ceil(mW) + 1; i++) {
-      var x = L + i * M;
-      grid += '<line x1="' + x + '" y1="' + (ground - Math.ceil(mH + 1) * M) +
-        '" x2="' + x + '" y2="' + ground + '"/>';
-    }
-    for (var j = 0; j <= Math.ceil(mH) + 1; j++) {
-      var y = ground - j * M;
-      grid += '<line x1="' + (L - M * 1.6) + '" y1="' + y +
-        '" x2="' + (L + (Math.ceil(mW) + 1) * M) + '" y2="' + y + '"/>';
-    }
-
-    var by = ground + 30;
-    var len = Math.round(W / M * 10) / 10;
-    var hgt = Math.round((ground - top) / M * 10) / 10;
-
-    var ruler =
-      '<line x1="' + L + '" y1="' + by + '" x2="' + (L + W) + '" y2="' + by + '"/>' +
-      '<line x1="' + L + '" y1="' + (by - 7) + '" x2="' + L + '" y2="' + (by + 7) + '"/>' +
-      '<line x1="' + (L + W) + '" y1="' + (by - 7) + '" x2="' + (L + W) + '" y2="' + (by + 7) + '"/>' +
-      '<text x="' + (L + W / 2) + '" y="' + (by - 10) + '">よこ やく ' + len + 'メートル</text>' +
-      '<line x1="' + (L - 22) + '" y1="' + ground + '" x2="' + (L - 22) + '" y2="' + top + '"/>' +
-      '<line x1="' + (L - 29) + '" y1="' + ground + '" x2="' + (L - 15) + '" y2="' + ground + '"/>' +
-      '<line x1="' + (L - 29) + '" y1="' + top + '" x2="' + (L - 15) + '" y2="' + top + '"/>' +
-      '<text x="' + (L - 22) + '" y="' + (top - 10) + '">たかさ やく ' + hgt + 'メートル</text>';
-
-    /* おなじ しゅくしゃくの 1年生（せの たかさ やく 1.2メートル） */
-    var px = L - M * 1.05, ph = M * 1.2, pt = ground - ph;
-    var person = '<g class="kz-person" stroke="#9fc3ef" fill="none" ' +
-      'stroke-width="3.2" stroke-linecap="round">' +
-      '<circle cx="' + px + '" cy="' + (pt + 5) + '" r="5.2" fill="#9fc3ef" stroke="none"/>' +
-      '<line x1="' + px + '" y1="' + (pt + 11) + '" x2="' + px + '" y2="' + (ground - 13) + '"/>' +
-      '<line x1="' + (px - 6) + '" y1="' + (ground - 19) + '" x2="' + px + '" y2="' + (ground - 24) + '"/>' +
-      '<line x1="' + (px + 6) + '" y1="' + (ground - 19) + '" x2="' + px + '" y2="' + (ground - 24) + '"/>' +
-      '<line x1="' + (px - 5) + '" y1="' + ground + '" x2="' + px + '" y2="' + (ground - 13) + '"/>' +
-      '<line x1="' + (px + 5) + '" y1="' + ground + '" x2="' + px + '" y2="' + (ground - 13) + '"/>' +
-      '<text x="' + px + '" y="' + (pt - 7) + '" fill="#9fc3ef" stroke="none" ' +
-      'font-size="7.5" text-anchor="middle">1ねんせい</text>' +
-      '</g>';
-
-    var wrap = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    wrap.setAttribute('class', 'kz-ruler');
-    wrap.setAttribute('font-size', '15');
-    wrap.setAttribute('stroke-width', '3');
-    wrap.innerHTML = '<g class="kz-grid" stroke-width="1">' + grid + '</g>' + ruler + person;
-    S.svg.appendChild(wrap);
-    S.rulerG = wrap;
-
-    /* ものさしの ぶんだけ、うつす はんいを ひろげる */
-    var c = S.content;
-    var x1 = Math.min(c.x, px - M * 0.8);
-    var y1 = Math.min(c.y, top - 30);
-    var x2 = Math.max(c.x + c.w, L + W + 10);
-    var y2 = Math.max(c.y + c.h, by + 14);
-    S.bounds = { x: x1, y: y1, w: x2 - x1, h: y2 - y1 };
-  }
-
-  function toggleRuler() {
-    if (S.rulerG) {
-      S.rulerG.remove();
-      S.rulerG = null;
-      S.bounds = { x: S.content.x, y: S.content.y, w: S.content.w, h: S.content.h };
-      S.rulerBtn.classList.remove('is-on');
-      S.rulerBtn.setAttribute('aria-pressed', 'false');
-    } else {
-      buildRuler();
-      S.rulerBtn.classList.add('is-on');
-      S.rulerBtn.setAttribute('aria-pressed', 'true');
-      deselect();
-    }
-    fitAll(false);
-  }
-
-  /* ==================================================================
      こえで きく
      ================================================================== */
 
@@ -702,26 +605,13 @@
       setTarget(S.view.cx, S.view.cy, S.fitW / z);
     });
 
-    S.rulerBtn.addEventListener('click', toggleRuler);
     $('#kz-back').addEventListener('click', function () { location.hash = '#/car/' + S.car.id; });
-    $('#kz-full').addEventListener('click', toggleFull);
 
-    /* キーボード */
+    /* Esc で とじる（ぶぶんを えらんで いる ときは、まず えらぶのを やめる） */
     S.onKey = function (e) {
-      var tag = (e.target.tagName || '').toLowerCase();
-      if (tag === 'input' || tag === 'textarea') return;
-      var step = S.view.w * 0.12;
-      if (e.key === 'ArrowLeft') { panBy(step, 0); e.preventDefault(); }
-      else if (e.key === 'ArrowRight') { panBy(-step, 0); e.preventDefault(); }
-      else if (e.key === 'ArrowUp') { panBy(0, step); e.preventDefault(); }
-      else if (e.key === 'ArrowDown') { panBy(0, -step); e.preventDefault(); }
-      else if (e.key === '+' || e.key === '=') { zoomCenter(1.7); }
-      else if (e.key === '-') { zoomCenter(1 / 1.7); }
-      else if (e.key === '0') { fitAll(false); }
-      else if (e.key === 'Escape') {
-        if (S.sel >= 0) { deselect(); }
-        else { location.hash = '#/car/' + S.car.id; }
-      }
+      if (e.key !== 'Escape') return;
+      if (S.sel >= 0) { deselect(); }
+      else { location.hash = '#/car/' + S.car.id; }
     };
     document.addEventListener('keydown', S.onKey);
 
@@ -749,16 +639,6 @@
     zoomAt(r.left + r.width / 2, r.top + r.height / 2, f);
   }
 
-  function toggleFull() {
-    var el = $('#kz');
-    if (!el) return;
-    if (document.fullscreenElement) {
-      if (document.exitFullscreen) { document.exitFullscreen(); }
-    } else if (el.requestFullscreen) {
-      el.requestFullscreen().catch(function () { });
-    }
-  }
-
   function hideHint() {
     var h = $('#kz-hint');
     if (h) { h.remove(); }
@@ -782,9 +662,8 @@
       count: $('#kz-count'),
       range: $('#kz-range'),
       zval: $('#kz-zval'),
-      rulerBtn: $('#kz-ruler'),
       parts: [], markEls: [], chipEls: [],
-      sel: -1, raf: 0, moving: false, rulerG: null, celebrated: false,
+      sel: -1, raf: 0, moving: false, celebrated: false,
       found: []
     };
     var saved = store.get('kz.' + car.id, []);
@@ -846,9 +725,6 @@
     if (S.raf) { window.cancelAnimationFrame(S.raf); }
     document.removeEventListener('keydown', S.onKey);
     window.removeEventListener('resize', S.onResize);
-    if (document.fullscreenElement && document.exitFullscreen) {
-      document.exitFullscreen().catch(function () { });
-    }
     if (S.host) { S.host.innerHTML = ''; }
     document.body.classList.remove('kz-open');
     S = null;

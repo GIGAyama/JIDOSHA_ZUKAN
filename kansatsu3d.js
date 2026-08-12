@@ -42,8 +42,6 @@
       '<h2 class="kz__title">' + car.name +
       '<span class="kz__len" id="kz-len"></span></h2>' +
       '<span class="kz__count" id="kz-count"></span>' +
-      '<button type="button" class="kz-btn" id="kz-ruler" aria-pressed="false">📏 ものさし</button>' +
-      '<button type="button" class="kz-btn" id="kz-full">⛶ ぜんがめん</button>' +
       '</div>' +
 
       '<div class="kz__main" id="kz-main">' +
@@ -400,28 +398,11 @@
     on($('#kz-reset'), 'click', function () { S.viewer.resetView(); deselect(); });
     on(S.range, 'input', function () { setZoomFromSlider(Number(S.range.value)); });
     on($('#kz-back'), 'click', function () { location.hash = '#/car/' + S.car.id; });
-    on($('#kz-ruler'), 'click', function (e) {
-      S.ruler = !S.ruler;
-      S.viewer.showRuler(S.ruler);
-      e.currentTarget.setAttribute('aria-pressed', S.ruler ? 'true' : 'false');
-      e.currentTarget.classList.toggle('is-on', S.ruler);
-    });
-    on($('#kz-full'), 'click', function () {
-      var el = $('#kz');
-      if (document.fullscreenElement) { document.exitFullscreen(); }
-      else if (el.requestFullscreen) { el.requestFullscreen(); }
-    });
-
+    /* Esc で とじる（ぶぶんを えらんで いる ときは、まず えらぶのを やめる） */
     var keyFn = function (e) {
-      if (e.key === 'Escape') { if (S.sel >= 0) { deselect(); } else { location.hash = '#/car/' + S.car.id; } }
-      else if (e.key === '+' || e.key === '=') { S.viewer.orbit.setView(null, null, S.viewer.orbit.tDist * 0.8); }
-      else if (e.key === '-') { S.viewer.orbit.setView(null, null, S.viewer.orbit.tDist / 0.8); }
-      else if (e.key === '0') { S.viewer.resetView(); }
-      else if (e.key === 'ArrowLeft') { S.viewer.orbit.setView(S.viewer.orbit.tAz - 0.25, null); }
-      else if (e.key === 'ArrowRight') { S.viewer.orbit.setView(S.viewer.orbit.tAz + 0.25, null); }
-      else if (e.key === 'ArrowUp') { S.viewer.orbit.setView(null, S.viewer.orbit.tPl - 0.12); }
-      else if (e.key === 'ArrowDown') { S.viewer.orbit.setView(null, S.viewer.orbit.tPl + 0.12); }
-      else { return; }
+      if (e.key !== 'Escape') return;
+      if (S.sel >= 0) { deselect(); }
+      else { location.hash = '#/car/' + S.car.id; }
       e.preventDefault();
     };
     document.addEventListener('keydown', keyFn);

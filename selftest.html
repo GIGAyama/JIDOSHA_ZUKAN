@@ -233,17 +233,7 @@
       ok(!$('#kz-panel'), 'とじると パネルが きえる');
       ok($$('#kz-stage svg .is-lit').length === 0, 'とじると 光りも きえる');
 
-      /* 6-4. ものさし */
-      ok(!$('#kz-stage svg .kz-ruler'), 'はじめは ものさしを 出さない');
-      $('#kz-ruler').click();
-      await wait(60);
-      ok(!!$('#kz-stage svg .kz-ruler'), 'ものさしが 出る');
-      ok(/メートル/.test($('#kz-stage svg .kz-ruler').textContent), 'ものさしに メートルが 出る');
-      $('#kz-ruler').click();
-      await wait(60);
-      ok(!$('#kz-stage svg .kz-ruler'), 'もう一度 おすと ものさしが しまえる');
-
-      /* 6-5. ✓は ほぞんされ、ずかんに もどれる */
+      /* 6-4. ✓は ほぞんされ、ずかんに もどれる */
       await go('#/');
       await go('#/kansatsu/crane');
       await until(function () { return $$('.kz-mark').length > 0; }, 2500);
