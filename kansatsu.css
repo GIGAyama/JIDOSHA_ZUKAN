@@ -119,12 +119,6 @@ body.kz-open {
   transform: scale(.96);
 }
 
-.kz-btn.is-on {
-  background: var(--lit);
-  border-color: var(--lit);
-  color: #2a1600;
-}
-
 .kz-btn--back {
   background: rgba(255, 255, 255, .16);
 }
@@ -173,33 +167,6 @@ body.kz-open {
   inset: 0;
   pointer-events: none;
   background: radial-gradient(90% 60% at 50% 50%, transparent 40%, rgba(4, 8, 16, .55) 100%);
-}
-
-/* ものさしの めもり（1メートルごと） */
-.kz-grid line {
-  stroke: #7ea8dd;
-  stroke-opacity: .3;
-  vector-effect: non-scaling-stroke;
-}
-
-/* ものさしの 線と 文字（じかの 子どもだけ。1年生の 絵には かけない） */
-.kz-ruler>line {
-  stroke: var(--yellow);
-  fill: none;
-  stroke-linecap: round;
-}
-
-.kz-ruler>text {
-  fill: var(--yellow);
-  font-family: var(--font);
-  font-weight: 700;
-  text-anchor: middle;
-  paint-order: stroke;
-  stroke: rgba(8, 14, 26, .85);
-}
-
-.kz-person {
-  opacity: .85;
 }
 
 /* ============================== ◯マーク ============================== */
@@ -299,7 +266,7 @@ body.kz-open {
 
 /* ============================ ズームの バー ============================ */
 
-/* ものさしの 文字と かさならない ように、みぎ下に おく */
+/* 絵の じゃまに ならない ように、みぎ下に おく */
 .kz__zoom {
   position: absolute;
   right: 14px;
@@ -672,11 +639,6 @@ body.kz-open {
 
   .kz__thumb {
     height: 74px;
-  }
-
-  /* スマホの ブラウザでは ぜんがめんに できない ことが おおい */
-  #kz-full {
-    display: none;
   }
 
   /* パネルが 出て いる ときは、ズームバーを 上に よける */

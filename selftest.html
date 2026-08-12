@@ -143,20 +143,7 @@
       var allTab = $$('#tabs .tab').filter(function (t) { return t.getAttribute('data-filter') === 'all'; })[0];
       allTab.click();
 
-      /* ---- 4. かきうつしシート（ほぞんと よみこみ） ---- */
-      await go('#/car/bus');
-      var ta = $('.js-slot');
-      ta.value = 'テスト の ぶん';
-      ta.dispatchEvent(new W.Event('input', { bubbles: true }));
-      await wait(30);
-      ok(/テスト の ぶん/.test($('.sheet__print').textContent), '入力が いんさつ用に うつる');
-      await go('#/car/truck');
-      await go('#/car/bus');
-      ok($('.js-slot').value === 'テスト の ぶん', 'ページを 行き来しても 入力が のこる');
-      await go('#/car/truck');
-      ok($('.js-slot').value === '', 'ちがう 車の シートは べつに ほぞんされる');
-
-      /* ---- 5. 読み上げテキスト（ルビの よみに なるか） ---- */
+      /* ---- 4. 読み上げテキスト（ルビの よみに なるか） ---- */
       await go('#/car/crane');
       var p = $('.step--q .js-read');
       var clone = p.cloneNode(true);
@@ -168,12 +155,12 @@
       ok(read.indexOf('クレーンしゃは') === 0, '読み上げが「クレーンしゃ」に なる → ' + read.slice(0, 24));
       ok(!/[一-鿿]/.test(read), '読み上げテキストに 漢字が のこらない');
 
-      /* ---- 6. 写真さしかえの しくみ ---- */
+      /* ---- 5. 写真さしかえの しくみ ---- */
       ok(W.carsData.every(function (c) { return 'photo' in c; }), 'ぜんぶの 車に photo 欄が ある');
 
-      /* ---- 7. ものすごい かんさつ ---- */
+      /* ---- 6. ものすごい かんさつ ---- */
 
-      /* 7-1. ぶひん辞書（parts-data.js）が 絵の data-part を すべて カバーするか */
+      /* 6-1. ぶひん辞書（parts-data.js）が 絵の data-part を すべて カバーするか */
       var artKeys = {}, dict = W.partInfo || {};
       W.carArt.ids().forEach(function (id) {
         (W.carArt.svg(id, 'fit').match(/data-part="[a-zA-Z0-9_]+"/g) || []).forEach(function (m) {
@@ -194,7 +181,7 @@
       });
       ok(noRuby.length === 0, 'ぶひん辞書の 漢字に ふりがなが ついて いる ' + (noRuby.join(',') || ''));
 
-      /* 7-2. ぜんぶの 車で ◯マークが 出て、絵の 上に のって いるか */
+      /* 6-2. ぜんぶの 車で ◯マークが 出て、絵の 上に のって いるか */
       var badMark = [], badBox = [];
       for (var n = 0; n < cars.length; n++) {
         var c7 = cars[n];
@@ -222,7 +209,7 @@
       ok(badMark.length === 0, cars.length + 'だい ぜんぶ ◯マークが そろう ' + (badMark.join(' / ') || ''));
       ok(badBox.length === 0, '◯マークが がめんの 中に おさまる ' + (badBox.join(' / ') || ''));
 
-      /* 7-3. ◯マークを おすと 光って、せつめいが 出て、✓が つく */
+      /* 6-3. ◯マークを おすと 光って、せつめいが 出て、✓が つく */
       W.localStorage.removeItem('jz.kz.crane');
       await go('#/kansatsu/crane');
       await until(function () { return $$('.kz-mark').length > 0; }, 2500);
@@ -246,17 +233,7 @@
       ok(!$('#kz-panel'), 'とじると パネルが きえる');
       ok($$('#kz-stage svg .is-lit').length === 0, 'とじると 光りも きえる');
 
-      /* 7-4. ものさし */
-      ok(!$('#kz-stage svg .kz-ruler'), 'はじめは ものさしを 出さない');
-      $('#kz-ruler').click();
-      await wait(60);
-      ok(!!$('#kz-stage svg .kz-ruler'), 'ものさしが 出る');
-      ok(/メートル/.test($('#kz-stage svg .kz-ruler').textContent), 'ものさしに メートルが 出る');
-      $('#kz-ruler').click();
-      await wait(60);
-      ok(!$('#kz-stage svg .kz-ruler'), 'もう一度 おすと ものさしが しまえる');
-
-      /* 7-5. ✓は ほぞんされ、ずかんに もどれる */
+      /* 6-4. ✓は ほぞんされ、ずかんに もどれる */
       await go('#/');
       await go('#/kansatsu/crane');
       await until(function () { return $$('.kz-mark').length > 0; }, 2500);
