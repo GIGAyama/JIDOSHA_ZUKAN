@@ -40,6 +40,18 @@
     'Yu Gothic Medium', 'Yu Gothic', Meiryo, sans-serif;
   --font-title: 'Kosugi Maru', 'BIZ UDPGothic', 'Hiragino Maru Gothic ProN', Meiryo, sans-serif;
 
+  /* もじの 大きさ（1年生が 読める ように、ちいさな 字を つくらない）
+     --fs-small が 下ばこ。これより 小さい 字は つかわない */
+  --fs-body: 19px;
+  --fs-step: 22px;
+  --fs-card: 24px;
+  --fs-btn: 18px;
+  --fs-sub: 16px;
+  --fs-small: 15px;
+
+  /* ゆびで おせる 大きさ */
+  --tap: 48px;
+
   --ease: cubic-bezier(.25, .8, .25, 1);
 }
 
@@ -60,7 +72,7 @@ html {
 
 body {
   font-family: var(--font);
-  font-size: 18px;
+  font-size: var(--fs-body);
   line-height: 2;
   color: var(--ink);
   background: var(--bg);
@@ -156,7 +168,7 @@ b {
   display: inline-block;
   background: var(--bg-soft);
   color: var(--navy);
-  font-size: 14px;
+  font-size: var(--fs-small);
   font-weight: 700;
   line-height: 1.6;
   padding: 5px 16px;
@@ -198,7 +210,7 @@ h1 {
 
 .btn {
   font-family: var(--font-title);
-  font-size: 17px;
+  font-size: var(--fs-btn);
   font-weight: 700;
   line-height: 1.4;
   border: none;
@@ -238,9 +250,9 @@ h1 {
   background: var(--bg-soft);
   color: var(--navy);
   box-shadow: none;
-  font-size: 16px;
+  font-size: var(--fs-sub);
   padding: 10px 16px;
-  min-height: 46px;
+  min-height: 52px;
 }
 
 .btn--audio:hover {
@@ -318,31 +330,42 @@ h1 {
 
 /* ========================= タブ ========================= */
 
+/* しごとの 名まえは ながい ものが あるので、おりかえしが ガタつかない ように
+   はばを そろえた ますめに ならべる。えもじを 先に 大きく 出して、
+   字を 読まなくても どの しごとか 分かるように する */
 .tabs {
   max-width: 1100px;
-  margin: 0 auto 18px;
-  display: flex;
-  flex-wrap: wrap;
+  margin: 0 auto 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  justify-content: center;
 }
 
 .tab {
   font-family: var(--font-title);
-  font-size: 17px;
+  font-size: var(--fs-btn);
   font-weight: 700;
+  line-height: 1.35;
   background: var(--card);
   color: var(--ink-sub);
   border: 2px solid transparent;
   border-radius: 40px;
-  padding: 11px 20px;
-  min-height: 50px;
+  padding: 8px 14px;
+  min-height: 58px;
   cursor: pointer;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 7px;
+  justify-content: center;
+  gap: 9px;
+  text-align: center;
   box-shadow: var(--shadow);
   transition: all .25s var(--ease);
+}
+
+.tab__icon {
+  font-size: 26px;
+  line-height: 1;
+  flex: none;
 }
 
 .tab:hover {
@@ -355,11 +378,34 @@ h1 {
   color: #fff;
 }
 
+/* 「大きさくらべ」は しぼりこみでは なく べつの がめんへ 行く ボタン。
+   まるい タブと 形を かえて、なかまで ない ことを 見た目でも しめす */
+.list-tools {
+  max-width: 1100px;
+  margin: 0 auto 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn--tool {
+  text-decoration: none;
+  background: var(--card);
+  color: var(--navy);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius-s);
+  min-height: 54px;
+  padding: 12px 26px;
+}
+
+.btn--tool:hover {
+  background: #f4f7fc;
+}
+
 .list-count {
   max-width: 1100px;
   margin: 0 auto 14px;
   text-align: center;
-  font-size: 15px;
+  font-size: 17px;
   color: var(--ink-sub);
 }
 
@@ -369,7 +415,51 @@ h1 {
   max-width: 1100px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+/* 「ぜんぶ」の ときは しごとの かたまりに 分ける。
+   そとがわの #grid は ただの いれもの に して、中の ますめだけ グリッドに する */
+.grid--blocks {
+  display: block;
+}
+
+.cat-block {
+  margin-bottom: 26px;
+}
+
+.cat-block__head {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-title);
+  font-size: 21px;
+  line-height: 1.5;
+  color: var(--navy-d);
+  background: var(--bg);
+  border-bottom: 3px solid var(--line);
+  padding: 10px 4px 8px;
+  margin-bottom: 14px;
+}
+
+.cat-block__icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.cat-block__n {
+  font-size: var(--fs-small);
+  font-weight: 400;
+  color: var(--ink-sub);
+}
+
+.cat-block__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 18px;
 }
 
@@ -397,8 +487,13 @@ h1 {
   box-shadow: var(--shadow-lg);
 }
 
+/* さっき 見て いた 車。ずかんに もどった とき すぐ 見つかる ように */
+.card.is-last {
+  box-shadow: 0 0 0 4px var(--yellow), var(--shadow-lg);
+}
+
 .card__art {
-  height: 120px;
+  height: 150px;
   margin-bottom: 6px;
 }
 
@@ -409,14 +504,14 @@ h1 {
 }
 
 .card__cat {
-  font-size: 13px;
+  font-size: var(--fs-small);
   line-height: 1.6;
   color: var(--ink-sub);
 }
 
 .card__name {
   font-family: var(--font-title);
-  font-size: 21px;
+  font-size: var(--fs-card);
   line-height: 1.6;
   color: var(--navy-d);
 }
@@ -433,18 +528,21 @@ h1 {
   border-radius: var(--radius);
 }
 
+/* 60だい 中 52だいが しゃしんなので、すきとおった ままだと
+   しゃしんの 上で ★が 見えなく なる。白い まるを しいて おく */
 .card__star {
   position: absolute;
   top: 8px;
   right: 8px;
   z-index: 2;
-  width: 44px;
-  height: 44px;
+  width: var(--tap);
+  height: var(--tap);
   border: none;
   border-radius: 50%;
-  background: transparent;
-  color: #c3cddd;
-  font-size: 23px;
+  background: rgba(255, 255, 255, .85);
+  box-shadow: 0 2px 6px rgba(30, 43, 69, .18);
+  color: #b0bccf;
+  font-size: 25px;
   line-height: 1;
   cursor: pointer;
   transition: transform .2s var(--ease), color .2s var(--ease);
@@ -489,7 +587,7 @@ h1 {
   background: var(--card);
   border-radius: 40px;
   padding: 5px 15px;
-  font-size: 15px;
+  font-size: var(--fs-sub);
   font-weight: 700;
   color: var(--navy);
   box-shadow: var(--shadow);
@@ -503,7 +601,7 @@ h1 {
 }
 
 .detail__len {
-  font-size: 15px;
+  font-size: var(--fs-sub);
   color: var(--ink-sub);
 }
 
@@ -539,11 +637,25 @@ h1 {
 }
 
 .art-hint {
-  font-size: 14px;
+  font-size: var(--fs-sub);
   color: var(--ink-sub);
   text-align: center;
   margin-top: 10px;
   line-height: 1.7;
+}
+
+/* しゃしんの 車は、ふだんは しゃしん。
+   「つくり」の 文を おした ときだけ えに かわって、その ぶぶんが 光る */
+.art-stage.has-photo>svg {
+  display: none;
+}
+
+.art-stage.has-photo.is-art>.art-photo {
+  display: none;
+}
+
+.art-stage.has-photo.is-art>svg {
+  display: block;
 }
 
 /* ひかる ぶぶん */
@@ -610,35 +722,77 @@ h1 {
   display: flex;
   gap: 8px;
   list-style: none;
+  align-items: center;
 }
 
 .progress li {
+  position: relative;
   flex: 1;
   text-align: center;
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.4;
   color: var(--ink-sub);
   background: var(--card);
   border-radius: 30px;
-  padding: 7px 4px;
-  border: 2px solid transparent;
+  padding: 10px 4px;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--line);
   transition: all .3s var(--ease);
 }
 
+/* 3つを 線で つないで、①→②→③の じゅんばんに 見せる */
+.progress li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  width: 8px;
+  height: 3px;
+  background: var(--line);
+}
+
+/* もう ひらいた ところ（うすい 色） */
 .progress li.is-on:nth-child(1) {
-  background: var(--q);
-  color: #fff;
+  background: var(--q-bg);
+  border-color: var(--q);
+  color: #a34a0f;
 }
 
 .progress li.is-on:nth-child(2) {
-  background: var(--a);
-  color: #fff;
+  background: var(--a-bg);
+  border-color: var(--a);
+  color: #1d5590;
 }
 
 .progress li.is-on:nth-child(3) {
-  background: var(--t);
+  background: var(--t-bg);
+  border-color: var(--t);
+  color: #1d6b47;
+}
+
+/* いま ここ（ベタぬり＋わっか）— どこを 読んで いるか まよわない ように */
+.progress li.is-now:nth-child(1) {
+  background: var(--q);
+  border-color: var(--q);
   color: #fff;
+  box-shadow: 0 0 0 4px var(--q-bg);
+}
+
+.progress li.is-now:nth-child(2) {
+  background: var(--a);
+  border-color: var(--a);
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--a-bg);
+}
+
+.progress li.is-now:nth-child(3) {
+  background: var(--t);
+  border-color: var(--t);
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--t-bg);
 }
 
 .step {
@@ -663,7 +817,7 @@ h1 {
 
 .step__tag {
   display: inline-block;
-  font-size: 14px;
+  font-size: var(--fs-small);
   font-weight: 700;
   line-height: 1.6;
   color: #fff;
@@ -672,8 +826,24 @@ h1 {
   margin-bottom: 8px;
 }
 
+/* 「おせる」ことの めじるし。ちいさな 字の ヒントだけでは 気づけない */
+.step__tapme {
+  display: inline-block;
+  margin-left: 8px;
+  margin-bottom: 8px;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  line-height: 1.6;
+  color: #1d6b47;
+  background: var(--t-bg);
+  border: 2px solid rgba(43, 156, 104, .5);
+  border-radius: 30px;
+  padding: 1px 12px;
+  white-space: nowrap;
+}
+
 .step__text {
-  font-size: 20px;
+  font-size: var(--fs-step);
   line-height: 2.05;
 }
 
@@ -699,8 +869,19 @@ h1 {
 }
 
 .step--make {
+  position: relative;
   border-left-color: var(--t);
   cursor: pointer;
+}
+
+/* おせる 面だと 形でも 分かる ように、うちがわに 点せんの わくを 出す */
+.step--make::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 2px dashed rgba(43, 156, 104, .4);
+  border-radius: var(--radius-s);
+  pointer-events: none;
 }
 
 .step--make .step__tag {
@@ -708,7 +889,7 @@ h1 {
 }
 
 .step--make .step__hint {
-  font-size: 13px;
+  font-size: var(--fs-small);
   color: var(--ink-sub);
   margin-top: 6px;
 }
@@ -716,6 +897,46 @@ h1 {
 .step--make.is-active {
   background: var(--t-bg);
   box-shadow: 0 0 0 3px var(--t), var(--shadow);
+}
+
+/* ========================= よみおわった ========================= */
+
+.done {
+  background: linear-gradient(135deg, #fff6d8, #fffdf5);
+  border: 3px solid var(--yellow);
+  border-radius: var(--radius);
+  padding: 18px 20px 20px;
+  text-align: center;
+  animation: stepIn .45s var(--ease) both;
+}
+
+.done__msg {
+  font-family: var(--font-title);
+  font-size: 22px;
+  line-height: 1.6;
+  color: #7a5200;
+  margin-bottom: 12px;
+}
+
+.done__acts {
+  display: grid;
+  gap: 10px;
+}
+
+.done__acts .btn {
+  width: 100%;
+  margin-top: 0;
+}
+
+.btn--sheet {
+  background: var(--t);
+  color: #fff;
+  min-height: 58px;
+  box-shadow: 0 6px 14px rgba(43, 156, 104, .3);
+}
+
+.btn--sheet:hover {
+  background: #238156;
 }
 
 /* --- もっと しりたい --- */
@@ -733,7 +954,7 @@ h1 {
   font-weight: 700;
   color: #8a5d00;
   cursor: pointer;
-  min-height: 40px;
+  min-height: var(--tap);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -833,7 +1054,7 @@ h1 {
 }
 
 .sheet__saved {
-  font-size: 14px;
+  font-size: var(--fs-small);
   color: var(--t);
   align-self: center;
 }
@@ -901,7 +1122,7 @@ h1 {
 }
 
 .crow__len {
-  font-size: 14px;
+  font-size: var(--fs-small);
   color: var(--ink-sub);
   line-height: 1.6;
 }
@@ -940,7 +1161,7 @@ h1 {
 }
 
 .site-footer p {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.9;
   color: var(--ink-sub);
 }
@@ -951,7 +1172,30 @@ h1 {
 
 /* ========================= タブレット・スマホ ========================= */
 
+/* --- よこむきの がっこうタブレット（だいたい 1180×820 / 1280×800）--- */
+@media (min-width: 1000px) {
+  .art-stage {
+    height: 340px;
+  }
+
+  .detail__body {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+
+  .card__art {
+    height: 170px;
+  }
+
+  .done__acts {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (max-width: 900px) {
+  .tabs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   .detail__body {
     grid-template-columns: 1fr;
   }
@@ -962,6 +1206,43 @@ h1 {
 
   .art-stage {
     height: 240px;
+  }
+}
+
+/* よこむきは たての ばしょが たりない。よはくを つめて、
+   絵と ①②③が いちどに 見える ように する */
+@media (orientation: landscape) and (max-height: 900px) {
+  body {
+    padding-bottom: 32px;
+  }
+
+  .site-header {
+    margin-bottom: 16px;
+    padding-top: 16px;
+  }
+
+  .site-header__inner {
+    padding: 18px 26px 20px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  .topbar {
+    padding: 12px 0 8px;
+  }
+
+  .step {
+    padding: 14px 18px 12px;
+  }
+
+  .steps {
+    gap: 12px;
+  }
+
+  .note {
+    margin-top: 32px;
   }
 }
 
@@ -988,27 +1269,37 @@ h1 {
   }
 
   .tabs {
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
 
   .tab {
-    font-size: 15px;
-    padding: 9px 13px;
-    min-height: 46px;
-    gap: 5px;
+    font-size: var(--fs-sub);
+    padding: 8px 10px;
+    min-height: 54px;
+    gap: 6px;
   }
 
-  .grid {
+  .tab__icon {
+    font-size: 22px;
+  }
+
+  .grid,
+  .cat-block__grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 12px;
   }
 
+  .cat-block__head {
+    font-size: 18px;
+  }
+
   .card__art {
-    height: 92px;
+    height: 110px;
   }
 
   .card__name {
-    font-size: 18px;
+    font-size: 19px;
   }
 
   .detail__name {
@@ -1016,11 +1307,16 @@ h1 {
   }
 
   .step__text {
-    font-size: 18px;
+    font-size: 19px;
   }
 
   .btn--next {
     font-size: 18px;
+  }
+
+  .progress li {
+    font-size: var(--fs-small);
+    padding: 8px 2px;
   }
 
   .crow {
