@@ -13,19 +13,13 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  function plain(html) {
-    var d = document.createElement('div');
-    d.innerHTML = html;
-    return d.textContent.replace(/\s+/g, ' ').trim();
-  }
-
-  var store = {
-    get: function (k, def) {
-      try { var v = localStorage.getItem(k); return v === null ? def : JSON.parse(v); }
-      catch (e) { return def; }
-    },
-    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }
-  };
+  /* ✓の ほぞん・かぞえ・おいわいは イラスト版と おなじなので kansatsu-common.js に ある。
+     （ここに べつの store を もって いた ころは、イラスト版と ちがう キーに ほぞんして いて、
+       2Dと 3Dを 行き来すると ✓が 消えて 見えて いました） */
+  var C = window.jzKz;
+  var plain = C.plain;
+  var syncFound = function () { C.syncFound(S); };
+  var markFound = function (key) { C.markFound(S, key); };
 
   var S = null;
 
@@ -220,41 +214,6 @@
      みつけた しるし（SVG版と 同じ 保存キー）
      ================================================================== */
 
-  function foundKey() { return 'kz.' + S.car.id; }
-
-  function markFound(key) {
-    if (S.found.indexOf(key) >= 0) return;
-    S.found.push(key);
-    store.set(foundKey(), S.found);
-    syncFound();
-    if (S.found.length >= S.parts.length) celebrate();
-  }
-
-  function syncFound() {
-    var n = 0;
-    S.parts.forEach(function (p, i) {
-      var on = S.found.indexOf(p.key) >= 0;
-      if (on) n++;
-      if (S.markEls && S.markEls[i]) S.markEls[i].classList.toggle('is-found', on);
-      if (S.chipEls && S.chipEls[i]) S.chipEls[i].classList.toggle('is-found', on);
-    });
-    var all = n >= S.parts.length && S.parts.length > 0;
-    S.count.innerHTML = all ? '🎉 ぜんぶ みつけた！' : 'みつけた ' + n + ' / ' + S.parts.length;
-    S.count.classList.toggle('is-done', all);
-  }
-
-  function celebrate() {
-    if (S.celebrated) return;
-    S.celebrated = true;
-    S.main.insertAdjacentHTML('beforeend',
-      '<div class="kz__done" id="kz-done"><div class="kz__done-card">' +
-      '<h2>🎉 ぜんぶ みつけた！</h2>' +
-      '<p>' + S.car.name + 'の ぶぶんを ' + S.parts.length + 'こ ぜんぶ かんさつ しました。<br>' +
-      'どの ぶぶんが いちばん おどろいたか、ずかんに かいて みよう。</p>' +
-      '<button type="button" class="btn" id="kz-done-stay">もっと かんさつ する</button> ' +
-      '<button type="button" class="btn btn--next" id="kz-done-go">✏️ ずかんに かく</button>' +
-      '</div></div>');
-  }
 
   /* ==================================================================
      大きさ（ズーム）と むき
@@ -325,9 +284,10 @@
       main: $('#kz-main'), stage: $('#kz-stage'), marks: $('#kz-marks'),
       rail: $('#kz-rail'), count: $('#kz-count'), range: $('#kz-range'),
       turn: $('#kz-turn'),
-      found: store.get('kz.' + car.id, []) || [],
+      found: [],
       sel: -1, celebrated: false, handlers: []
     };
+    S.found = C.loadFound(S);     /* イラスト版と おなじ キーから 読む */
 
     try {
       S.viewer = window.jz3d.createViewer(S.stage, car.art, { autoRotate: true });

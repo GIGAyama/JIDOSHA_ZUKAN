@@ -124,14 +124,39 @@
      ------------------------------------------------------------------ */
   var view3d = null;                                   /* いま 出て いる ビューア */
 
+  /* 3Dは 1MBを こえるので、一覧では 読みこまない。
+     詳細ページと かんさつを ひらく ときだけ よぶ。
+     index.html の module は defer なので、この app.js より あとに 走る ことが ある。
+     その ときは しるしだけ つけて おき、module 側で ひろって もらう。 */
+  function load3d() {
+    if (window.jzLoad3d) { window.jzLoad3d(); }
+    else { window.jzNeeds3d = true; }
+  }
+
   function has3d(car) {
     return !!(car && window.jz3d && window.jz3d.MODEL3D[car.art]);
   }
   function want3d() { return store.get('use3d', true) !== false; }
   function setWant3d(v) { store.set('use3d', !!v); }
 
+  var seen3d = null;                                   /* 絵が がめんに 出て いるか 見はる */
+
   function drop3d() {
+    if (seen3d) { try { seen3d.disconnect(); } catch (e) { } seen3d = null; }
     if (view3d) { try { view3d.dispose(); } catch (e) { } view3d = null; }
+  }
+
+  /* 絵の パネルが スクロールで がめんの 外へ 出たら、3Dの えがきを 休ませる。
+     児童が ①②③の 文を 読んで いる あいだ ずっと 回しつづけると、
+     タブレットの でんちが へって しまう。もどって きたら すぐ 動きだす。 */
+  function watch3d(stage) {
+    if (!view3d || !window.IntersectionObserver) { return; }
+    seen3d = new window.IntersectionObserver(function (entries) {
+      if (!view3d) { return; }
+      var on = entries[entries.length - 1].isIntersecting;
+      try { if (on) { view3d.resume(); } else { view3d.pause(); } } catch (e) { }
+    }, { threshold: 0 });
+    seen3d.observe(stage);
   }
 
   /* 詳細ページの 絵を 3Dに する（できなければ false）*/
@@ -149,6 +174,7 @@
     if (img) img.style.display = 'none';
     stage.classList.add('is-3d');
     build3dBar(car);
+    watch3d(stage);
     return true;
   }
 
@@ -580,6 +606,7 @@
   window.addEventListener('resize', repositionCallout);
 
   function showDetail(car) {
+    load3d();                           /* ここで はじめて 3Dを 読みこむ */
     state = { car: car, step: 0, pin: null };
     lastCarId = car.id;                 /* ずかんに もどった ときの しるし */
     unmount3d();
@@ -714,6 +741,7 @@
      ものすごい かんさつ
      ================================================================== */
   function showKansatsu(car) {
+    load3d();                           /* ここで はじめて 3Dを 読みこむ */
     setView('kansatsu');
     document.title = plain(car.name) + 'を ものすごく 大きく - じどう車ずかん';
     /* まえの かんさつを かならず 片づけてから 出す（3D↔イラストの 行き来の ため）*/

@@ -101,15 +101,28 @@
   <script src="car-art.js"></script>
   <script src="cars-data.js"></script>
   <script src="parts-data.js"></script>
+  <script src="kansatsu-common.js"></script>
   <script src="kansatsu.js"></script>
   <script src="kansatsu3d.js"></script>
 
-  <!-- 3Dモデル（つかえる 端末だけ 読みこむ。だめでも イラストで そのまま 動きます）-->
+  <!-- 3Dモデル（つかえる 端末だけ 読みこむ。だめでも イラストで そのまま 動きます）
+
+       car3d.js は three.js を いっしょに つれて くるので、ふたつで 1MB を こえます。
+       一覧では 3Dを つかわないので、詳細ページか かんさつを ひらいた ときに
+       はじめて 読みこみます（app.js が window.jzLoad3d() を よぶ）。 -->
   <script type="module">
-    import('./car3d.js').then(function (m) {
-      window.jz3d = { createViewer: m.createViewer, MODEL3D: m.MODEL3D };
-      window.dispatchEvent(new CustomEvent('jz3d-ready'));
-    }).catch(function () { /* 3Dなしで つづける */ });
+    var loading = null;
+    window.jzLoad3d = function () {
+      if (loading) { return loading; }                /* 読みこみは 1かいだけ */
+      loading = import('./car3d.js').then(function (m) {
+        window.jz3d = { createViewer: m.createViewer, MODEL3D: m.MODEL3D };
+        window.dispatchEvent(new CustomEvent('jz3d-ready'));
+      }).catch(function () { /* 3Dなしで つづける */ });
+      return loading;
+    };
+    /* app.js より さきに この module が 走るとは かぎらないので、
+       app.js が よびそこねた ぶんを ここで ひろう */
+    if (window.jzNeeds3d) { window.jzLoad3d(); }
   </script>
 
   <script src="app.js"></script>

@@ -29,29 +29,15 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  function plain(html) {
-    var d = document.createElement('div');
-    d.innerHTML = html;
-    return d.textContent.replace(/\s+/g, ' ').trim();
-  }
-
   function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
 
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ほぞん（app.js の ものを つかう。なければ この 場で つくる） */
-  var store = window.jzStore || {
-    get: function (k, def) {
-      try {
-        var v = window.localStorage.getItem('jz.' + k);
-        return v === null ? def : JSON.parse(v);
-      } catch (e) { return def; }
-    },
-    set: function (k, v) {
-      try { window.localStorage.setItem('jz.' + k, JSON.stringify(v)); return true; }
-      catch (e) { return false; }
-    }
-  };
+  /* ✓の ほぞん・かぞえ・おいわいは 3D版と おなじなので kansatsu-common.js に ある */
+  var C = window.jzKz;
+  var plain = C.plain;
+  var syncFound = function () { C.syncFound(S); };
+  var markFound = function (key) { C.markFound(S, key); };
 
   var S = null;   /* いま ひらいて いる かんさつの じょうたい */
 
@@ -435,45 +421,6 @@
      みつけた しるし
      ================================================================== */
 
-  function foundKey() { return 'kz.' + S.car.id; }
-
-  function markFound(key) {
-    if (S.found.indexOf(key) >= 0) { return; }
-    S.found.push(key);
-    store.set(foundKey(), S.found);
-    syncFound();
-    if (S.found.length >= S.parts.length) { celebrate(); }
-  }
-
-  function syncFound() {
-    var n = 0;
-    S.parts.forEach(function (p, i) {
-      var on = S.found.indexOf(p.key) >= 0;
-      if (on) { n++; }
-      if (S.markEls[i]) { S.markEls[i].classList.toggle('is-found', on); }
-      if (S.chipEls && S.chipEls[i]) { S.chipEls[i].classList.toggle('is-found', on); }
-    });
-    var all = n >= S.parts.length && S.parts.length > 0;
-    S.count.innerHTML = all
-      ? '🎉 ぜんぶ みつけた！'
-      : 'みつけた ' + n + ' / ' + S.parts.length;
-    S.count.classList.toggle('is-done', all);
-  }
-
-  function celebrate() {
-    if (S.celebrated) return;
-    S.celebrated = true;
-    var html = '<div class="kz__done" id="kz-done">' +
-      '<div class="kz__done-card">' +
-      '<h2>🎉 ぜんぶ みつけた！</h2>' +
-      '<p>' + S.car.name + 'の ぶぶんを ' + S.parts.length + 'こ ぜんぶ かんさつ しました。<br>' +
-      'どの ぶぶんが いちばん おどろいたか、ずかんに かいて みよう。</p>' +
-      '<button type="button" class="btn" id="kz-done-stay">もっと かんさつ する</button> ' +
-      '<button type="button" class="btn btn--next" id="kz-done-go">✏️ ずかんに かく</button>' +
-      '</div></div>';
-    S.main.insertAdjacentHTML('beforeend', html);
-  }
-
   /* ==================================================================
      こえで きく
      ================================================================== */
@@ -666,8 +613,7 @@
       sel: -1, raf: 0, moving: false, celebrated: false,
       found: []
     };
-    var saved = store.get('kz.' + car.id, []);
-    S.found = Array.isArray(saved) ? saved : [];
+    S.found = C.loadFound(S);
 
     /* 絵は かならず イラスト（SVG）を つかう。写真では ぶぶんを 光らせられない */
     S.stage.innerHTML = window.carArt.svg(car.art, 'fit');
@@ -679,9 +625,9 @@
     var vb = (S.svg.getAttribute('viewBox') || '0 0 400 220').split(/\s+/).map(Number);
     S.base = { x: vb[0], y: vb[1], w: vb[2], h: vb[3] };
 
-    /* じっさいに かかれて いる はんい（うでを 上げた クレーンなど、
-       きめられた わくより 外へ はみ出す 車が あるので はかりなおす） */
-    S.content = { x: S.base.x, y: S.base.y, w: S.base.w, h: S.base.h };
+    /* カメラの うごける はんい。じっさいに かかれて いる ところを はかる
+       （うでを 上げた クレーンなど、きめられた わくより 外へ はみ出す 車が あるため） */
+    S.bounds = { x: S.base.x, y: S.base.y, w: S.base.w, h: S.base.h };
     try {
       var bb = S.svg.getBBox();
       if (bb && bb.width && bb.height) {
@@ -689,10 +635,9 @@
         var y1 = Math.min(S.base.y, bb.y - 8);
         var x2 = Math.max(S.base.x + S.base.w, bb.x + bb.width + 8);
         var y2 = Math.max(S.base.y + S.base.h, bb.y + bb.height + 8);
-        S.content = { x: x1, y: y1, w: x2 - x1, h: y2 - y1 };
+        S.bounds = { x: x1, y: y1, w: x2 - x1, h: y2 - y1 };
       }
     } catch (e) { /* はかれない ときは きめられた わくの まま */ }
-    S.bounds = { x: S.content.x, y: S.content.y, w: S.content.w, h: S.content.h };
 
     computeFit();
     S.view = { cx: S.base.x + S.base.w / 2, cy: S.base.y + S.base.h / 2, w: S.fitW * 1.35 };
