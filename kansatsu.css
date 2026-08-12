@@ -283,11 +283,12 @@ body.kz-open {
   display: none;
 }
 
-/* えらんで いる ときは、ほかの マークを 小さな 点に する */
+/* えらんで いる ときは、ほかの マークを 小さく する
+   （ただし ゆびで おせる 大きさは のこす） */
 .kz__marks.has-on .kz-mark:not(.is-on) {
-  width: 20px;
-  height: 20px;
-  margin: -10px 0 0 -10px;
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
   font-size: 0;
   opacity: .55;
 }
