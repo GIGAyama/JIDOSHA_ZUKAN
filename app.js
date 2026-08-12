@@ -43,6 +43,19 @@
   /* ものすごい かんさつ（kansatsu.js）からも つかう */
   window.jzStore = store;
 
+  /* むかし あった「かきうつしシート」の のこりを 片づける。
+     きのうが なくなったので、たんまつに データだけ のこって しまう */
+  function dropOldSheets() {
+    try {
+      var ls = window.localStorage, kill = [], i;
+      for (i = 0; i < ls.length; i++) {
+        var k = ls.key(i);
+        if (k && k.indexOf('jz.sheet.') === 0) { kill.push(k); }
+      }
+      kill.forEach(function (k) { ls.removeItem(k); });
+    } catch (e) { /* ほぞんが つかえない たんまつでは なにも しない */ }
+  }
+
   function stars() {
     var s = store.get('stars', []);
     return Array.isArray(s) ? s : [];
@@ -317,30 +330,6 @@
      詳細（ずかんの ページ）
      ================================================================== */
 
-  var SLOTS = [
-    {
-      key: 'shigoto', num: '1',
-      tmpl: function (car) {
-        return car.name + 'は、<i class="slot__blank">　　　　　</i> しごとを して います。';
-      },
-      hint: 'どんな しごとを して いますか。'
-    },
-    {
-      key: 'tsukuri1', num: '2',
-      tmpl: function () {
-        return '<b>その ために</b>、<i class="slot__blank">　　　　　</i>。';
-      },
-      hint: 'その しごとの ために、どんな つくりに なって いますか。'
-    },
-    {
-      key: 'tsukuri2', num: '3',
-      tmpl: function () {
-        return '<i class="slot__blank">　　　　</i>ように、<i class="slot__blank">　　　　</i>。';
-      },
-      hint: 'もう ひとつの つくりも かいて みましょう。'
-    }
-  ];
-
   /* 「つくり」の カードに いつも 出して おく、おせる ことの めじるし */
   var TAPME = '👆 おすと <ruby>光<rt>ひか</rt></ruby>る';
   var TAPBACK = '✕ もどす';
@@ -359,18 +348,6 @@
         audioBtn('つくりの せつめい') +
         ' <button type="button" class="btn btn--audio js-pin">📍 ばしょを <ruby>見<rt>み</rt></ruby>る</button>' +
         '</div></div>';
-    }).join('');
-
-    var saved = store.get('sheet.' + car.id, {}) || {};
-    var slots = SLOTS.map(function (s) {
-      var val = typeof saved[s.key] === 'string' ? saved[s.key] : '';
-      return '<div class="slot">' +
-        '<p class="slot__tmpl"><span class="slot__num">' + s.num + '</span>' + s.tmpl(car) + '</p>' +
-        '<label class="visually-hidden" for="slot-' + s.key + '">' + s.hint + '</label>' +
-        '<textarea id="slot-' + s.key + '" class="js-slot" data-key="' + s.key + '" ' +
-        'placeholder="' + s.hint + '"></textarea>' +
-        '<div class="sheet__print"></div>' +
-        '</div>';
     }).join('');
 
     return '<div class="detail">' +
@@ -429,8 +406,6 @@
       '<div class="done__acts">' +
       '<a class="btn btn--zoom" href="#/kansatsu/' + car.id + '">' +
       '🔬 ものすごく <ruby>大<rt>おお</rt></ruby>きく <ruby>見<rt>み</rt></ruby>る</a>' +
-      '<button type="button" class="btn btn--sheet" id="btn-go-sheet">' +
-      '✏️ <ruby>文<rt>ぶん</rt></ruby>を かいて みよう</button>' +
       '</div></div>' +
 
       '</div>' +
@@ -442,18 +417,6 @@
       '<p class="js-read">' + car.hakken + '</p>' +
       '<div class="step__foot">' + audioBtn('もっと しりたい') + '</div>' +
       '</details>' +
-
-      '<section class="sheet">' +
-      '<h2>✏️ かきうつしシート</h2>' +
-      '<p class="sheet__lead">' +
-      'この じゅんばんで かくと、じぶんの ずかんの <ruby>文<rt>ぶん</rt></ruby>に なります。' +
-      'ここに かいた ことは、この たんまつに ほぞんされます。' +
-      '</p>' + slots +
-      '<div class="sheet__foot">' +
-      '<button type="button" class="btn" id="btn-print">🖨️ ワークシートを いんさつ</button>' +
-      '<span class="sheet__saved" id="saved"></span>' +
-      '</div>' +
-      '</section>' +
 
       '</div>';
   }
@@ -616,32 +579,6 @@
   }
   window.addEventListener('resize', repositionCallout);
 
-  /* --- かきうつしシート --- */
-  var saveTimer = null;
-  function saveSheet() {
-    if (!state.car) return;
-    var data = {};
-    $$('.js-slot', viewDetail).forEach(function (ta) {
-      data[ta.getAttribute('data-key')] = ta.value;
-    });
-    var ok = store.set('sheet.' + state.car.id, data);
-    var el = $('#saved');
-    if (el) {
-      el.textContent = ok ? '✓ ほぞん しました' : '（この たんまつでは ほぞん できません）';
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(function () { if (el) el.textContent = ''; }, 2200);
-    }
-    syncPrint();
-  }
-
-  /* 印刷用に、入力した 文を うつしておく（textarea は 印刷で きれる ことが ある） */
-  function syncPrint() {
-    $$('.js-slot', viewDetail).forEach(function (ta) {
-      var box = ta.parentNode.querySelector('.sheet__print');
-      if (box) { box.textContent = ta.value; }
-    });
-  }
-
   function showDetail(car) {
     state = { car: car, step: 0, pin: null };
     lastCarId = car.id;                 /* ずかんに もどった ときの しるし */
@@ -650,14 +587,6 @@
     if (has3d(car) && want3d()) { mount3d(car); }
     sync3dToggle(car);
     if (view3d) { view3d.onFrame(place3dCallout); }
-
-    /* ほぞんして あった 文を もどす */
-    var saved = store.get('sheet.' + car.id, {}) || {};
-    $$('.js-slot', viewDetail).forEach(function (ta) {
-      var v = saved[ta.getAttribute('data-key')];
-      if (typeof v === 'string') { ta.value = v; }
-    });
-    syncPrint();
 
     updateSteps();
     setView('detail');
@@ -685,14 +614,6 @@
       if (justOpened) { justOpened.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
       return;
     }
-    if (e.target.closest('#btn-print')) { window.print(); return; }
-
-    if (e.target.closest('#btn-go-sheet')) {
-      var sheet = $('.sheet', viewDetail);
-      if (sheet) { sheet.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
-      return;
-    }
-
     if (e.target.closest('#btn-3d')) {
       clearPin();
       if (view3d) { unmount3d(); setWant3d(false); }
@@ -709,10 +630,6 @@
 
     var make = e.target.closest('.js-make');
     if (make) { showPin(make); }
-  });
-
-  viewDetail.addEventListener('input', function (e) {
-    if (e.target.classList.contains('js-slot')) { saveSheet(); }
   });
 
   /* 「つくり」の カードは キーボードからも おせる（role="button" tabindex="0"） */
@@ -832,7 +749,7 @@
   window.addEventListener('hashchange', route);
 
   /* car3d.js は あとから 読みこまれる。来た ときに 詳細ページを 出して いたら、
-     画面を 作りなおさずに（かきうつしシートを 消さずに）3Dを のせる */
+     詳細ページを 作りなおさずに（いまの じょうたいの まま）3Dを のせる */
   window.addEventListener('jz3d-ready', function () {
     /* かんさつを 見て いる とちゅうなら、まわせる ほうに 入れかえる
        （✓は localStorage に 入って いるので 消えません）*/
@@ -851,5 +768,6 @@
     sync3dToggle(state.car);
   });
 
+  dropOldSheets();
   route();
 })();
