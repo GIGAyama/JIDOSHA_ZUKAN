@@ -97,12 +97,27 @@ body {
   overflow-wrap: break-word;
 }
 
-/* ふりがな */
+/* ふりがな（ルビ表示の調整） */
+ruby {
+  display: inline-ruby;
+  ruby-position: over;
+  ruby-align: center;
+}
+
 ruby rt {
-  font-size: .48em;
+  font-size: 0.48em;
   font-weight: 400;
   color: var(--ink-sub);
-  letter-spacing: .06em;
+  letter-spacing: .04em;
+  line-height: 1.2;
+}
+
+.btn ruby rt,
+.tab ruby rt,
+.badge ruby rt,
+.cat-block__head ruby rt {
+  color: inherit;
+  opacity: 0.88;
 }
 
 b {
@@ -125,7 +140,6 @@ b {
   left: 0;
 }
 
-<<<<<<< HEAD
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -136,9 +150,7 @@ b {
   white-space: nowrap;
 }
 
-=======
 /* assets に 写真を おいた ときの 見せかた */
->>>>>>> 3c84f8e4489265e72ad62e526e1879d1b82095a5
 .card__art img,
 .art-stage img {
   width: 100%;
@@ -276,11 +288,11 @@ b {
   font-family: var(--font-title);
   font-size: var(--fs-btn);
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.6;
   border: 1px solid transparent;
   border-radius: var(--radius);
   padding: 12px 22px;
-  min-height: 52px;
+  min-height: 54px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -290,6 +302,8 @@ b {
   background: var(--navy);
   color: #fff;
   box-shadow: var(--shadow-active);
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
 .btn:hover {
@@ -345,11 +359,12 @@ b {
 .btn--next {
   width: 100%;
   font-size: 19px;
-  min-height: 60px;
+  min-height: 62px;
   background: var(--yellow);
   color: #452b00;
   box-shadow: 0 6px 18px rgba(217, 147, 0, .3);
   border-radius: var(--radius);
+  line-height: 1.6;
 }
 
 .btn--next:hover {
@@ -361,7 +376,9 @@ b {
   margin-top: 12px;
   text-decoration: none;
   font-size: 18px;
-  min-height: 56px;
+  line-height: 1.6;
+  padding: 14px 20px;
+  min-height: 60px;
   background: linear-gradient(135deg, #1e3a66, #10203b);
   color: #fff;
   border-radius: var(--radius);
@@ -373,7 +390,7 @@ b {
 }
 
 .btn--zoom rt {
-  color: #94a3b8;
+  color: #cbd5e1;
 }
 
 .btn--star {
@@ -1062,6 +1079,113 @@ b {
   color: #6b4a08;
   padding-top: 8px;
 }
+
+/* ========================= かきうつしシート ========================= */
+
+.sheet {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  padding: 24px 28px 28px;
+  margin-top: 24px;
+}
+
+.sheet h2 {
+  font-family: var(--font-title);
+  font-size: 22px;
+  line-height: 1.6;
+  color: var(--navy-d);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sheet__lead {
+  font-size: 16px;
+  color: var(--ink-sub);
+  margin-bottom: 18px;
+  line-height: 1.8;
+}
+
+.slot {
+  border-top: 1px dashed var(--line);
+  padding: 18px 0 8px;
+}
+
+.slot__tmpl {
+  font-size: 18px;
+  line-height: 2.1;
+  margin-bottom: 10px;
+}
+
+.slot__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.slot__blank {
+  display: inline-block;
+  background: var(--yellow-light);
+  border-bottom: 3px solid var(--yellow-d);
+  padding: 0 16px;
+  font-style: normal;
+  line-height: 1.4;
+  vertical-align: middle;
+  border-radius: 4px 4px 0 0;
+}
+
+.slot textarea {
+  width: 100%;
+  min-height: 96px;
+  font-family: var(--font);
+  font-size: 18px;
+  line-height: 1.9;
+  color: var(--ink);
+  background: var(--card-sub);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  padding: 14px 16px;
+  resize: vertical;
+  transition: border-color .2s var(--ease), background-color .2s var(--ease);
+}
+
+.slot textarea:focus {
+  border-color: var(--navy);
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37, 74, 133, 0.12);
+}
+
+.sheet__foot {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.sheet__saved {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--t);
+  align-self: center;
+}
+
+.sheet__print {
+  display: none;
+}
+
 /* ========================= 大きさくらべ ========================= */
 
 .compare {
