@@ -24,13 +24,24 @@
   <!-- ============ 一覧のときの 大きな ヘッダー ============ -->
   <header class="site-header" id="site-header">
     <div class="site-header__inner">
-      <span class="badge">こくご「じどう車ずかんを つくろう」</span>
-      <h1>じどう<ruby>車<rt>しゃ</rt></ruby>ずかん</h1>
+      <div class="site-header__badge-wrap">
+        <span class="badge">📖 こくご「じどう車ずかんを つくろう」</span>
+      </div>
+      <h1 class="site-header__title">じどう<ruby>車<rt>しゃ</rt></ruby>ずかん</h1>
       <p class="site-header__lead">
-        しらべたい <ruby>車<rt>くるま</rt></ruby>を えらんで、<br>
-        <b>①どんな しごとを して いるか</b> → <b>②その ために どんな つくりに なって いるか</b><br>
-        の じゅんばんに よんで みよう。
+        しらべたい <ruby>車<rt>くるま</rt></ruby>を えらんで、じゅんばんに よんで みよう！
       </p>
+      <div class="site-header__steps">
+        <div class="step-pill step-pill--1">
+          <span class="step-pill__num">①</span>
+          <span class="step-pill__text">どんな しごとを しているか</span>
+        </div>
+        <span class="step-arrow" aria-hidden="true">➔</span>
+        <div class="step-pill step-pill--2">
+          <span class="step-pill__num">②</span>
+          <span class="step-pill__text">そのために どんな つくりか</span>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -48,12 +59,13 @@
 
     <!-- ==================== 一覧 ==================== -->
     <section class="view" id="view-list">
-      <nav class="tabs" id="tabs" aria-label="しごとで えらぶ"></nav>
-
-      <div class="list-tools">
-        <a class="btn btn--tool" href="#/kurabe">
-          📏 <ruby>大<rt>おお</rt></ruby>きさくらべを <ruby>見<rt>み</rt></ruby>る
-        </a>
+      <div class="toolbar-area">
+        <nav class="tabs" id="tabs" aria-label="しごとで えらぶ"></nav>
+        <div class="list-tools">
+          <a class="btn btn--tool" href="#/kurabe">
+            📏 <ruby>大<rt>おお</rt></ruby>きさくらべを <ruby>見<rt>み</rt></ruby>る
+          </a>
+        </div>
       </div>
 
       <p class="list-count" id="list-count" aria-live="polite"></p>
@@ -64,20 +76,30 @@
       </p>
 
       <section class="note">
-        <h2>💡 がくしゅうの ポイント</h2>
-        <p>
-          どの ページも <b>おなじ じゅんじょ</b>で かいて あります。<br>
-          ①「どんな しごとを して いますか。」 →
-          ②「〜する しごとを して います。」 →
-          ③「<b>その ために</b>、〜」<br>
-          この じゅんばんで かくと、じぶんの 「じどう<ruby>車<rt>しゃ</rt></ruby>ずかん」の <ruby>文<rt>ぶん</rt></ruby>に なります。
-        </p>
-        <p>
-          🔬 <b>ものすごい かんさつ</b>… <ruby>車<rt>くるま</rt></ruby>の ページの
-          「ものすごく <ruby>大<rt>おお</rt></ruby>きく <ruby>見<rt>み</rt></ruby>る」を おすと、
-          その <ruby>車<rt>くるま</rt></ruby>を まっくらな へやで ライトを あてた ように、
-          ものすごく <ruby>大<rt>おお</rt></ruby>きく して しらべられます。
-        </p>
+        <div class="note__header">
+          <h2>💡 がくしゅうの ポイント</h2>
+        </div>
+        <div class="note__content">
+          <p class="note__lead">どの ページも <b>おなじ じゅんじょ</b>で かいて あります。</p>
+          <div class="note__flow">
+            <span class="flow-item flow-item--q">①「どんな しごとを して いますか。」</span>
+            <span class="flow-arrow">➔</span>
+            <span class="flow-item flow-item--a">②「〜する しごとを して います。」</span>
+            <span class="flow-arrow">➔</span>
+            <span class="flow-item flow-item--t">③「<b>その ために</b>、〜」</span>
+          </div>
+          <p class="note__sub">この じゅんばんで かくと、じぶんの 「じどう<ruby>車<rt>しゃ</rt></ruby>ずかん」の <ruby>文<rt>ぶん</rt></ruby>に なります。</p>
+          <hr class="note__divider">
+          <div class="note__extra">
+            <span class="icon">🔬</span>
+            <div>
+              <b>ものすごい かんさつ</b>：<ruby>車<rt>くるま</rt></ruby>の ページの
+              「ものすごく <ruby>大<rt>おお</rt></ruby>きく <ruby>見<rt>み</rt></ruby>る」を おすと、
+              その <ruby>車<rt>くるま</rt></ruby>を まっくらな へやで ライトを あてた ように、
+              ものすごく <ruby>大<rt>おお</rt></ruby>きく して しらべられます。
+            </div>
+          </div>
+        </div>
       </section>
     </section>
 
