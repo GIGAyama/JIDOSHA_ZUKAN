@@ -79,23 +79,6 @@ body.kz-open {
   white-space: nowrap;
 }
 
-.kz__count.is-done {
-  background: var(--lit);
-  border-color: var(--lit);
-  color: #2a1600;
-  animation: kzPop .5s var(--ease) both;
-}
-
-@keyframes kzPop {
-  from {
-    transform: scale(.7);
-  }
-
-  60% {
-    transform: scale(1.12);
-  }
-}
-
 .kz-btn {
   font-family: var(--font);
   font-size: 15px;
@@ -558,50 +541,6 @@ body.kz-open {
   color: #5ddba0;
 }
 
-/* ============================ ぜんぶ みつけた ============================ */
-
-.kz__done {
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-  display: grid;
-  place-items: center;
-  background: rgba(6, 11, 20, .72);
-  animation: kzIn .3s var(--ease) both;
-}
-
-.kz__done-card {
-  background: #fff;
-  color: var(--ink);
-  border-radius: var(--radius);
-  padding: 26px 30px;
-  text-align: center;
-  box-shadow: var(--shadow-lg);
-  animation: kzPop .5s var(--ease) both;
-  max-width: min(92%, 420px);
-}
-
-.kz__done-card h2 {
-  font-family: var(--font-title);
-  font-size: 28px;
-  color: var(--lit);
-  margin-bottom: 8px;
-}
-
-.kz__done-card p {
-  font-size: 16px;
-  line-height: 1.9;
-  margin-bottom: 16px;
-}
-
-.kz__done-card .btn,
-.kz__done-card .btn--next {
-  width: auto;
-  margin: 4px;
-  min-height: 54px;
-  font-size: 17px;
-}
-
 /* ============================== ちいさい がめん ============================== */
 
 @media (max-width: 760px) {
@@ -669,10 +608,7 @@ body.kz-open {
 @media (prefers-reduced-motion: reduce) {
 
   .kz,
-  .kz__panel,
-  .kz__done,
-  .kz__done-card,
-  .kz__count.is-done {
+  .kz__panel {
     animation: none;
   }
 

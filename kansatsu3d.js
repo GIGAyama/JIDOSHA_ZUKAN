@@ -285,7 +285,7 @@
       rail: $('#kz-rail'), count: $('#kz-count'), range: $('#kz-range'),
       turn: $('#kz-turn'),
       found: [],
-      sel: -1, celebrated: false, handlers: []
+      sel: -1, handlers: []
     };
     S.found = C.loadFound(S);     /* イラスト版と おなじ キーから 読む */
 
@@ -334,8 +334,6 @@
         window.jzSpeech.speak(e.target.closest('#kz-say'), box);
         return;
       }
-      if (e.target.closest('#kz-done-stay')) { var d = $('#kz-done'); if (d) d.remove(); return; }
-      if (e.target.closest('#kz-done-go')) { location.hash = '#/car/' + S.car.id; return; }
     });
 
     /* 車を 直せつ さわる → その ぶぶんへ */

@@ -214,19 +214,19 @@
       await go('#/kansatsu/crane');
       await until(function () { return $$('.kz-mark').length > 0; }, 2500);
       await wait(60);
-      ok($('#kz-count').textContent.indexOf('0 /') > 0, 'はじめは みつけた 0こ');
+      ok(/0こ/.test($('#kz-count').textContent), 'はじめは 見た ぶぶん 0こ');
       $$('.kz-mark')[0].click();
       await wait(80);
       ok($$('#kz-stage svg .is-lit').length > 0, '◯を おすと 絵の ぶぶんが 光る');
       ok(!!$('#kz-panel'), 'せつめいの パネルが 出る');
       ok($('#kz-panel .kz__panel-name').textContent.length > 0, 'ぶぶんの 名まえが 出る');
-      ok($('#kz-count').textContent.indexOf('1 /') > 0, 'みつけた 1こに なる');
+      ok(/1こ/.test($('#kz-count').textContent), '見た ぶぶんが 1こに なる');
       ok(/kz-chip is-found|is-found/.test($$('.kz-chip')[0].className), 'リストに ✓が つく');
 
       $('#kz-next').click();
       await wait(80);
       ok($('#kz-panel .kz__panel-n').textContent === '2', 'つぎの ぶぶんへ すすめる');
-      ok($('#kz-count').textContent.indexOf('2 /') > 0, 'みつけた 2こに なる');
+      ok(/2こ/.test($('#kz-count').textContent), '見た ぶぶんが 2こに なる');
 
       $('#kz-pclose').click();
       await wait(30);
@@ -238,7 +238,7 @@
       await go('#/kansatsu/crane');
       await until(function () { return $$('.kz-mark').length > 0; }, 2500);
       await wait(60);
-      ok($('#kz-count').textContent.indexOf('2 /') > 0, 'みつけた ✓が ほぞんされる');
+      ok(/2こ/.test($('#kz-count').textContent), '見た ✓が ほぞんされる');
       $('#kz-back').click();
       await wait(80);
       ok(!$('#view-detail').hidden && $('#view-kansatsu').hidden, 'ずかんの ページに もどれる');

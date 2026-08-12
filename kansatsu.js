@@ -10,7 +10,7 @@
      ・絵の 上の ◯マークを おすと、そこへ カメラが とんで いって 光る
      ・その ぶぶんの 名まえと せつめい（parts-data.js）が 出る
      ・その 車の「③ つくり」の 文が あれば、いっしょに ならぶ
-     ・見た ぶぶんには ✓が つく。ぜんぶ 見つけると おいわいが 出る
+     ・見た ぶぶんには ✓が つく（たんまつに ほぞんされる）
      ・Esc で とじる（ぶぶんを えらんで いる ときは、まず えらぶのを やめる）
 
    ■ しくみ（さわる ときの めやす）
@@ -535,11 +535,6 @@
         select((S.sel + 1) % S.parts.length);
         return;
       }
-      if (e.target.closest('#kz-done-stay')) { $('#kz-done').remove(); return; }
-      if (e.target.closest('#kz-done-go')) {
-        location.hash = '#/car/' + S.car.id;
-        return;
-      }
     });
 
     /* ズームの バー */
@@ -610,7 +605,7 @@
       range: $('#kz-range'),
       zval: $('#kz-zval'),
       parts: [], markEls: [], chipEls: [],
-      sel: -1, raf: 0, moving: false, celebrated: false,
+      sel: -1, raf: 0, moving: false,
       found: []
     };
     S.found = C.loadFound(S);
