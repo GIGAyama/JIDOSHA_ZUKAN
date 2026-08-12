@@ -1084,7 +1084,7 @@ window.carsData = [
     kana: 'きをはこぶくるま',
     category: 'sodateru',
     art: 'logger',
-    photo: 'assets/logger.png',
+    photo: 'assets/logger.webp',
     shigoto: '<ruby>木<rt>き</rt></ruby>を はこぶ <ruby>車<rt>くるま</rt></ruby>は、<ruby>山<rt>やま</rt></ruby>で きりたおした <ruby>木<rt>き</rt></ruby>を、まちまで はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -1104,7 +1104,7 @@ window.carsData = [
     kana: 'くすりをまくくるま',
     category: 'sodateru',
     art: 'sprayer',
-    photo: 'assets/sprayer.png',
+    photo: 'assets/sprayer.webp',
     shigoto: 'くすりを まく <ruby>車<rt>くるま</rt></ruby>は、はたけの さくもつを <ruby>虫<rt>むし</rt></ruby>から まもる くすりを まく しごとを して います。',
     tsukuri: [
       {
@@ -1126,7 +1126,7 @@ window.carsData = [
     kana: 'トーイングカー',
     category: 'basho',
     art: 'towing',
-    photo: 'assets/towing.png',
+    photo: 'assets/towing.webp',
     shigoto: 'トーイングカーは、くうこうで ひこうきを おしたり ひっぱったり して、うごかす しごとを して います。',
     tsukuri: [
       {
@@ -1146,7 +1146,7 @@ window.carsData = [
     kana: 'きゅうゆしゃ',
     category: 'basho',
     art: 'fueler',
-    photo: 'assets/fueler.png',
+    photo: 'assets/fueler.webp',
     shigoto: 'きゅうゆ<ruby>車<rt>しゃ</rt></ruby>は、くうこうで、ひこうきに あぶらを <ruby>入<rt>い</rt></ruby>れる しごとを して います。',
     tsukuri: [
       {
@@ -1166,7 +1166,7 @@ window.carsData = [
     kana: 'ハイリフトローダー',
     category: 'basho',
     art: 'cargoloader',
-    photo: 'assets/cargoloader.png',
+    photo: 'assets/cargoloader.webp',
     shigoto: 'ハイリフトローダーは、ひこうきの <ruby>中<rt>なか</rt></ruby>へ にもつを つみこむ しごとを して います。',
     tsukuri: [
       {
@@ -1186,7 +1186,7 @@ window.carsData = [
     kana: 'タラップしゃ',
     category: 'basho',
     art: 'stairs',
-    photo: 'assets/stairs.png',
+    photo: 'assets/stairs.webp',
     shigoto: 'タラップ<ruby>車<rt>しゃ</rt></ruby>は、ひこうきの <ruby>入口<rt>いりぐち</rt></ruby>まで、のりおりする <ruby>人<rt>ひと</rt></ruby>の かいだんを はこぶ しごとを して います。',
     tsukuri: [
       {
@@ -1206,7 +1206,7 @@ window.carsData = [
     kana: 'リーチスタッカー',
     category: 'basho',
     art: 'stacker',
-    photo: 'assets/stacker.png',
+    photo: 'assets/stacker.webp',
     shigoto: 'リーチスタッカーは、みなとで、おもい コンテナを つみ<ruby>上<rt>あ</rt></ruby>げる しごとを して います。',
     tsukuri: [
       {
@@ -1226,7 +1226,7 @@ window.carsData = [
     kana: 'せんろのてんけんしゃ',
     category: 'basho',
     art: 'railcar',
-    photo: 'assets/railcar.png',
+    photo: 'assets/railcar.webp',
     shigoto: 'せんろの てんけん<ruby>車<rt>しゃ</rt></ruby>は、でんしゃが とまった よるに、せんろを しらべて なおす しごとを して います。',
     tsukuri: [
       {
