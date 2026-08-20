@@ -19,3 +19,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+## 適用範囲についての 但し書き / Scope note
+
+このライセンスは、本リポジトリの **ソースコード** に適用されます。
+`assets/` 配下の画像等の素材には適用されません。素材を再利用するときは、
+それぞれの権利者の利用条件を確認してください。
+
+This license applies to the **source code** in this repository.
+It does not apply to the images and other materials under `assets/`.
+Check the terms of the respective rights holders before reusing those materials.
