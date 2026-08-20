@@ -6,7 +6,7 @@
 画面の操作としてたどれるようにしてあります。本を一人1冊用意できなくても、児童が各自で
 「自分の1台」を調べ、そのまま書く活動に入れることをねらいとしています。
 
-公開URL（Pages を有効にした場合）: <https://gigayama.github.io/JIDOSHA_ZUKAN/>
+公開URL（Pages を有効にした場合）: <https://jidosha-zukan.giga-school.com/>
 
 ---
 
@@ -252,7 +252,7 @@ python3 -m http.server 8000
 
 1. リポジトリの **Settings → Pages** を開く
 2. Source を `Deploy from a branch`、Branch を `main` / `/ (root)` にする
-3. 数分後に <https://gigayama.github.io/JIDOSHA_ZUKAN/> で見られます
+3. 数分後に <https://jidosha-zukan.giga-school.com/> で見られます
 
 ---
 
