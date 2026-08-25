@@ -1,0 +1,56 @@
+# =====================================================================
+# ci.yml — このリポジトリの最低限の点検
+# =====================================================================
+# 素の HTML / CSS / JavaScript で配信していて、ビルドもテストも持たない。
+# それでも次の 2 つは機械で見ておきたい。
+#
+#   1. syntax — 8 本の .js が構文として壊れていないか。GitHub Pages は
+#      壊れた JavaScript でもそのまま配るので、画面が白いまま公開される。
+#   2. drift  — 配られたスキルが正本からずれていないか。
+#
+# ⚠️ vendor/ は外から持ってきたもの（three.js）なので見ない。
+#    こちらで直せないものを赤くしても、直しようがない。
+#
+# ⚠️ これまでこのリポジトリには検査が 1 つも無かった。
+# =====================================================================
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: .js の構文検査（vendor と配られたスキルは除く）
+        run: |
+          set -e
+          fail=0
+          n=0
+          for f in $(find . -name '*.js' -not -path './vendor/*' -not -path './.claude/*' -not -path './node_modules/*'); do
+            node --check "$f" || fail=1
+            n=$((n+1))
+          done
+          echo "$n 本の .js を見ました"
+          exit $fail
+
+  # 配られたスキル（.claude/skills/）が正本からずれていないか。
+  # 正本は GIGAyama.github.io/standards/ にあり、そこを checkout して直に照合する。
+  # 実行時の依存は増えない（このリポジトリには何も足さない）。
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: GIGAyama/GIGAyama.github.io
+          path: .standards-src
+      - name: 正本とのずれ検知
+        run: node .standards-src/standards/check-drift.mjs --standards .standards-src/standards
