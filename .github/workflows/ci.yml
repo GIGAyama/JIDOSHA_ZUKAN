@@ -34,14 +34,14 @@ jobs:
           set -e
           fail=0
           n=0
-          for f in $(find . -name '*.js' -not -path './vendor/*' -not -path './.claude/*' -not -path './node_modules/*'); do
+          for f in $(find . -name '*.js' -not -path './vendor/*' -not -path './.claude/*' -not -path './.agents/*' -not -path './node_modules/*'); do
             node --check "$f" || fail=1
             n=$((n+1))
           done
           echo "$n 本の .js を見ました"
           exit $fail
 
-  # 配られたスキル（.claude/skills/）が正本からずれていないか。
+  # 配られたスキル（.claude/skills/ と .agents/skills/）が正本からずれていないか。
   # 正本は GIGAyama.github.io/standards/ にあり、そこを checkout して直に照合する。
   # 実行時の依存は増えない（このリポジトリには何も足さない）。
   drift:
