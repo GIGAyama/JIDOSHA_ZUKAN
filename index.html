@@ -129,7 +129,22 @@
       イラストは この サイトで かいた ものです。
       せつめいの <ruby>文<rt>ぶん</rt></ruby>は、<ruby>教科書<rt>きょうかしょ</rt></ruby>と おなじ じゅんじょで あたらしく かきました。
     </p>
+    <!-- ⚠️ 行き先の リンクを 手で 書かない こと。中身は 正本の 部品
+         standards/web/giga-app-links.js（配布物 web/giga-app-links.js）が
+         この 中に 出す。文言も 並びも 行き先も、あちらで 決まって いる。
+         ここに 手で 書くと、次に 文言が 変わった ときに 42 本ぶんの
+         直し忘れが 起きる。
+
+         ⚠️ <div> にしないこと。そこで 改行が 入って、1 行に 収まらなく なる。
+
+         ⚠️ data-links で「つかいかた」を 外して ある。この アプリには まだ
+            docs/manual/ が 無く、既定の まま 出すと 行き止まりの リンクに なる。
+            マニュアルを 書いたら、この 属性ごと 消す こと。 -->
+    <span data-giga-links data-links="terms,privacy"></span>
   </footer>
+
+  <!-- 利用規約・プライバシーへの 行き先を、上の <span data-giga-links> に 出す。 -->
+  <script src="web/giga-app-links.js" defer></script>
 
   <script src="car-art.js"></script>
   <script src="cars-data.js"></script>
