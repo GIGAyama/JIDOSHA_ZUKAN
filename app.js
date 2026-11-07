@@ -122,6 +122,26 @@
   /* 写真の 車で、イラストに 入れかえられる か */
   function hasArtSwap(car) { return !!(car && car.photo && window.carArt.has(car.art)); }
 
+  /* 写真の でどころ（photo-credits.js）。ライセンスの 条件なので、写真を 出す ところには かならず 出す。
+     大人むけの 小さな 字。リンクは 新しい タブで ひらく */
+  function esc(t) {
+    return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function photoCredit(car) {
+    var c = car && car.photo && window.photoCredits && window.photoCredits[car.id];
+    if (!c) return '';
+    var lic = c.licenseUrl
+      ? '<a href="' + esc(c.licenseUrl) + '" target="_blank" rel="noopener noreferrer">' + esc(c.license) + '</a>'
+      : esc(c.license);
+    return '<p class="photo-credit">📷 しゃしん：' +
+      '<a href="' + esc(c.source) + '" target="_blank" rel="noopener noreferrer">' + esc(c.author || 'Wikimedia Commons') + '</a>' +
+      '（' + lic + '／Wikimedia Commons）' +
+      (c.changes ? '<span class="photo-credit__chg">' + esc(c.changes) + '</span>' : '') +
+      '</p>';
+  }
+
   /* ------------------------------------------------------------------
      3Dモデル（car3d.js）— ある 車だけ「3Dで 見る」が 出る
      ------------------------------------------------------------------ */
@@ -447,6 +467,7 @@
       '「つくり」の <b>ぶん</b>を おすと、その ぶぶんが <b>光ります</b>' +
       (hasArtSwap(car) ? '（しゃしんの ときは <b>えに かわって</b> 光ります）' : '') + '。<br>' +
       'もっと よく 見る ときは、<b>ものすごく <ruby>大<rt>おお</rt></ruby>きく</b> して みよう。</p>' +
+      photoCredit(car) +
       '</div>' +
 
       '<div class="steps">' +
@@ -877,6 +898,7 @@
 
   /* hon.js（じどう車の 本）が つかう 道具 */
   window.jzApp = {
+    photoCredit: photoCredit,
     store: store,
     plain: plain,
     speak: speak,

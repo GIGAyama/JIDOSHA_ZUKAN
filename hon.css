@@ -1050,3 +1050,25 @@ body.is-memo-open {
     font-size: 17px;
   }
 }
+
+/* ---------- 写真の でどころ（app.js の photoCredit） ---------- */
+.photo-credit {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-sub);
+  text-align: center;
+  word-break: break-word;
+}
+
+.photo-credit a {
+  color: var(--navy);
+}
+
+.photo-credit__chg {
+  display: block;
+}
+
+.site-footer a {
+  color: var(--navy);
+}

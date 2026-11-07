@@ -229,6 +229,7 @@
       '<figcaption class="hon__cap">' + (car.photo ? '📷 ' : '🖼️ ') + name +
       (parts.length ? '<br>「ここを <ruby>見<rt>み</rt></ruby>て！」を おすと、その ぶぶんが <ruby>光<rt>ひか</rt></ruby>ります。' : '') +
       '</figcaption>' +
+      A.photoCredit(car) +
       '</figure>' +
       '</div>' +
 
