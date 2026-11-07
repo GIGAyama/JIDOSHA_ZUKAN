@@ -131,6 +131,28 @@ for (const [id, e] of Object.entries(data)) {
 }
 if (all) for (const id of cars.keys()) if (!seen.has(id)) E(id, 'hon-data.js に ない');
 
+// 子どもが 読む 文に、自前で 配る フォント（fonts.config.json）に ない 漢字が ないか。
+// ない 字は 端末の 書体に おちて、その 字だけ 形が かわる（□には ならない）。
+// 止めは しない。足すなら fonts.config.json の extra に 入れて build-fonts を 走らせる。
+try {
+  const { kanjiForGrades } = await import('./fonts/chars.mjs');
+  const cfg = JSON.parse(fs.readFileSync(`${repo}/fonts.config.json`, 'utf8'));
+  const have = new Set([...kanjiForGrades(cfg.grades || []) + (cfg.extra || '')]);
+  for (const f of cfg.scan || []) {
+    try { for (const ch of fs.readFileSync(`${repo}/${f}`, 'utf8')) have.add(ch); } catch (e) { /* なければ とばす */ }
+  }
+  for (const [id, e] of Object.entries(data)) {
+    if (id.startsWith('_') || !e || !e.pages) continue;
+    let kid = e.catch || '';
+    e.pages.forEach((pg) => { kid += pg.h; (pg.s || []).forEach((s) => { kid += s.t; }); });
+    (e.kazu || []).forEach((k) => { kid += k.l + k.v; });
+    const miss = [...new Set([...plain(kid)].filter((c) => KANJI.test(c) && !have.has(c)))];
+    if (miss.length) Wn(id, `フォントに ない 漢字「${miss.join('')}」→ fonts.config.json の extra に 足して node tools/fonts/build-fonts.mjs`);
+  }
+} catch (err) {
+  Wn('-', `フォントの しらべに しっぱい: ${err.message}`);
+}
+
 for (const w of warns) console.log('warn ' + w);
 for (const e of errs) console.log('NG   ' + e);
 console.log(`\n${seen.size} 台 / NG ${errs.length} / warn ${warns.length}`);

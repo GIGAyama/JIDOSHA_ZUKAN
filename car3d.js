@@ -2462,9 +2462,9 @@ MODEL3D.ambulance = {
       B.box({ x: bx + blen * 0.26, y: top - 0.52, z: sz * (W / 2 - 0.035), w: blen * 0.34 + 0.08, h: 0.70, d: 0.045, r: 0.07, mat: matte(0x11151b, 0.5) });
       /* 赤い ライン */
       B.box({ x: bx, y: bot + 0.72, z: sz * (W / 2 + 0.012), w: blen - 0.10, h: 0.16, d: 0.02, r: 0.01, mat: paint(RED, { rough: 0.3 }) });
-      /* 赤十字の マーク */
-      B.box({ x: bx - blen * 0.22, y: top - 0.85, z: sz * (W / 2 + 0.014), w: 0.13, h: 0.42, d: 0.02, r: 0.01, mat: paint(RED, { rough: 0.3 }) });
-      B.box({ x: bx - blen * 0.22, y: top - 0.85, z: sz * (W / 2 + 0.014), w: 0.42, h: 0.13, d: 0.02, r: 0.01, mat: paint(RED, { rough: 0.3 }) });
+      /* 赤十字の マークは つけない。日本の しょうぼうの きゅうきゅう車は 赤十字を
+         つけない（赤十字の しるしは ほうりつで つかえる ところが きまって いる）。
+         赤い ラインだけに して おく */
       /* よこの ちいさな マーカー */
       B.lamp({ x: bx - blen / 2 + 0.25, y: bot + 0.10, z: sz * (W / 2 + 0.012), w: 0.09, h: 0.06, d: 0.03, color: PAL.lampR, strength: 0.8, aux: true });
     });
