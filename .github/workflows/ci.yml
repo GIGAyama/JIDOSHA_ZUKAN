@@ -2,11 +2,14 @@
 # ci.yml — このリポジトリの最低限の点検
 # =====================================================================
 # 素の HTML / CSS / JavaScript で配信していて、ビルドもテストも持たない。
-# それでも次の 2 つは機械で見ておきたい。
+# それでも次の 3 つは機械で見ておきたい。
 #
-#   1. syntax — 8 本の .js が構文として壊れていないか。GitHub Pages は
+#   1. syntax — .js が構文として壊れていないか。GitHub Pages は
 #      壊れた JavaScript でもそのまま配るので、画面が白いまま公開される。
-#   2. drift  — 配られたスキルが正本からずれていないか。
+#   2. hon    — じどう車の本（hon-data.js）の中身のきまり。ふりがなの付け忘れ、
+#      教科書の型（その ために）の書きこみ、材料の数の不足、絵に無い部分の指定。
+#      ⚠️ 事実が正しいかは見られない。それは src を読んで人が確かめる。
+#   3. drift  — 配られたスキルが正本からずれていないか。
 #
 # ⚠️ vendor/ は外から持ってきたもの（three.js）なので見ない。
 #    こちらで直せないものを赤くしても、直しようがない。
@@ -40,6 +43,16 @@ jobs:
           done
           echo "$n 本の .js を見ました"
           exit $fail
+
+  hon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: じどう車の本の中身を検査
+        run: node tools/check-hon.mjs
 
   # 配られたスキル（.claude/skills/ と .agents/skills/）が正本からずれていないか。
   # 正本は GIGAyama.github.io/standards/ にあり、そこを checkout して直に照合する。

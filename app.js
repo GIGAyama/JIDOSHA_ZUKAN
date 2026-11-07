@@ -2,6 +2,7 @@
    app.js — がめんの きりかえ・じゅんばんに ひらく しくみ・こえで きく
 
    ・ハッシュルーティング  #/ 一覧 / #/car/<id> 詳細 / #/kurabe 大きさくらべ
+                           #/hon 本の もくじ / #/hon/<id> 本の ページ（hon.js）
    ・詳細は ①とい → ②しごと → ③つくり の じゅんにしか ひらかない
    ・「つくり」の 文を おすと、絵の その ぶぶんが 光って ふきだしが 出る
    ・読み上げは <ruby> の よみを つかうので、漢字を まちがえて 読まない
@@ -23,6 +24,8 @@
   var viewDetail = $('#view-detail');
   var viewCompare = $('#view-compare');
   var viewKansatsu = $('#view-kansatsu');
+  var viewHon = $('#view-hon');
+  var elHonHeader = $('#hon-header');
 
   /* ------------------------------------------------------------------
      ほぞん（学校の たんまつで ブロックされて いても うごくように）
@@ -274,6 +277,12 @@
      ================================================================== */
   var filter = store.get('filter', 'all');
 
+  /* 一覧は 2つの 入り口で つかう。
+     'zukan' … #/   ①とい→②しごと→③つくり の ずかん（じどう車くらべの ふくしゅう）
+     'hon'   … #/hon 本の もくじ（じどう車ずかんを つくろう の 材料あつめ）
+     カードの 行き先と 見出しだけが ちがう。しごとの タブや ★は おなじ ものを つかう。 */
+  var listMode = 'zukan';
+
   /* 「さっき 見て いた 車」— ずかんに もどった ときに しるしを つける */
   var lastCarId = null;
 
@@ -292,18 +301,38 @@
     $('#tabs').innerHTML = html;
   }
 
+  /* 本の もくじで、線を ひいた かずを カードに 出す */
+  function memoBadge(car) {
+    if (listMode !== 'hon' || !window.jzHon) return '';
+    var n = window.jzHon.count(car.id);
+    if (!n.s && !n.t) return '';
+    return '<span class="card__memo" aria-label="メモ しごと ' + n.s + 'こ、つくり ' + n.t + 'こ">📝 ' +
+      '<span class="ink-s">' + n.s + '</span>・<span class="ink-t">' + n.t + '</span></span>';
+  }
+
   function cardHTML(car) {
     var cat = catMap[car.category] || { icon: '', name: '' };
     var on = isStar(car.id);
+    /* 本の ページが まだ ない 車は、①②③の ページへ（行き止まりに しない） */
+    var href = (listMode === 'hon' && window.jzHon && window.jzHon.has(car.id)) ? '#/hon/' : '#/car/';
     return '<article class="card' + (car.id === lastCarId ? ' is-last' : '') + '">' +
       '<button type="button" class="card__star js-star" data-id="' + car.id + '" ' +
       'aria-pressed="' + on + '" aria-label="' + plain(car.name) + 'を えらんだ 車に する">' +
       (on ? '★' : '☆') + '</button>' +
       '<div class="card__art">' + artHTML(car, 'fit') + '</div>' +
       '<p class="card__cat">' + cat.icon + ' ' + cat.name + '</p>' +
-      '<h3 class="card__name"><a class="card__link" href="#/car/' + car.id + '">' +
+      '<h3 class="card__name"><a class="card__link" href="' + href + car.id + '">' +
       car.name + '</a></h3>' +
+      memoBadge(car) +
       '</article>';
+  }
+
+  function renderTools() {
+    $('#list-tools').innerHTML = listMode === 'hon'
+      ? '<a class="btn btn--tool" href="#/">📖 ①②③の ずかんを <ruby>見<rt>み</rt></ruby>る</a>' +
+        '<a class="btn btn--tool" href="#/kurabe">📏 <ruby>大<rt>おお</rt></ruby>きさくらべを <ruby>見<rt>み</rt></ruby>る</a>'
+      : '<a class="btn btn--tool btn--hon" href="#/hon">📚 <ruby>本<rt>ほん</rt></ruby>で しらべる</a>' +
+        '<a class="btn btn--tool" href="#/kurabe">📏 <ruby>大<rt>おお</rt></ruby>きさくらべを <ruby>見<rt>み</rt></ruby>る</a>';
   }
 
   function renderList() {
@@ -364,6 +393,13 @@
   var TAPME = '👆 おすと <ruby>光<rt>ひか</rt></ruby>る';
   var TAPBACK = '✕ もどす';
 
+  /* その 車の 本の ページへ（本が ある 車だけ） */
+  function honLink(car) {
+    if (!window.jzHon || !window.jzHon.has(car.id)) return '';
+    return '<a class="btn btn--hon-go" href="#/hon/' + car.id + '">' +
+      '📚 この <ruby>車<rt>くるま</rt></ruby>の <ruby>本<rt>ほん</rt></ruby>を よむ</a>';
+  }
+
   function detailHTML(car) {
     var cat = catMap[car.category] || { icon: '', name: '' };
     var t = car.tsukuri;
@@ -400,6 +436,7 @@
       '🧊 3Dで まわして <ruby>見<rt>み</rt></ruby>る</button>' +
       '<a class="btn btn--zoom" href="#/kansatsu/' + car.id + '">' +
       '🔬 ものすごく <ruby>大<rt>おお</rt></ruby>きく <ruby>見<rt>み</rt></ruby>る</a>' +
+      honLink(car) +
       '</div>' +
       '<div class="art-anim" id="art-anim"></div>' +
       /* 3つの 見せかたは、それぞれ やくわりが ちがう。
@@ -439,6 +476,7 @@
       '<div class="done__acts">' +
       '<a class="btn btn--zoom" href="#/kansatsu/' + car.id + '">' +
       '🔬 ものすごく <ruby>大<rt>おお</rt></ruby>きく <ruby>見<rt>み</rt></ruby>る</a>' +
+      honLink(car) +
       '</div></div>' +
 
       '</div>' +
@@ -678,11 +716,15 @@
     if (e.key === 'Escape') { clearPin(); stopSpeech(); }
   });
 
-  $('#btn-back').addEventListener('click', function () { location.hash = '#/'; });
+  /* 本の ページからは 本の もくじへ。それ いがいは、さいごに 見た 一覧へ */
+  $('#btn-back').addEventListener('click', function () {
+    location.hash = (!viewHon.hidden || listMode === 'hon') ? '#/hon' : '#/';
+  });
 
   $('#btn-star').addEventListener('click', function () {
-    if (!state.car) return;
-    var on = toggleStar(state.car.id);
+    var car = !viewHon.hidden ? carById(lastCarId) : state.car;
+    if (!car) return;
+    var on = toggleStar(car.id);
     this.setAttribute('aria-pressed', String(on));
     $('.star', this).textContent = on ? '★' : '☆';
     $('.btn-star__text', this).textContent = on ? 'えらんで います' : 'えらんだ 車に する';
@@ -718,7 +760,8 @@
   /* ==================================================================
      がめんの きりかえ
      ================================================================== */
-  var lastListY = 0;          /* 一覧で どこまで スクロールして いたか */
+  /* 一覧で どこまで スクロールして いたか（ずかんと 本の もくじで べつべつ） */
+  var lastListY = { zukan: 0, hon: 0 };
 
   function setView(name) {
     stopSpeech();
@@ -727,21 +770,26 @@
       if (window.kansatsu3d) { window.kansatsu3d.unmount(); }
     }
     if (name !== 'detail') { unmount3d(); }
+    if (name !== 'hon' && window.jzHon) { window.jzHon.unmount(); }
     viewList.hidden = name !== 'list';
     viewDetail.hidden = name !== 'detail';
     viewCompare.hidden = name !== 'compare';
     viewKansatsu.hidden = name !== 'kansatsu';
-    elHeader.hidden = name !== 'list';
-    elTopbar.hidden = name !== 'detail';
-    if (name === 'compare') {
-      elTopbar.hidden = false;
-      $('#btn-star').hidden = true;
-    } else {
-      $('#btn-star').hidden = false;
-    }
-    /* ずかんに もどった ときは、さがして いた ところへ もどす
+    viewHon.hidden = name !== 'hon';
+    elHeader.hidden = !(name === 'list' && listMode === 'zukan');
+    elHonHeader.hidden = !(name === 'list' && listMode === 'hon');
+    $('#note-zukan').hidden = listMode !== 'zukan';
+    $('#note-hon').hidden = listMode !== 'hon';
+    elTopbar.hidden = !(name === 'detail' || name === 'compare' || name === 'hon');
+    $('#btn-star').hidden = name === 'compare';
+    $('#btn-back').innerHTML = '<span aria-hidden="true">←</span> ' +
+      ((name === 'hon' || listMode === 'hon')
+        ? '<ruby>本<rt>ほん</rt></ruby>の もくじに もどる'
+        : 'ずかんに もどる');
+    document.body.classList.toggle('is-hon', name === 'hon');
+    /* 一覧に もどった ときは、さがして いた ところへ もどす
        （60だい あるので、まいかい 先頭に もどると さがしなおしに なる） */
-    window.scrollTo(0, name === 'list' ? lastListY : 0);
+    window.scrollTo(0, name === 'list' ? lastListY[listMode] : 0);
   }
 
   /* ==================================================================
@@ -760,11 +808,31 @@
     window.kansatsu.mount(car, viewKansatsu);
   }
 
+  /* ==================================================================
+     じどう車の 本（中身は hon.js）
+     ================================================================== */
+  function showHon(car) {
+    listMode = 'hon';                   /* もどる ボタンの 行き先を 本の もくじに */
+    lastCarId = car.id;
+    setView('hon');
+    if (!window.jzHon.mount(car, viewHon)) { location.replace('#/car/' + car.id); return; }
+    document.title = plain(car.name) + 'の 本 - じどう車ずかん';
+    var star = $('#btn-star');
+    var on = isStar(car.id);
+    star.setAttribute('aria-pressed', String(on));
+    $('.star', star).textContent = on ? '★' : '☆';
+    $('.btn-star__text', star).textContent = on ? 'えらんで います' : 'えらんだ 車に する';
+  }
+
   function route() {
     var h = location.hash || '#/';
     /* 一覧から はなれる まえに、いま 見て いた ところを おぼえて おく */
-    if (!viewList.hidden) { lastListY = window.scrollY || window.pageYOffset || 0; }
+    if (!viewList.hidden) { lastListY[listMode] = window.scrollY || window.pageYOffset || 0; }
     clearPin();
+    if (h.indexOf('#/hon/') === 0 && window.jzHon) {
+      var hcar = carById(h.slice('#/hon/'.length));
+      if (hcar && window.jzHon.has(hcar.id)) { showHon(hcar); return; }
+    }
     if (h.indexOf('#/kansatsu/') === 0) {
       var kcar = carById(h.slice('#/kansatsu/'.length));
       if (kcar && window.kansatsu &&
@@ -775,10 +843,14 @@
       if (car) { showDetail(car); return; }
     }
     if (h === '#/kurabe') { showCompare(); return; }
+    listMode = (h === '#/hon' || h.indexOf('#/hon/') === 0) ? 'hon' : 'zukan';
     renderTabs();
+    renderTools();
     renderList();
     setView('list');
-    document.title = 'じどう車ずかん - しごとと つくりを しらべよう';
+    document.title = listMode === 'hon'
+      ? 'じどう車の 本 - しごとと つくりを さがそう'
+      : 'じどう車ずかん - しごとと つくりを しらべよう';
   }
 
   window.addEventListener('hashchange', route);
@@ -802,6 +874,18 @@
     }
     sync3dToggle(state.car);
   });
+
+  /* hon.js（じどう車の 本）が つかう 道具 */
+  window.jzApp = {
+    store: store,
+    plain: plain,
+    speak: speak,
+    stopSpeech: stopSpeech,
+    artHTML: artHTML,
+    hasArtSwap: hasArtSwap,
+    placeCallout: placeCallout,
+    catMap: catMap
+  };
 
   dropOldSheets();
   route();

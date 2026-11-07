@@ -245,6 +245,169 @@
       ok(!D.body.classList.contains('kz-open'), 'もどると ページを スクロール できる');
       ok(!!$('.btn--zoom'), '詳細ページに かんさつへの ボタンが ある');
 
+      /* ---- 7. じどう車の 本（#/hon） ---- */
+      var HON = W.honData || {};
+      var KANJI = /[㐀-鿿豈-﫿々〆]/;
+
+      /* 7-1. 中身の きまり（tools/check-hon.mjs と おなじ ことを ブラウザでも 見る） */
+      var noHon = [], badHon = [];
+      cars.forEach(function (c) {
+        var d = HON[c.id];
+        if (!d) { noHon.push(c.id); return; }
+        var parts = {};
+        (W.carArt.svg(c.art, 'fit').match(/data-part="[a-zA-Z0-9_]+"/g) || []).forEach(function (m) {
+          parts[m.slice(11, -1)] = true;
+        });
+        var cnt = { s: 0, t: 0, o: 0 }, used = {}, texts = [d.catch];
+        d.pages.forEach(function (pg) {
+          texts.push(pg.h);
+          pg.s.forEach(function (s) {
+            cnt[s.k] = (cnt[s.k] || 0) + 1;
+            texts.push(s.t);
+            if (s.part) {
+              if (!parts[s.part]) { badHon.push(c.id + ':絵に ない part ' + s.part); }
+              used[s.part] = true;
+            }
+            var pl = s.t.replace(/<rt>[\s\S]*?<\/rt>/g, '').replace(/<[^>]+>/g, '');
+            if (/その ?ために|しごとを ?して ?います/.test(pl)) { badHon.push(c.id + ':教科書の 型 「' + pl + '」'); }
+          });
+        });
+        (d.kazu || []).forEach(function (k) { texts.push(k.l, k.v); });
+        var total = cnt.s + cnt.t + cnt.o;
+        if (cnt.s < 2 || cnt.t < 5 || cnt.o < 1 || total < 11 || total > 18) {
+          badHon.push(c.id + ':文の かず s' + cnt.s + ' t' + cnt.t + ' o' + cnt.o);
+        }
+        if (Object.keys(used).length < 2) { badHon.push(c.id + ':「ここを 見て」が 2つ より すくない'); }
+        texts.forEach(function (t) {
+          if (KANJI.test(String(t).replace(/<ruby>[\s\S]*?<\/ruby>/g, ''))) { badHon.push(c.id + ':ルビの ない 漢字 「' + t + '」'); }
+        });
+        if (!d.src || d.src.length < 2 || !d.src.every(function (s) { return /^https:\/\//.test(s.u); })) {
+          badHon.push(c.id + ':しらべた ところ（src）');
+        }
+      });
+      ok(noHon.length === 0, cars.length + 'だい ぜんぶに 本の ページが ある ' + (noHon.join(',') || ''));
+      ok(badHon.length === 0, '本の 中身が きまりを まもって いる ' + (badHon.slice(0, 8).join(' / ') || ''));
+
+      /* 7-2. 本の もくじ */
+      await go('#/hon');
+      ok(!$('#view-list').hidden && !$('#hon-header').hidden && $('#site-header').hidden,
+        '#/hon で 本の もくじが 出る');
+      ok($$('#grid .card').length === cars.length, '本の もくじに ' + cars.length + 'だい ならぶ');
+      ok($$('#grid .card__link').every(function (a) { return a.getAttribute('href').indexOf('#/hon/') === 0; }),
+        'もくじの カードは 本の ページへ 行く');
+      ok(!$('#note-hon').hidden && $('#note-zukan').hidden, 'もくじでは 本の よみかたを 出す');
+      await go('#/');
+      ok(!!$('#list-tools a[href="#/hon"]'), 'ずかんの 一覧から 本へ 行ける');
+      ok($$('#grid .card__link').every(function (a) { return a.getAttribute('href').indexOf('#/car/') === 0; }),
+        'ずかんの カードは これまでどおり ①②③の ページへ 行く');
+
+      /* 7-3. ぜんぶの 車の 本を ひらき、文の かずと「ここを 見て！」を たしかめる */
+      var badPage = [], badChip = [];
+      for (var h = 0; h < cars.length; h++) {
+        var hc = cars[h], hd = HON[hc.id];
+        if (!hd) { continue; }
+        await go('#/hon/' + hc.id);
+        if ($('#view-hon').hidden) { badPage.push(hc.id + ':ひらかない'); continue; }
+        var nS = hd.pages.reduce(function (a, pg) { return a + pg.s.length; }, 0);
+        if ($$('#view-hon .hon__p .hs').length !== nS) { badPage.push(hc.id + ':文の かず'); }
+        if ($$('#view-hon .hon__kz-row').length !== hd.kazu.length) { badPage.push(hc.id + ':かずで 見る'); }
+        if ($$('#view-hon .hon__sec').length !== hd.pages.length) { badPage.push(hc.id + ':見出しの かず'); }
+        var chips = $$('#view-hon .js-hon-part');
+        if (chips.length < 2) { badChip.push(hc.id + ':ボタンが ' + chips.length); }
+        for (var q = 0; q < chips.length; q++) {
+          chips[q].click();
+          var part = chips[q].getAttribute('data-part');
+          if (!$$('#hon-stage svg .is-lit').length) { badChip.push(hc.id + '/' + part + ':光らない'); }
+          var co = $('#hon-callout'), stg = $('#hon-stage');
+          if (co.hidden) { badChip.push(hc.id + '/' + part + ':ふきだし'); }
+          else if (co.offsetLeft < 0 || co.offsetLeft > stg.clientWidth || co.offsetTop < 0 || co.offsetTop > stg.clientHeight) {
+            badChip.push(hc.id + '/' + part + ':ふきだしが 絵の そと');
+          }
+          chips[q].click();
+          if ($$('#hon-stage svg .is-lit').length) { badChip.push(hc.id + '/' + part + ':もう一度 おしても きえない'); }
+        }
+      }
+      ok(badPage.length === 0, cars.length + 'だい ぜんぶ 本の ページが 出る ' + (badPage.join(' / ') || ''));
+      ok(badChip.length === 0, '「ここを 見て！」で 絵の ぶぶんが 光る ' + (badChip.join(' / ') || ''));
+
+      /* 7-4. ペンで 線を ひく → メモに あつまる */
+      W.localStorage.removeItem('jz.hon.ladder');
+      await go('#/hon/ladder');
+      var sents = function () { return $$('#view-hon .hon__p .hs'); };
+      var saved = function () { return JSON.parse(W.localStorage.getItem('jz.hon.ladder') || '{}'); };
+      sents()[0].click();
+      ok(!/is-[st]/.test(sents()[0].className), 'ペンを もたずに おしても 線は ひかれない');
+      ok($('#hon-toast').classList.contains('is-on'), 'ペンを えらぶように おしえる');
+
+      $('.js-pen[data-pen="s"]').click();
+      ok($('.js-pen[data-pen="s"]').getAttribute('aria-pressed') === 'true', 'しごとの ペンを もてる');
+      sents()[0].click();
+      sents()[1].click();
+      ok(sents()[0].classList.contains('is-s') && sents()[1].classList.contains('is-s'), 'しごとの ペンで 線が ひける');
+      ok(Object.keys(saved()).length === 2, '線は ほぞんされる');
+      sents()[1].click();
+      ok(!sents()[1].classList.contains('is-s'), 'おなじ ペンで もう いちど おすと 線が きえる');
+
+      $('.js-pen[data-pen="t"]').click();
+      ok($('.js-pen[data-pen="s"]').getAttribute('aria-pressed') === 'false', 'ペンは 1本だけ もてる');
+      sents()[3].click();
+      sents()[4].click();
+      sents()[0].click();
+      ok(sents()[0].classList.contains('is-t'), 'ちがう ペンで おすと 色が かわる');
+      $$('#view-hon .hon__kz-row')[0].click();
+      ok($$('#view-hon .hon__kz-row')[0].classList.contains('is-t'), '「かずで 見る」にも 線が ひける');
+
+      $('.js-pen[data-pen="x"]').click();
+      sents()[4].click();
+      ok(!/is-[st]/.test(sents()[4].className), 'けすで 線が きえる');
+      ok(/0.*3/.test($('#hon-count').textContent), 'メモの かずが 出る（しごと0・つくり3）→ ' + $('#hon-count').textContent);
+
+      $('.js-memo-open').click();
+      ok(!$('#hon-memo').hidden, '📝 メモが ひらく');
+      ok($$('#hon-memo .memo__item--s').length === 0 && $$('#hon-memo .memo__item--t').length === 3,
+        'メモに つくりが 3つ あつまる');
+      ok(!!$('#hon-memo .memo__group--s .memo__empty'), 'しごとが ない ときは ペンを つかうように 出る');
+      ok(/しごとを して います/.test($('#hon-memo .memo__frame').textContent) &&
+        /その ために/.test($('#hon-memo .memo__frame').textContent), 'ノートに かく かたちが 出る');
+      $$('#hon-memo .js-memo-del')[0].click();
+      ok($$('#hon-memo .memo__item--t').length === 2, 'メモから 1つ けせる');
+      ok(Object.keys(saved()).length === 2, 'けした ことも ほぞんされる');
+      $('#hon-memo .js-memo-clear').click();
+      ok($$('#hon-memo .memo__item--t').length === 2, 'ぜんぶ けすは 1かいでは けさない');
+      $('#hon-memo .js-memo-clear').click();
+      ok($$('#hon-memo .memo__item').length === 0 && Object.keys(saved()).length === 0, '2かい おすと ぜんぶ けせる');
+      $('#hon-memo .js-memo-close').click();
+      ok($('#hon-memo').hidden, 'メモを とじられる');
+
+      /* 7-5. もどって きても 線が のこる。もくじに メモの かずが 出る */
+      $('.js-pen[data-pen="s"]').click();
+      sents()[2].click();
+      await go('#/hon');
+      var lcard = $$('#grid .card').filter(function (c) { return c.querySelector('a[href="#/hon/ladder"]'); })[0];
+      ok(!!(lcard && lcard.querySelector('.card__memo')), 'もくじの カードに メモの かずが 出る');
+      await go('#/hon/ladder');
+      ok(sents()[2].classList.contains('is-s'), 'もう いちど ひらいても 線が のこって いる');
+      ok($$('#view-hon .js-pen').every(function (b) { return b.getAttribute('aria-pressed') === 'false'; }),
+        'ひらいた ときは ペンを もって いない');
+
+      /* 7-6. 読み上げは ルビの よみに なる */
+      var hp = $('#view-hon .hon__p').cloneNode(true);
+      Array.prototype.forEach.call(hp.querySelectorAll('.js-state'), function (e) { e.parentNode.removeChild(e); });
+      Array.prototype.forEach.call(hp.querySelectorAll('ruby'), function (r) {
+        var rt = r.querySelector('rt');
+        if (rt) r.parentNode.replaceChild(D.createTextNode(rt.textContent.trim()), r);
+      });
+      ok(!KANJI.test(hp.textContent), '本の 読み上げテキストに 漢字が のこらない');
+
+      /* 7-7. 行き来 */
+      $('#btn-back').click();
+      await wait(80);
+      ok(W.location.hash === '#/hon' && !$('#view-list').hidden, '本の ページから もくじに もどる → ' + W.location.hash);
+      await go('#/car/ladder');
+      ok(!!$('#view-detail .btn--hon-go[href="#/hon/ladder"]'), '①②③の ページから その 車の 本へ 行ける');
+      await go('#/');
+      W.localStorage.removeItem('jz.hon.ladder');
+
       flush();
       document.title = fails ? 'FAIL' : 'PASS';
     }
