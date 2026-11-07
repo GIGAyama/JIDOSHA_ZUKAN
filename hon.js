@@ -217,7 +217,10 @@
 
       '<div class="hon__spread">' +
 
+      /* 「ここを 見て！」は 絵の 上に おく。下に おくと、ひらいた ときに
+         したの ペンの おびに かくれて おせない（よこむきの タブレット） */
       '<div class="hon__left">' +
+      look +
       '<figure class="hon__fig">' +
       '<div class="art-stage hon__stage' + (A.hasArtSwap(car) ? ' has-photo' : '') + '" id="hon-stage">' +
       A.artHTML(car, 'both') +
@@ -227,7 +230,6 @@
       (parts.length ? '<br>「ここを <ruby>見<rt>み</rt></ruby>て！」を おすと、その ぶぶんが <ruby>光<rt>ひか</rt></ruby>ります。' : '') +
       '</figcaption>' +
       '</figure>' +
-      look +
       '</div>' +
 
       '<div class="hon__right">' +
