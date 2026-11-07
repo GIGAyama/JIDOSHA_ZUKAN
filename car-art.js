@@ -139,10 +139,13 @@
   }
 
   /* かいてんとう（パトカー・きゅうきゅう車） */
-  function siren(cx, y, w, part) {
+  /* color を わたすと その 色に なる（じょせつ車は きいろ。どうろの しごとを する 車の
+     ランプは きいろと きまって いる。3D も きいろ） */
+  function siren(cx, y, w, part, color) {
+    var c = color || LAMP_R;
     return '<g' + P(part || 'lamp') + '>' +
-      rect(cx - w / 2, y - 9, w, 11, { rx: 4, fill: LAMP_R, sw: 2.5 }) +
-      rect(cx - w / 2 + 3, y - 6, w / 3, 5, { rx: 2, fill: '#ffd9d9', sw: 0 }) +
+      rect(cx - w / 2, y - 9, w, 11, { rx: 4, fill: c, sw: 2.5 }) +
+      rect(cx - w / 2 + 3, y - 6, w / 3, 5, { rx: 2, fill: c === LAMP_R ? '#ffd9d9' : '#fff6cf', sw: 0 }) +
       '</g>';
   }
 
@@ -888,7 +891,9 @@
         // ねかせたまま はこべる ベッド
         glass(L + 56, G - 70, 44, 26, { part: 'bed' }),
         rect(L + 60, G - 58, 36, 9, { rx: 3, fill: '#ffffff', sw: 2, part: 'bed' }),
-        cross(L + 128, G - 56, 12, '#e5544b', 'mark'),
+        // しるし：日本の しょうぼうの きゅうきゅう車は 赤十字を つけない（赤十字の しるしは
+        // ほうりつで つかえる ところが きまって いる）。よこに「救急」の 字が ある ものが おおい
+        '<g' + P('mark') + '>' + mark(L + 120, G - 54, 15, '救急', '#e5544b') + '</g>',
         // うしろの 大きな とびら
         rect(L + 140, G - 74, 26, 50, { rx: 3, fill: '#f3f5f8', sw: 2.5, part: 'door' }),
         siren(L + 96, G - 78, 40, 'lamp'),
@@ -1031,7 +1036,7 @@
           'Q' + n(L + 22) + ' ' + n(G - 40) + ' ' + n(L + 44) + ' ' + n(G - 70) + 'Z',
           { fill: '#e0632f', part: 'plow' }),
         line(L + 6, G - 30, L + 26, G - 30, { sw: 3, stroke: '#fff', part: 'plow' }),
-        siren(L + 52, G - 104, 38, 'lamp'),
+        siren(L + 52, G - 104, 38, 'lamp', LAMP_Y),
         wheels([L + 64, L + 178, L + 222], 23)
       ].join('');
     }

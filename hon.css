@@ -1,0 +1,1052 @@
+/* =========================================================================
+   hon.css — じどう車の 本（#/hon・#/hon/<id>）
+   ・紙の 本の ような 見ひらき（左に 絵、右に 文）
+   ・ペンの 色は アプリ ぜんたいと おなじ「しごと＝あお」「つくり＝みどり」
+   ========================================================================= */
+
+:root {
+  --paper: #fffdf8;
+  --paper-line: #ece3d1;
+  --pen-s: #2563eb;
+  --pen-s-ink: #1d4ed8;
+  --pen-s-mark: rgba(37, 99, 235, .28);
+  --pen-s-soft: rgba(37, 99, 235, .08);
+  --pen-t: #10b981;
+  --pen-t-ink: #047857;
+  --pen-t-mark: rgba(16, 185, 129, .36);
+  --pen-t-soft: rgba(16, 185, 129, .10);
+}
+
+.ink-s {
+  color: var(--pen-s-ink);
+}
+
+.ink-t {
+  color: var(--pen-t-ink);
+}
+
+/* ---------- ずかんの 一覧から 本へ ---------- */
+.list-tools {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn--hon {
+  background: #fff7e6;
+  color: #8a4b00;
+  border-color: #f5c26b;
+}
+
+.btn--hon:hover {
+  background: #ffefcc;
+  border-color: #e9a93a;
+}
+
+.btn--hon-go {
+  width: 100%;
+  min-height: 56px;
+  text-decoration: none;
+  background: #fff7e6;
+  color: #8a4b00;
+  border: 2px solid #f5c26b;
+  box-shadow: none;
+}
+
+.btn--hon-go:hover {
+  background: #ffefcc;
+}
+
+.done__acts .btn--hon-go {
+  margin-top: 12px;
+}
+
+/* ---------- 本の もくじ ---------- */
+.site-header--hon .site-header__inner::before {
+  background: linear-gradient(90deg, var(--pen-s) 0%, var(--pen-t) 60%, var(--yellow) 100%);
+}
+
+.step-pill--pen-s {
+  color: var(--pen-s-ink);
+  border: 1px solid var(--a-border);
+}
+
+.step-pill--pen-t {
+  color: var(--pen-t-ink);
+  border: 1px solid var(--t-border);
+}
+
+.step-pill--memo {
+  color: #8a4b00;
+  border: 1px solid #f5c26b;
+}
+
+.card__memo {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  background: rgba(255, 255, 255, .95);
+  border-radius: var(--radius-pill);
+  padding: 2px 12px;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  line-height: 1.8;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(30, 43, 69, .18);
+}
+
+.note__steps {
+  margin: 0 0 16px 1.4em;
+  font-size: 17px;
+  line-height: 2.1;
+}
+
+.note__steps li {
+  padding-left: 4px;
+}
+
+/* ---------- 本の ページ ---------- */
+body.is-hon {
+  padding-bottom: 140px;
+}
+
+.hon {
+  --cat: #d9480f;
+  --cat-d: #9c330a;
+  max-width: 1160px;
+  margin: 0 auto;
+  background: var(--paper);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.hon[data-cat="tsukuru"] { --cat: #e8a500; --cat-d: #8a5d00; }
+.hon[data-cat="mamoru"] { --cat: #d6336c; --cat-d: #a01e4d; }
+.hon[data-cat="kurashi"] { --cat: #7048e8; --cat-d: #5030b8; }
+.hon[data-cat="sodateru"] { --cat: #8f5d1a; --cat-d: #6b4310; }
+.hon[data-cat="basho"] { --cat: #0b7285; --cat-d: #08515e; }
+
+.hon__head {
+  background: linear-gradient(120deg, var(--cat) 0%, var(--cat-d) 100%);
+  color: #fff;
+  padding: 16px 30px 22px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.hon__head rt {
+  color: rgba(255, 255, 255, .9);
+}
+
+.hon__series {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px 16px;
+  flex-wrap: wrap;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  line-height: 1.9;
+  opacity: .96;
+}
+
+.hon__cat {
+  background: rgba(255, 255, 255, .2);
+  border-radius: var(--radius-pill);
+  padding: 0 12px;
+}
+
+.hon__name {
+  font-family: var(--font-title);
+  font-size: 44px;
+  line-height: 1.35;
+  letter-spacing: .02em;
+  margin-top: 4px;
+}
+
+.hon__catch {
+  font-family: var(--font-title);
+  font-size: 20px;
+  line-height: 1.9;
+}
+
+.hon__spread {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  align-items: start;
+  /* まん中の とじめ */
+  background: linear-gradient(90deg, transparent calc(46% - 14px), rgba(120, 90, 40, .07) 46%, transparent calc(46% + 14px));
+}
+
+.hon__left {
+  padding: 24px 22px 24px 26px;
+  position: sticky;
+  top: 12px;
+}
+
+.hon__right {
+  padding: 22px 30px 26px 26px;
+  min-width: 0;
+}
+
+.hon__fig {
+  background: #fff;
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius);
+  padding: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.hon__stage {
+  height: 300px;
+}
+
+.hon__cap {
+  font-size: var(--fs-small);
+  line-height: 1.8;
+  color: var(--ink-sub);
+  text-align: center;
+  margin-top: 8px;
+}
+
+.hon__look {
+  margin-bottom: 12px;
+}
+
+.hon__look-h {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 6px;
+}
+
+.hon__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hon__chip {
+  min-height: var(--tap);
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--lit);
+  background: #fff;
+  color: #92400e;
+  font-family: var(--font-title);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.6;
+  cursor: pointer;
+  transition: background .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+}
+
+.hon__chip:hover {
+  background: #fff7e6;
+}
+
+.hon__chip[aria-pressed="true"] {
+  background: var(--lit);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.hon__chip[aria-pressed="true"] rt {
+  color: #fef3c7;
+}
+
+/* --- 見出しと 文 --- */
+.hon__sec {
+  padding: 4px 0 18px;
+  margin-bottom: 16px;
+  border-bottom: 2px dashed var(--paper-line);
+}
+
+.hon__sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hon__h {
+  font-family: var(--font-title);
+  font-size: 23px;
+  line-height: 1.6;
+  color: var(--cat-d);
+  border-left: 8px solid var(--cat);
+  padding-left: 12px;
+}
+
+.hon__audio {
+  flex: none;
+  min-height: var(--tap);
+  padding: 6px 16px;
+}
+
+.hon__p {
+  font-size: 21px;
+  line-height: 2.35;
+  letter-spacing: .02em;
+  margin-top: 8px;
+}
+
+/* --- 線を ひける ところ ---
+   マーカーの 線は 文の あたまから おわりへ のびる（行を またいで つづく）。
+   色は --mk、のびる ながさは background-size で うごかす。 */
+.hs {
+  --mk: transparent;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 3px 1px;
+  background-image: linear-gradient(transparent 58%, var(--mk) 58%);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size .55s var(--ease), background-color .2s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hs.is-s {
+  --mk: var(--pen-s-mark);
+  background-size: 100% 100%;
+}
+
+.hs.is-t {
+  --mk: var(--pen-t-mark);
+  background-size: 100% 100%;
+}
+
+/* 色だけに たよらない ように、線の あとに ふせんを つける */
+.hs.is-s::after,
+.hs.is-t::after {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 8px;
+  border-radius: 6px;
+  font-family: var(--font-title);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: #fff;
+  vertical-align: 2px;
+}
+
+.hs.is-s::after {
+  content: 'しごと';
+  background: var(--pen-s-ink);
+}
+
+.hs.is-t::after {
+  content: 'つくり';
+  background: var(--pen-t-ink);
+}
+
+.hs.is-new::after {
+  animation: tagPop .45s var(--ease) .35s both;
+}
+
+@keyframes tagPop {
+  from {
+    opacity: 0;
+    transform: scale(.6);
+  }
+}
+
+/* ペンを もって いる ときは、おせる ところを うすく 見せる */
+.hon.pen-s .hs:hover {
+  background-color: var(--pen-s-soft);
+}
+
+.hon.pen-t .hs:hover {
+  background-color: var(--pen-t-soft);
+}
+
+.hon.pen-x .hs:hover {
+  background-color: rgba(100, 116, 139, .12);
+}
+
+.hs:focus-visible {
+  outline: 3px solid var(--yellow-d);
+  outline-offset: 2px;
+}
+
+/* --- かずで 見る --- */
+.hon__kazu {
+  background: #fff7e6;
+  border: 2px solid #f5d9a8;
+  border-radius: var(--radius);
+  padding: 12px 18px 14px;
+  margin-bottom: 18px;
+}
+
+.hon__kazu-h {
+  font-family: var(--font-title);
+  font-size: 20px;
+  color: #8a4b00;
+  margin-bottom: 4px;
+}
+
+.hon__kz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 14px;
+  padding: 6px 10px 6px 16px;
+  border-bottom: 1px dotted #e9cf9f;
+  font-size: 19px;
+  line-height: 2.1;
+}
+
+.hon__kz-row:last-child {
+  border-bottom: 0;
+}
+
+/* かずの 行は マーカーの かわりに 行ごと 色を つける（はばの せまい 行で 線が 切れる ため） */
+.hon__kz-row.hs {
+  background-image: none;
+  border-radius: 8px;
+}
+
+.hon__kz-row.is-s {
+  background-color: var(--pen-s-soft);
+  box-shadow: inset 6px 0 0 var(--pen-s);
+}
+
+.hon__kz-row.is-t {
+  background-color: var(--pen-t-soft);
+  box-shadow: inset 6px 0 0 var(--pen-t);
+}
+
+.hon__kz-row.is-s::after,
+.hon__kz-row.is-t::after {
+  margin-left: auto;
+  align-self: center;
+}
+
+.hon.pen-s .hon__kz-row.hs:hover,
+.hon.pen-t .hon__kz-row.hs:hover,
+.hon.pen-x .hon__kz-row.hs:hover {
+  box-shadow: inset 6px 0 0 var(--line-bold);
+}
+
+.hon__kz-row dt {
+  font-weight: 700;
+  color: var(--ink-sub);
+  min-width: 7.5em;
+}
+
+.hon__kz-row dd {
+  flex: 1;
+  min-width: 8em;
+  font-weight: 700;
+}
+
+/* --- しらべた ところ（大人むけ） --- */
+.hon__src {
+  margin-top: 6px;
+  background: #fff;
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius-s);
+  padding: 4px 16px;
+  font-size: var(--fs-small);
+  line-height: 1.8;
+  color: var(--ink-sub);
+}
+
+.hon__src summary {
+  cursor: pointer;
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+}
+
+.hon__src ul {
+  margin: 4px 0 8px 1.2em;
+}
+
+.hon__src a {
+  color: var(--navy);
+  word-break: break-all;
+}
+
+.hon__src p {
+  margin-bottom: 10px;
+}
+
+.hon__more {
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hon__more .btn {
+  text-decoration: none;
+}
+
+/* --- ページを めくる --- */
+.hon__turn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding: 16px 26px 24px;
+  border-top: 2px dashed var(--paper-line);
+}
+
+.hon__turn-a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 64px;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--paper-line);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  color: var(--navy-d);
+  text-decoration: none;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+
+.hon__turn-a:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.hon__turn-a--next {
+  text-align: right;
+}
+
+.hon__turn-dir {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--ink-sub);
+}
+
+.hon__turn-name {
+  font-family: var(--font-title);
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.hon__pno {
+  margin-left: 12px;
+  opacity: .85;
+  font-weight: 400;
+}
+
+/* ---------- ペン ---------- */
+.penbar {
+  position: fixed;
+  left: 50%;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  max-width: calc(100vw - 24px);
+  background: rgba(255, 255, 255, .97);
+  border: 1px solid var(--line-bold);
+  border-radius: 26px;
+  box-shadow: 0 12px 32px rgba(19, 34, 56, .2);
+}
+
+.penbar.is-nudge {
+  animation: nudge .5s var(--ease);
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateX(-50%); }
+  25% { transform: translateX(calc(-50% - 10px)); }
+  50% { transform: translateX(calc(-50% + 10px)); }
+  75% { transform: translateX(calc(-50% - 6px)); }
+}
+
+.pen,
+.pen-memo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 62px;
+  min-width: 62px;
+  padding: 8px 18px;
+  border: 3px solid transparent;
+  border-radius: 18px;
+  background: var(--bg-soft);
+  color: var(--ink);
+  font-family: var(--font-title);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: transform .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+
+/* ペンの さき（マーカーの かたち） */
+.pen__tip {
+  width: 30px;
+  height: 14px;
+  border-radius: 3px 8px 8px 3px;
+  transform: rotate(-20deg);
+  box-shadow: inset -6px 0 0 rgba(255, 255, 255, .35);
+}
+
+.pen--s .pen__tip,
+.pen__tip--s {
+  background: var(--pen-s);
+}
+
+.pen--t .pen__tip,
+.pen__tip--t {
+  background: var(--pen-t);
+}
+
+.step-pill .pen__tip {
+  width: 22px;
+  height: 10px;
+}
+
+.pen--s .pen__name {
+  color: var(--pen-s-ink);
+}
+
+.pen--t .pen__name {
+  color: var(--pen-t-ink);
+}
+
+.pen__ico {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.pen:hover,
+.pen-memo:hover {
+  transform: translateY(-2px);
+}
+
+.pen--s[aria-pressed="true"] {
+  border-color: var(--pen-s);
+  background: #e0ebff;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, .3);
+}
+
+.pen--t[aria-pressed="true"] {
+  border-color: var(--pen-t);
+  background: #d9f7ea;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(16, 185, 129, .3);
+}
+
+.pen--x[aria-pressed="true"] {
+  border-color: #64748b;
+  background: #e2e8f0;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(100, 116, 139, .3);
+}
+
+.pen-memo {
+  background: var(--yellow);
+  color: #452b00;
+  margin-left: 6px;
+}
+
+.pen-memo:hover {
+  background: #ffbe24;
+}
+
+.pen-memo__n {
+  background: #fff;
+  border-radius: var(--radius-pill);
+  padding: 2px 10px;
+  font-size: 17px;
+  white-space: nowrap;
+}
+
+/* ---------- ひとこと（したに すこし 出る） ---------- */
+.hon-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(max(12px, env(safe-area-inset-bottom)) + 96px);
+  transform: translate(-50%, 10px);
+  z-index: 45;
+  max-width: calc(100vw - 32px);
+  background: var(--navy-d);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.9;
+  padding: 8px 22px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s var(--ease), transform .25s var(--ease);
+  text-align: center;
+}
+
+.hon-toast.is-on {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.hon-toast rt {
+  color: #cbd5e1;
+}
+
+.hon-toast .ink-s {
+  color: #93c5fd;
+}
+
+.hon-toast .ink-t {
+  color: #6ee7b7;
+}
+
+/* ---------- メモ ---------- */
+body.is-memo-open {
+  overflow: hidden;
+}
+
+.hon-memo {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(19, 34, 56, .5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn .2s var(--ease) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+}
+
+.hon-memo__panel {
+  width: min(800px, 100%);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  background: var(--paper);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 20px 26px 24px;
+  animation: popUp .3s var(--ease) both;
+}
+
+@keyframes popUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(.98);
+  }
+}
+
+.memo__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.memo__title {
+  font-family: var(--font-title);
+  font-size: 26px;
+  line-height: 1.5;
+  color: var(--navy-d);
+}
+
+.memo__group {
+  border-radius: var(--radius);
+  border: 2px solid;
+  padding: 12px 18px 16px;
+  margin-bottom: 14px;
+}
+
+.memo__group--s {
+  background: var(--a-bg);
+  border-color: var(--a-border);
+}
+
+.memo__group--t {
+  background: var(--t-bg);
+  border-color: var(--t-border);
+}
+
+.memo__h {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-title);
+  font-size: 21px;
+  line-height: 1.6;
+}
+
+.memo__group--s .memo__h {
+  color: var(--pen-s-ink);
+}
+
+.memo__group--t .memo__h {
+  color: var(--pen-t-ink);
+}
+
+.memo__pen {
+  width: 30px;
+  height: 12px;
+  border-radius: 3px 8px 8px 3px;
+}
+
+.memo__pen--s {
+  background: var(--pen-s);
+}
+
+.memo__pen--t {
+  background: var(--pen-t);
+}
+
+.memo__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.memo__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fff;
+  border-radius: var(--radius-s);
+  border-left: 6px solid;
+  padding: 8px 10px 8px 16px;
+  font-size: 20px;
+  line-height: 2.2;
+}
+
+.memo__item--s {
+  border-left-color: var(--pen-s);
+}
+
+.memo__item--t {
+  border-left-color: var(--pen-t);
+}
+
+.memo__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.memo__del {
+  flex: none;
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: 4px 12px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--line-bold);
+  background: #fff;
+  color: var(--ink-sub);
+  font-family: var(--font-title);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.memo__del:hover {
+  background: #f1f5f9;
+}
+
+.memo__empty {
+  font-size: 17px;
+  line-height: 2.1;
+  color: var(--ink-sub);
+  margin-top: 4px;
+}
+
+.memo__frame {
+  background: #fff;
+  border: 2px dashed #f5c26b;
+  border-radius: var(--radius);
+  padding: 14px 20px 16px;
+  margin-bottom: 16px;
+}
+
+.memo__frame-h {
+  font-family: var(--font-title);
+  font-size: 19px;
+  color: #8a4b00;
+  margin-bottom: 4px;
+}
+
+.memo__line {
+  font-size: 22px;
+  line-height: 2.3;
+}
+
+.blank {
+  display: inline-block;
+  min-width: 7em;
+  text-align: center;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  line-height: 1.6;
+  border-bottom: 4px solid;
+  margin: 0 4px;
+}
+
+.blank--s {
+  color: var(--pen-s-ink);
+  border-color: var(--pen-s);
+}
+
+.blank--t {
+  color: var(--pen-t-ink);
+  border-color: var(--pen-t);
+}
+
+.memo__tip {
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--ink-sub);
+  margin-top: 6px;
+}
+
+.memo__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.memo__clear.is-armed {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fca5a5;
+}
+
+/* ---------- タブレット・スマホ ---------- */
+@media (min-width: 1000px) {
+  .hon__stage {
+    height: 330px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hon__spread {
+    grid-template-columns: 1fr;
+    background: none;
+  }
+
+  .hon__left {
+    position: static;
+    padding: 18px 18px 6px;
+  }
+
+  .hon__right {
+    padding: 14px 18px 22px;
+  }
+
+  .hon__stage {
+    height: 250px;
+  }
+}
+
+@media (max-width: 620px) {
+  .hon__head {
+    padding: 14px 18px 18px;
+  }
+
+  .hon__name {
+    font-size: 32px;
+  }
+
+  .hon__catch {
+    font-size: 17px;
+  }
+
+  .hon__h {
+    font-size: 20px;
+  }
+
+  .hon__p {
+    font-size: 19px;
+  }
+
+  .hon__stage {
+    height: 200px;
+  }
+
+  .penbar {
+    gap: 6px;
+    padding: 8px;
+    border-radius: 22px;
+  }
+
+  .pen,
+  .pen-memo {
+    padding: 6px 10px;
+    font-size: 16px;
+    gap: 6px;
+    min-height: 58px;
+    min-width: 56px;
+  }
+
+  .pen__tip {
+    width: 22px;
+    height: 11px;
+  }
+
+  .pen-memo {
+    margin-left: 0;
+  }
+
+  .pen-memo__n {
+    font-size: 15px;
+    padding: 0 6px;
+  }
+
+  .hon-memo {
+    padding: 8px;
+    align-items: flex-end;
+  }
+
+  .hon-memo__panel {
+    padding: 16px 16px 20px;
+  }
+
+  .memo__item {
+    font-size: 18px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .memo__del {
+    align-self: flex-end;
+  }
+
+  .memo__line {
+    font-size: 19px;
+  }
+
+  .hon__more .btn {
+    width: 100%;
+  }
+
+  .hon__turn {
+    padding: 14px 14px 20px;
+    gap: 8px;
+  }
+
+  .hon__turn-a {
+    padding: 8px 12px;
+  }
+
+  .hon__turn-name {
+    font-size: 17px;
+  }
+}
