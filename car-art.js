@@ -139,10 +139,13 @@
   }
 
   /* かいてんとう（パトカー・きゅうきゅう車） */
-  function siren(cx, y, w, part) {
+  /* color を わたすと その 色に なる（じょせつ車は きいろ。どうろの しごとを する 車の
+     ランプは きいろと きまって いる。3D も きいろ） */
+  function siren(cx, y, w, part, color) {
+    var c = color || LAMP_R;
     return '<g' + P(part || 'lamp') + '>' +
-      rect(cx - w / 2, y - 9, w, 11, { rx: 4, fill: LAMP_R, sw: 2.5 }) +
-      rect(cx - w / 2 + 3, y - 6, w / 3, 5, { rx: 2, fill: '#ffd9d9', sw: 0 }) +
+      rect(cx - w / 2, y - 9, w, 11, { rx: 4, fill: c, sw: 2.5 }) +
+      rect(cx - w / 2 + 3, y - 6, w / 3, 5, { rx: 2, fill: c === LAMP_R ? '#ffd9d9' : '#fff6cf', sw: 0 }) +
       '</g>';
   }
 
@@ -1033,7 +1036,7 @@
           'Q' + n(L + 22) + ' ' + n(G - 40) + ' ' + n(L + 44) + ' ' + n(G - 70) + 'Z',
           { fill: '#e0632f', part: 'plow' }),
         line(L + 6, G - 30, L + 26, G - 30, { sw: 3, stroke: '#fff', part: 'plow' }),
-        siren(L + 52, G - 104, 38, 'lamp'),
+        siren(L + 52, G - 104, 38, 'lamp', LAMP_Y),
         wheels([L + 64, L + 178, L + 222], 23)
       ].join('');
     }
