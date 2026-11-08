@@ -5,12 +5,14 @@
      ・すべての 車は「地面 y = 200」「まん中 x = 200」を きじゅんに かく
      ・1メートル ＝ およそ 28 たんい（ぜんぶの 車が おなじ しゅくしゃく）
        → 「大きさくらべ」の 画面で 車を ならべると 大きさの ちがいが 分かる
-     ・「つくり」で せつめいする ぶひんには data-part を つける
-       → app.js が つくりの 文と むすびつけて、その ぶぶんを 光らせる
+     ・名まえを つけて 見せたい ぶひんには data-part を つける
+       → 車の ページの「ぶぶんの 名まえ」の ボタンに なり、おすと その ぶぶんが 光る
+         （名まえと せつめいは parts-data.js。「くわしく 見る」の ◯マークにも なる）
 
    ■ つかいかた
-     window.carArt.svg('truck', 'fit')    … その車に よった 絵（カード・詳細用）
+     window.carArt.svg('truck', 'fit')    … その車に よった 絵（カード・車の ページ用）
      window.carArt.svg('truck', 'scale')  … 全車 共通しゅくしゃくの 絵（大きさくらべ用）
+     window.carArt.svg('truck', 'size')   … 1年生と その 車だけを ならべた 絵（車の ページの「かずで 見る」）
      window.carArt.size('truck')          … { w, h }（たんい）
    ========================================================================= */
 (function () {
@@ -1760,13 +1762,19 @@
     var a = ART[id];
     if (!a) return '';
     var scale = mode === 'scale';
+    var size = mode === 'size';
     /* 大きさくらべでは 左はしを そろえて かく（ながさの ちがいが すぐ 分かる） */
-    var L = scale ? 46 : CX - a.w / 2;
+    var L = (scale || size) ? 46 : CX - a.w / 2;
     var vb, par;
     if (scale) {
       /* いちばん ながい トレーラー（やく 15メートル）まで 入る はば */
       vb = '0 20 490 198';
       par = 'xMinYMid meet';
+    } else if (size) {
+      /* 車の ページの「1年生と くらべた 大きさ」。1年生と その 車が ちょうど 入る */
+      var top = G - Math.max(a.h, 40) - 16;
+      vb = '0 ' + n(top) + ' ' + n(L + a.w + 16) + ' ' + n(G + 14 - top);
+      par = 'xMidYMid meet';
     } else {
       vb = n(L - 16) + ' ' + n(G - a.h - 20) + ' ' + n(a.w + 32) + ' ' + n(a.h + 40);
       par = 'xMidYMid meet';
@@ -1774,7 +1782,7 @@
     return '<svg class="car-art" viewBox="' + vb + '" xmlns="http://www.w3.org/2000/svg" ' +
       'preserveAspectRatio="' + par + '" role="img" aria-label="' + a.label + 'の え">' +
       ell(L + a.w / 2, G + 5, a.w / 2 + 10, 6, { fill: SHADOW, stroke: 'none', sw: 0 }) +
-      (scale ? person() : '') +
+      ((scale || size) ? person() : '') +
       a.draw(L) +
       '</svg>';
   }

@@ -106,6 +106,12 @@ body.kz-open {
   background: rgba(255, 255, 255, .16);
 }
 
+/* 3D ⇄ え の きりかえ */
+.kz-btn--mode ruby rt {
+  color: inherit;
+  opacity: .85;
+}
+
 .kz-btn:focus-visible,
 .kz-mark:focus-visible,
 .kz-chip:focus-visible {
@@ -425,31 +431,6 @@ body.kz-open {
 }
 
 /* ずかんの 本文（③ つくり）と つながる ところ */
-.kz__tsukuri {
-  background: var(--t-bg);
-  border-inline-start: 6px solid var(--t);
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 16px;
-  line-height: 1.95;
-  margin-bottom: 10px;
-}
-
-.kz__tsukuri b {
-  color: var(--t);
-}
-
-.kz__tag {
-  display: inline-block;
-  font-size: 13px;
-  font-weight: 700;
-  color: #fff;
-  background: var(--t);
-  border-radius: 20px;
-  padding: 2px 12px;
-  margin-bottom: 6px;
-}
-
 .kz__panel-foot {
   display: flex;
   gap: 8px;

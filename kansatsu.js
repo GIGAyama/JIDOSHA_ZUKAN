@@ -9,7 +9,12 @@
      ・ゆびや マウスで、うごかす／大きくする（ピンチ・ホイール・ボタン）
      ・絵の 上の ◯マークを おすと、そこへ カメラが とんで いって 光る
      ・その ぶぶんの 名まえと せつめい（parts-data.js）が 出る
-     ・その 車の「③ つくり」の 文が あれば、いっしょに ならぶ
+     ・3Dモデルが ある 車は、うえの バーの ボタンで 3D版（kansatsu3d.js）に きりかえられる
+
+   ⚠️ むかしは、その 車の「③ つくり」の 文（教科書の 型の こたえ）も ならべ、
+      その ぶぶんを ①② として さきに 出して いた。2026-11-08 に やめた。
+      どの ぶぶんが しごとに あう つくりかは、子どもが ずかんの 文から 見つける。
+      ぶぶんは えの 中の 左から じゅんに、どれも おなじ あつかいで ならべる。
      ・見た ぶぶんには ✓が つく（たんまつに ほぞんされる）
      ・Esc で とじる（ぶぶんを えらんで いる ときは、まず えらぶのを やめる）
 
@@ -53,6 +58,8 @@
       '<span aria-hidden="true">←</span> ずかんに もどる</button>' +
       '<h2 class="kz__title">' + car.name +
       '<span class="kz__len" id="kz-len"></span></h2>' +
+      /* 3D ⇄ え の きりかえ（中身と 出す かどうかは app.js が きめる） */
+      '<button type="button" class="kz-btn kz-btn--mode" id="kz-mode" hidden></button>' +
       '<span class="kz__count" id="kz-count"></span>' +
       '</div>' +
 
@@ -213,32 +220,19 @@
       if (!isFinite(minX)) return null;
 
       var info = (window.partInfo || {})[k] || {};
-      var own = null;
-      (car.tsukuri || []).forEach(function (t) { if (t.part === k) { own = t; } });
 
       return {
         key: k,
-        name: (own && own.label) || info.name || k,
+        name: info.name || k,
         text: info.text || '',
-        tsukuri: own,
         box: { x: minX, y: minY, w: maxX - minX, h: maxY - minY },
         mx: (minX + maxX) / 2,
         my: (minY + maxY) / 2
       };
     }).filter(Boolean);
 
-    /* ならびじゅん … ①②は ずかんの 本文（つくり）に 出て くる ぶぶん、
-       そのあとは 左から じゅんばんに */
-    var order = (car.tsukuri || []).map(function (t) { return t.part; });
-    list.sort(function (a, b) {
-      var ia = order.indexOf(a.key), ib = order.indexOf(b.key);
-      if (ia >= 0 || ib >= 0) {
-        if (ia < 0) return 1;
-        if (ib < 0) return -1;
-        return ia - ib;
-      }
-      return a.mx - b.mx;
-    });
+    /* ならびじゅん … えの 中の 左から じゅんばんに（どの ぶぶんも おなじ あつかい） */
+    list.sort(function (a, b) { return a.mx - b.mx; });
 
     spreadMarks(list);
     return list;
@@ -390,13 +384,6 @@
     var old = $('#kz-panel');
     if (old) { old.remove(); }
 
-    var tsu = '';
-    if (p.tsukuri) {
-      tsu = '<div class="kz__tsukuri">' +
-        '<span class="kz__tag">③ つくり</span><br>' +
-        '<span class="js-read">' + p.tsukuri.text + '</span></div>';
-    }
-
     var html = '<aside class="kz__panel" id="kz-panel" aria-live="polite">' +
       '<div class="kz__panel-head">' +
       '<span class="kz__panel-n">' + (i + 1) + '</span>' +
@@ -404,7 +391,6 @@
       '<button type="button" class="kz__panel-close" id="kz-pclose" aria-label="とじる">✕</button>' +
       '</div>' +
       '<div class="kz__thumb">' + cropSVG(p, 0.22) + '</div>' +
-      tsu +
       (p.text ? '<p class="kz__panel-text js-read">' + p.text + '</p>' : '') +
       '<div class="kz__panel-foot">' +
       '<button type="button" class="btn btn--audio" id="kz-say" ' +

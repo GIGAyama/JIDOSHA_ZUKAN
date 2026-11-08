@@ -1,11 +1,27 @@
 /* =========================================================================
-   app.js — がめんの きりかえ・じゅんばんに ひらく しくみ・こえで きく
+   app.js — じどう車ずかん の がめんの きりかえ
 
-   ・ハッシュルーティング  #/ 一覧 / #/car/<id> 詳細 / #/kurabe 大きさくらべ
-                           #/hon 本の もくじ / #/hon/<id> 本の ページ（hon.js）
-   ・詳細は ①とい → ②しごと → ③つくり の じゅんにしか ひらかない
-   ・「つくり」の 文を おすと、絵の その ぶぶんが 光って ふきだしが 出る
-   ・読み上げは <ruby> の よみを つかうので、漢字を まちがえて 読まない
+   ■ ページ（ハッシュ）
+     #/               ひょうし と もくじ（しごとの なかま ＝ しょう ごとに ならぶ）
+     #/car/<id>       車の ページ（中身は hon.js）
+     #/sakuin         さくいん（名まえの あいうえお じゅん）
+     #/mikata         ずかんの 見かた
+     #/kurabe         大きさくらべ
+     #/kansatsu/<id>  くわしく 見る（3D・大きく。kansatsu.js / kansatsu3d.js）
+
+     むかしの 行き先も そのまま つかえる（先生が くばった URL が 行き止まりに ならない）
+     #/hon → #/ 、#/hon/<id> → #/car/<id>
+
+   ■ この ずかんで しない こと（2026-11-08 に はずした）
+     ・①とい → ②しごと → ③つくり の じゅんに こたえを ひらく ページ
+     ・「〜しごとを して います。その ために、〜」の 型の 文を 出す こと
+     ・文に ペンで 線を ひいて メモに あつめ、カードの 型に ならべる こと
+     子どもが アプリを そうさして 書きうつす だけで ずかんの カードが できて しまった。
+     いまは 本物の ずかんと おなじに、読んで、見つけて、じぶんで 書く。
+
+   ■ ページばんごう
+     carCategories の じゅん → その 中は cars-data.js の じゅん で 1〜60。
+     もくじ・さくいん・車の ページで おなじ 数を 出す（「28ページ」で つたえあえる）。
    ========================================================================= */
 (function () {
   'use strict';
@@ -18,14 +34,14 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  var elHeader = $('#site-header');
-  var elTopbar = $('#topbar');
-  var viewList = $('#view-list');
-  var viewDetail = $('#view-detail');
+  var viewMokuji = $('#view-mokuji');
+  var viewPage = $('#view-page');
+  var viewSakuin = $('#view-sakuin');
+  var viewMikata = $('#view-mikata');
   var viewCompare = $('#view-compare');
   var viewKansatsu = $('#view-kansatsu');
-  var viewHon = $('#view-hon');
-  var elHonHeader = $('#hon-header');
+  var elTopbar = $('#topbar');
+  var btnShiori = $('#btn-shiori');
 
   /* ------------------------------------------------------------------
      ほぞん（学校の たんまつで ブロックされて いても うごくように）
@@ -43,29 +59,31 @@
     }
   };
 
-  /* ものすごい かんさつ（kansatsu.js）からも つかう */
+  /* くわしく 見る（kansatsu.js）からも つかう */
   window.jzStore = store;
 
-  /* むかし あった「かきうつしシート」の のこりを 片づける。
-     きのうが なくなったので、たんまつに データだけ のこって しまう */
-  function dropOldSheets() {
+  /* なくなった きのうの データを 片づける（たんまつに のこさない）
+     jz.sheet.* … かきうつしシート
+     jz.hon.*   … 本の 文に ひいた ペンの 線（2026-11-08 に ペンを はずした） */
+  function dropOld() {
     try {
       var ls = window.localStorage, kill = [], i;
       for (i = 0; i < ls.length; i++) {
         var k = ls.key(i);
-        if (k && k.indexOf('jz.sheet.') === 0) { kill.push(k); }
+        if (k && (k.indexOf('jz.sheet.') === 0 || k.indexOf('jz.hon.') === 0)) { kill.push(k); }
       }
       kill.forEach(function (k) { ls.removeItem(k); });
     } catch (e) { /* ほぞんが つかえない たんまつでは なにも しない */ }
   }
 
-  function stars() {
+  /* しおり（むかしの「★ えらんだ 車」と おなじ ばしょ jz.stars に ほぞん） */
+  function shioriList() {
     var s = store.get('stars', []);
     return Array.isArray(s) ? s : [];
   }
-  function isStar(id) { return stars().indexOf(id) >= 0; }
-  function toggleStar(id) {
-    var s = stars(), i = s.indexOf(id);
+  function isShiori(id) { return shioriList().indexOf(id) >= 0; }
+  function toggleShiori(id) {
+    var s = shioriList(), i = s.indexOf(id);
     if (i >= 0) { s.splice(i, 1); } else { s.push(id); }
     store.set('stars', s);
     return i < 0;
@@ -78,6 +96,17 @@
     var d = document.createElement('div');
     d.innerHTML = html;
     return d.textContent.replace(/\s+/g, ' ').trim();
+  }
+
+  /* ふりがなを のぞいた 文字（「きゅうきゅう車」。title や alt に つかう） */
+  function bare(html) {
+    return plain(String(html).replace(/<rt>[\s\S]*?<\/rt>/g, ''));
+  }
+
+  function esc(t) {
+    return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
   }
 
   /* <ruby>漢字<rt>よみ</rt></ruby> → よみ に して から 読み上げる */
@@ -102,53 +131,51 @@
     return (m % 1 === 0 ? m : m.toFixed(1)) + 'メートル';
   }
 
-  /* 絵（assets に 写真が あれば そちらを つかう）
+  /* ------------------------------------------------------------------
+     ページばんごう
+     ------------------------------------------------------------------ */
+  var bookList = [];
+  cats.forEach(function (c) {
+    cars.forEach(function (car) { if (car.category === c.id) { bookList.push(car); } });
+  });
+  cars.forEach(function (car) { if (bookList.indexOf(car) < 0) { bookList.push(car); } });
+  var pageNo = {};
+  bookList.forEach(function (car, i) { pageNo[car.id] = i + 1; });
 
-     mode に 'both' を わたすと、写真の うしろに イラストも いっしょに 入れて おく。
-     写真では ぶぶんを 光らせられないので、「つくり」の 文を おした ときだけ
-     イラストに 入れかえて 光らせる（CSS の .art-stage.has-photo / .is-art で きりかえ）。 */
-  function artHTML(car, mode) {
-    if (car.photo) {
-      var img = '<img class="art-photo" src="' + car.photo + '" alt="' + plain(car.name) +
-        'の しゃしん" loading="lazy" decoding="async">';
-      if (mode === 'both' && window.carArt.has(car.art)) {
-        return img + window.carArt.svg(car.art, 'fit');
-      }
-      return img;
+  var book = {
+    list: bookList,
+    pageOf: function (id) { return pageNo[id] || 0; },
+    prev: function (id) { return bookList[(pageNo[id] || 0) - 2] || null; },
+    next: function (id) { return pageNo[id] ? (bookList[pageNo[id]] || null) : null; },
+    /* その しょうの さいしょと さいごの ページ */
+    range: function (catId) {
+      var first = 0, last = 0;
+      bookList.forEach(function (car, i) {
+        if (car.category !== catId) { return; }
+        if (!first) { first = i + 1; }
+        last = i + 1;
+      });
+      return { first: first, last: last };
     }
-    return window.carArt.svg(car.art, mode === 'both' ? 'fit' : (mode || 'fit'));
+  };
+
+  function rangeText(catId) {
+    var r = book.range(catId);
+    return r.first === r.last ? r.first + 'ページ' : r.first + '〜' + r.last + 'ページ';
   }
 
-  /* 写真の 車で、イラストに 入れかえられる か */
-  function hasArtSwap(car) { return !!(car && car.photo && window.carArt.has(car.art)); }
-
-  /* 写真の でどころ（photo-credits.js）。ライセンスの 条件なので、写真を 出す ところには かならず 出す。
-     大人むけの 小さな 字。リンクは 新しい タブで ひらく */
-  function esc(t) {
-    return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
-    });
-  }
-  function photoCredit(car) {
-    var c = car && car.photo && window.photoCredits && window.photoCredits[car.id];
-    if (!c) return '';
-    var lic = c.licenseUrl
-      ? '<a href="' + esc(c.licenseUrl) + '" target="_blank" rel="noopener noreferrer">' + esc(c.license) + '</a>'
-      : esc(c.license);
-    return '<p class="photo-credit">📷 しゃしん：' +
-      '<a href="' + esc(c.source) + '" target="_blank" rel="noopener noreferrer">' + esc(c.author || 'Wikimedia Commons') + '</a>' +
-      '（' + lic + '／Wikimedia Commons）' +
-      (c.changes ? '<span class="photo-credit__chg">' + esc(c.changes) + '</span>' : '') +
-      '</p>';
+  /* カードの 絵（写真が あれば 写真） */
+  function cardArt(car) {
+    if (car.photo) {
+      return '<img src="' + esc(car.photo) + '" alt="" loading="lazy" decoding="async">';
+    }
+    return window.carArt.svg(car.art, 'fit');
   }
 
   /* ------------------------------------------------------------------
-     3Dモデル（car3d.js）— ある 車だけ「3Dで 見る」が 出る
+     3Dモデル（car3d.js）— くわしく 見る で つかう
      ------------------------------------------------------------------ */
-  var view3d = null;                                   /* いま 出て いる ビューア */
-
-  /* 3Dは 1MBを こえるので、一覧では 読みこまない。
-     詳細ページと かんさつを ひらく ときだけ よぶ。
+  /* 3Dは 1MBを こえるので、くわしく 見る を ひらく まで 読みこまない。
      index.html の module は defer なので、この app.js より あとに 走る ことが ある。
      その ときは しるしだけ つけて おき、module 側で ひろって もらう。 */
   function load3d() {
@@ -161,87 +188,6 @@
   }
   function want3d() { return store.get('use3d', true) !== false; }
   function setWant3d(v) { store.set('use3d', !!v); }
-
-  var seen3d = null;                                   /* 絵が がめんに 出て いるか 見はる */
-
-  function drop3d() {
-    if (seen3d) { try { seen3d.disconnect(); } catch (e) { } seen3d = null; }
-    if (view3d) { try { view3d.dispose(); } catch (e) { } view3d = null; }
-  }
-
-  /* 絵の パネルが スクロールで がめんの 外へ 出たら、3Dの えがきを 休ませる。
-     児童が ①②③の 文を 読んで いる あいだ ずっと 回しつづけると、
-     タブレットの でんちが へって しまう。もどって きたら すぐ 動きだす。 */
-  function watch3d(stage) {
-    if (!view3d || !window.IntersectionObserver) { return; }
-    seen3d = new window.IntersectionObserver(function (entries) {
-      if (!view3d) { return; }
-      var on = entries[entries.length - 1].isIntersecting;
-      try { if (on) { view3d.resume(); } else { view3d.pause(); } } catch (e) { }
-    }, { threshold: 0 });
-    seen3d.observe(stage);
-  }
-
-  /* 詳細ページの 絵を 3Dに する（できなければ false）*/
-  function mount3d(car) {
-    var stage = $('#art-stage');
-    if (!stage || !has3d(car)) return false;
-    drop3d();
-    var svg = stage.querySelector('svg'), img = stage.querySelector('img');
-    try {
-      view3d = window.jz3d.createViewer(stage, car.art, { autoRotate: true });
-    } catch (e) {
-      return false;                                    /* WebGLが ない → イラストの まま */
-    }
-    if (svg) svg.style.display = 'none';
-    if (img) img.style.display = 'none';
-    stage.classList.add('is-3d');
-    build3dBar(car);
-    watch3d(stage);
-    return true;
-  }
-
-  function unmount3d() {
-    drop3d();
-    var stage = $('#art-stage');
-    if (!stage) return;
-    stage.classList.remove('is-3d');
-    var svg = stage.querySelector('svg'), img = stage.querySelector('img');
-    if (svg) svg.style.display = '';
-    if (img) img.style.display = '';
-    var bar = $('#art-anim');
-    if (bar) bar.innerHTML = '';
-  }
-
-  /* ▶ うごかす ボタン（にだいが かたむく など）*/
-  function build3dBar(car) {
-    var bar = $('#art-anim');
-    if (!bar || !view3d) return;
-    bar.innerHTML = '';
-    view3d.animations().forEach(function (a) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'btn btn--anim3d' + (a.value > 0.5 ? ' is-on' : '');
-      b.setAttribute('data-anim', a.key);
-      b.textContent = '▶ ' + a.label;
-      bar.appendChild(b);
-    });
-  }
-
-  function sync3dToggle(car) {
-    var t = $('#btn-3d');
-    if (!t) return;
-    t.hidden = !has3d(car);
-    var on = !!view3d;
-    /* 3Dを 出して いる ときは「しゃしん」に もどす ボタンに なる。
-       写真の ない 車では イラストに もどるので、そう 書く */
-    t.innerHTML = on
-      ? (car && car.photo
-        ? '📷 しゃしんで <ruby>見<rt>み</rt></ruby>る'
-        : '🖼️ イラストで <ruby>見<rt>み</rt></ruby>る')
-      : '🧊 3Dで まわして <ruby>見<rt>み</rt></ruby>る';
-    t.setAttribute('aria-pressed', String(on));
-  }
 
   /* ------------------------------------------------------------------
      こえで きく
@@ -264,8 +210,8 @@
 
     var u = new window.SpeechSynthesisUtterance(readingOf(target));
     u.lang = 'ja-JP';
-    u.rate = 0.75;   /* 1年生が ついて いける はやさ */
-    u.pitch = 1.15;
+    u.rate = 0.8;    /* 1年生が ついて いける はやさ */
+    u.pitch = 1.1;
 
     var done = function () {
       btn.classList.remove('is-playing');
@@ -283,356 +229,12 @@
     window.speechSynthesis.speak(u);
   }
 
-  /* ものすごい かんさつ（kansatsu.js）からも つかう */
+  /* くわしく 見る（kansatsu.js）からも つかう */
   window.jzSpeech = { speak: speak, stop: stopSpeech, reading: readingOf };
 
-  function audioBtn(label) {
-    var html = '🔊 こえで きく';
-    return '<button type="button" class="btn btn--audio js-audio" data-label="' + html + '" ' +
-      'aria-label="' + label + 'を こえで きく">' + html + '</button>';
-  }
-
-  /* ==================================================================
-     一覧
-     ================================================================== */
-  var filter = store.get('filter', 'all');
-
-  /* 一覧は 2つの 入り口で つかう。
-     'zukan' … #/   ①とい→②しごと→③つくり の ずかん（じどう車くらべの ふくしゅう）
-     'hon'   … #/hon 本の もくじ（じどう車ずかんを つくろう の 材料あつめ）
-     カードの 行き先と 見出しだけが ちがう。しごとの タブや ★は おなじ ものを つかう。 */
-  var listMode = 'zukan';
-
-  /* 「さっき 見て いた 車」— ずかんに もどった ときに しるしを つける */
-  var lastCarId = null;
-
-  function tabHTML(id, icon, name) {
-    var on = filter === id;
-    return '<button type="button" class="tab' + (on ? ' is-active' : '') +
-      '" data-filter="' + id + '" aria-pressed="' + on + '">' +
-      '<span class="tab__icon" aria-hidden="true">' + icon + '</span>' +
-      '<span class="tab__name">' + name + '</span></button>';
-  }
-
-  function renderTabs() {
-    var html = tabHTML('all', '🚙', 'ぜんぶ');
-    cats.forEach(function (c) { html += tabHTML(c.id, c.icon, c.name); });
-    html += tabHTML('star', '⭐', 'えらんだ <ruby>車<rt>くるま</rt></ruby>');
-    $('#tabs').innerHTML = html;
-  }
-
-  /* 本の もくじで、線を ひいた かずを カードに 出す */
-  function memoBadge(car) {
-    if (listMode !== 'hon' || !window.jzHon) return '';
-    var n = window.jzHon.count(car.id);
-    if (!n.s && !n.t) return '';
-    return '<span class="card__memo" aria-label="メモ しごと ' + n.s + 'こ、つくり ' + n.t + 'こ">📝 ' +
-      '<span class="ink-s">' + n.s + '</span>・<span class="ink-t">' + n.t + '</span></span>';
-  }
-
-  function cardHTML(car) {
-    var cat = catMap[car.category] || { icon: '', name: '' };
-    var on = isStar(car.id);
-    /* 本の ページが まだ ない 車は、①②③の ページへ（行き止まりに しない） */
-    var href = (listMode === 'hon' && window.jzHon && window.jzHon.has(car.id)) ? '#/hon/' : '#/car/';
-    return '<article class="card' + (car.id === lastCarId ? ' is-last' : '') + '">' +
-      '<button type="button" class="card__star js-star" data-id="' + car.id + '" ' +
-      'aria-pressed="' + on + '" aria-label="' + plain(car.name) + 'を えらんだ 車に する">' +
-      (on ? '★' : '☆') + '</button>' +
-      '<div class="card__art">' + artHTML(car, 'fit') + '</div>' +
-      '<p class="card__cat">' + cat.icon + ' ' + cat.name + '</p>' +
-      '<h3 class="card__name"><a class="card__link" href="' + href + car.id + '">' +
-      car.name + '</a></h3>' +
-      memoBadge(car) +
-      '</article>';
-  }
-
-  function renderTools() {
-    $('#list-tools').innerHTML = listMode === 'hon'
-      ? '<a class="btn btn--tool" href="#/">📖 ①②③の ずかんを <ruby>見<rt>み</rt></ruby>る</a>' +
-        '<a class="btn btn--tool" href="#/kurabe">📏 <ruby>大<rt>おお</rt></ruby>きさくらべを <ruby>見<rt>み</rt></ruby>る</a>'
-      : '<a class="btn btn--tool btn--hon" href="#/hon">📚 <ruby>本<rt>ほん</rt></ruby>で しらべる</a>' +
-        '<a class="btn btn--tool" href="#/kurabe">📏 <ruby>大<rt>おお</rt></ruby>きさくらべを <ruby>見<rt>み</rt></ruby>る</a>';
-  }
-
-  function renderList() {
-    var list = filter === 'all' ? cars
-      : filter === 'star' ? cars.filter(function (c) { return isStar(c.id); })
-        : cars.filter(function (c) { return c.category === filter; });
-
-    var grid = $('#grid');
-
-    /* 「ぜんぶ」の ときは、しごとの かたまりに 分けて 見出しを つける
-       （60だいが ずらっと ならぶと、いま どこを 見て いるか 分からなく なる） */
-    if (filter === 'all') {
-      grid.className = 'grid grid--blocks';
-      grid.innerHTML = cats.map(function (c) {
-        var g = cars.filter(function (x) { return x.category === c.id; });
-        if (!g.length) return '';
-        return '<section class="cat-block">' +
-          '<h3 class="cat-block__head">' +
-          '<span class="cat-block__icon" aria-hidden="true">' + c.icon + '</span>' +
-          '<span class="cat-block__name">' + c.name + '</span>' +
-          '<span class="cat-block__n">' + g.length + 'だい</span></h3>' +
-          '<div class="cat-block__grid">' + g.map(cardHTML).join('') + '</div>' +
-          '</section>';
-      }).join('');
-    } else {
-      grid.className = 'grid';
-      grid.innerHTML = list.map(cardHTML).join('');
-    }
-
-    $('#empty').hidden = !(filter === 'star' && list.length === 0);
-    $('#list-count').innerHTML = list.length + 'だいの じどう<ruby>車<rt>しゃ</rt></ruby>が あります。';
-  }
-
-  $('#tabs').addEventListener('click', function (e) {
-    var tab = e.target.closest('.tab[data-filter]');
-    if (!tab) return;
-    filter = tab.getAttribute('data-filter');
-    store.set('filter', filter);
-    renderTabs();
-    renderList();
-  });
-
-  $('#grid').addEventListener('click', function (e) {
-    var star = e.target.closest('.js-star');
-    if (!star) return;
-    e.preventDefault();
-    var on = toggleStar(star.getAttribute('data-id'));
-    star.setAttribute('aria-pressed', String(on));
-    star.textContent = on ? '★' : '☆';
-    if (filter === 'star' && !on) { renderList(); }
-  });
-
-  /* ==================================================================
-     詳細（ずかんの ページ）
-     ================================================================== */
-
-  /* 「つくり」の カードに いつも 出して おく、おせる ことの めじるし */
-  var TAPME = '👆 おすと <ruby>光<rt>ひか</rt></ruby>る';
-  var TAPBACK = '✕ もどす';
-
-  /* その 車の 本の ページへ（本が ある 車だけ） */
-  function honLink(car) {
-    if (!window.jzHon || !window.jzHon.has(car.id)) return '';
-    return '<a class="btn btn--hon-go" href="#/hon/' + car.id + '">' +
-      '📚 この <ruby>車<rt>くるま</rt></ruby>の <ruby>本<rt>ほん</rt></ruby>を よむ</a>';
-  }
-
-  function detailHTML(car) {
-    var cat = catMap[car.category] || { icon: '', name: '' };
-    var t = car.tsukuri;
-
-    var makes = t.map(function (item, i) {
-      return '<div class="step step--make js-make" data-part="' + item.part + '" data-i="' + i + '" ' +
-        'role="button" tabindex="0" hidden>' +
-        '<span class="step__tag">③ つくり' + (t.length > 1 ? ' その' + (i + 1) : '') + '</span>' +
-        '<span class="step__tapme js-tapme" aria-hidden="true">' + TAPME + '</span>' +
-        '<p class="step__text js-read">' + item.text + '</p>' +
-        '<div class="step__foot">' +
-        audioBtn('つくりの せつめい') +
-        ' <button type="button" class="btn btn--audio js-pin">📍 ばしょを <ruby>見<rt>み</rt></ruby>る</button>' +
-        '</div></div>';
-    }).join('');
-
-    return '<div class="detail">' +
-
-      '<div class="detail__head">' +
-      '<span class="cat-chip">' + cat.icon + ' ' + cat.name + '</span>' +
-      '<h2 class="detail__name">' + car.name + '</h2>' +
-      '<p class="detail__len">ながさ やく ' + meters(car) + '</p>' +
-      '</div>' +
-
-      '<div class="detail__body">' +
-
-      '<div class="art-panel">' +
-      '<div class="art-stage' + (hasArtSwap(car) ? ' has-photo' : '') + '" id="art-stage">' +
-      artHTML(car, 'both') +
-      '<div class="callout" id="callout" hidden></div>' +
-      '</div>' +
-      '<div class="art-tools">' +
-      '<button type="button" class="btn btn--3d" id="btn-3d" aria-pressed="false" hidden>' +
-      '🧊 3Dで まわして <ruby>見<rt>み</rt></ruby>る</button>' +
-      '<a class="btn btn--zoom" href="#/kansatsu/' + car.id + '">' +
-      '🔬 ものすごく <ruby>大<rt>おお</rt></ruby>きく <ruby>見<rt>み</rt></ruby>る</a>' +
-      honLink(car) +
-      '</div>' +
-      '<div class="art-anim" id="art-anim"></div>' +
-      /* 3つの 見せかたは、それぞれ やくわりが ちがう。
-         しゃしん＝ほんものを 見る／3D＝まわして つくりを 見る／え＝ぶぶんを 光らせて 見る */
-      '<p class="art-hint">' +
-      (car.photo ? '<b>📷 しゃしん</b>は ほんものの すがた。' : '') +
-      (has3d(car) ? '<b>🧊 3D</b>は <b>ゆびで まわして</b> つくりを たしかめられます。' : '') + '<br>' +
-      '「つくり」の <b>ぶん</b>を おすと、その ぶぶんが <b>光ります</b>' +
-      (hasArtSwap(car) ? '（しゃしんの ときは <b>えに かわって</b> 光ります）' : '') + '。<br>' +
-      'もっと よく 見る ときは、<b>ものすごく <ruby>大<rt>おお</rt></ruby>きく</b> して みよう。</p>' +
-      photoCredit(car) +
-      '</div>' +
-
-      '<div class="steps">' +
-      '<ol class="progress" id="progress">' +
-      '<li class="is-on">① とい</li><li>② しごと</li><li>③ つくり</li>' +
-      '</ol>' +
-
-      '<div class="step step--q">' +
-      '<span class="step__tag">① とい</span>' +
-      '<p class="step__text js-read">' + car.name +
-      'は、どんな しごとを して いますか。<br>その ために、どんな つくりに なって いますか。</p>' +
-      '<div class="step__foot">' + audioBtn('とい') + '</div>' +
-      '</div>' +
-
-      '<div class="step step--job" id="step-job" hidden>' +
-      '<span class="step__tag">② しごと</span>' +
-      '<p class="step__text js-read">' + car.shigoto + '</p>' +
-      '<div class="step__foot">' + audioBtn('しごとの せつめい') + '</div>' +
-      '</div>' +
-
-      makes +
-
-      '<button type="button" class="btn btn--next" id="btn-next">こたえを <ruby>見<rt>み</rt></ruby>る →</button>' +
-
-      '<div class="done" id="done" hidden>' +
-      '<p class="done__msg">🎉 ぜんぶ よめたね！</p>' +
-      '<div class="done__acts">' +
-      '<a class="btn btn--zoom" href="#/kansatsu/' + car.id + '">' +
-      '🔬 ものすごく <ruby>大<rt>おお</rt></ruby>きく <ruby>見<rt>み</rt></ruby>る</a>' +
-      honLink(car) +
-      '</div></div>' +
-
-      '</div>' +
-
-      '</div>' +
-
-      '<details class="more">' +
-      '<summary>🔍 もっと しりたい <ruby>人<rt>ひと</rt></ruby>へ</summary>' +
-      '<p class="js-read">' + car.hakken + '</p>' +
-      '<div class="step__foot">' + audioBtn('もっと しりたい') + '</div>' +
-      '</details>' +
-
-      '</div>';
-  }
-
-  var state = { car: null, step: 0, pin: null };
-
-  function updateSteps() {
-    var t = state.car.tsukuri;
-    $('#step-job').hidden = state.step < 1;
-    $$('.js-make', viewDetail).forEach(function (el, i) {
-      el.hidden = state.step < 2 + i;
-    });
-
-    /* is-on = もう ひらいた／is-now = いま ここ（1年生が 見うしなわない ように） */
-    var now = state.step < 1 ? 0 : (state.step < 2 ? 1 : 2);
-    $$('#progress li').forEach(function (li, i) {
-      li.classList.toggle('is-on', state.step >= i);
-      li.classList.toggle('is-now', i === now);
-      if (i === now) { li.setAttribute('aria-current', 'step'); }
-      else { li.removeAttribute('aria-current'); }
-    });
-
-    var next = $('#btn-next');
-    var done = $('#done');
-    var last = 1 + t.length;
-    if (state.step === 0) {
-      next.innerHTML = 'こたえを <ruby>見<rt>み</rt></ruby>る →';
-    } else if (state.step === 1) {
-      next.innerHTML = '<b>その ために</b>… →';
-    } else if (state.step < last) {
-      next.innerHTML = 'つぎの つくり →';
-    } else {
-      next.hidden = true;
-      if (done) { done.hidden = false; }
-    }
-  }
-
-  /* --- 絵の ぶぶんを 光らせる --- */
-  function clearPin() {
-    var stage = $('#art-stage');
-    if (!stage) return;
-    if (view3d) { view3d.clearHighlight(); }
-    stage.classList.remove('is-art');          /* 写真に もどす */
-    var svg = stage.querySelector('svg');
-    if (svg) {
-      svg.classList.remove('has-lit');
-      $$('.is-lit', svg).forEach(function (e) { e.classList.remove('is-lit'); });
-    }
-    var c = $('#callout');
-    if (c) { c.hidden = true; }
-    $$('.js-make', viewDetail).forEach(function (el) {
-      el.classList.remove('is-active');
-      var b = $('.js-pin', el);
-      if (b) b.innerHTML = '📍 ばしょを <ruby>見<rt>み</rt></ruby>る';
-      var tap = $('.js-tapme', el);
-      if (tap) tap.innerHTML = TAPME;
-    });
-    state.pin = null;
-  }
-
-  function showPin(makeEl) {
-    var part = makeEl.getAttribute('data-part');
-    var i = Number(makeEl.getAttribute('data-i'));
-    if (state.pin === part) { clearPin(); return; }
-    clearPin();
-
-    var stage = $('#art-stage');
-    var callout = $('#callout');
-
-    /* --- 3Dの とき --- */
-    if (view3d) {
-      if (!view3d.highlight(part)) return;
-      view3d.focusPart(part);
-      view3d.setAutoRotate(false);
-      makeEl.classList.add('is-active');
-      var b3 = $('.js-pin', makeEl);
-      if (b3) b3.innerHTML = '✕ もどす';
-      var tap3 = $('.js-tapme', makeEl);
-      if (tap3) tap3.innerHTML = TAPBACK;
-      callout.innerHTML = state.car.tsukuri[i].label;
-      callout.hidden = false;
-      state.pin = part;
-      place3dCallout();
-      return;
-    }
-
-    /* --- イラストの とき ---
-       写真の 車でも、うしろに イラストを 入れて あるので、
-       ここで えに 入れかえて 光らせる（clearPin で 写真に もどる）*/
-    var svg = stage.querySelector('svg');
-    if (!svg) return;                       /* えが ない ときだけ なにも しない */
-    var els = $$('[data-part="' + part + '"]', svg);
-    if (!els.length) return;
-
-    stage.classList.add('is-art');
-
-    els.forEach(function (e) { e.classList.add('is-lit'); });
-    svg.classList.add('has-lit');
-    makeEl.classList.add('is-active');
-    var b = $('.js-pin', makeEl);
-    if (b) b.innerHTML = '✕ もどす';
-    var tap = $('.js-tapme', makeEl);
-    if (tap) tap.innerHTML = TAPBACK;
-
-    callout.innerHTML = state.car.tsukuri[i].label;
-    callout.hidden = false;
-    state.pin = part;
-    placeCallout(svg, els, callout, stage);
-  }
-
-  /* 3Dの ふきだしは 車を まわしても ついてくる */
-  function place3dCallout() {
-    if (!view3d || !state.pin) return;
-    var stage = $('#art-stage');
-    var callout = $('#callout');
-    if (!stage || !callout || callout.hidden) return;
-    var p = view3d.screenPos(state.pin);
-    if (!p) return;
-    var half = callout.offsetWidth / 2 + 6;
-    callout.style.opacity = p.visible ? '1' : '0.25';
-    callout.style.left = Math.max(half, Math.min(stage.clientWidth - half, p.x)) + 'px';
-    callout.style.top = Math.max(callout.offsetHeight + 10, p.y - 14) + 'px';
-  }
-
+  /* ------------------------------------------------------------------
+     えの ぶぶんの 上に ふきだしを おく（hon.js が つかう）
+     ------------------------------------------------------------------ */
   function placeCallout(svg, els, callout, stage) {
     var minX = Infinity, maxX = -Infinity, minY = Infinity;
     els.forEach(function (e) {
@@ -660,255 +262,398 @@
     callout.style.top = Math.max(callout.offsetHeight + 6, y - 6) + 'px';
   }
 
-  function repositionCallout() {
-    if (!state.pin) return;
-    if (view3d) { place3dCallout(); return; }
-    var stage = $('#art-stage');
-    if (!stage) return;
-    var svg = stage.querySelector('svg');
-    if (!svg) return;
-    placeCallout(svg, $$('[data-part="' + state.pin + '"]', svg), $('#callout'), stage);
-  }
-  window.addEventListener('resize', repositionCallout);
+  /* ==================================================================
+     もくじ
+     ================================================================== */
+  var filter = store.get('filter', 'all');
+  if (filter === 'star') { filter = 'shiori'; }                 /* むかしの ★ */
+  if (filter !== 'all' && filter !== 'shiori' && !catMap[filter]) { filter = 'all'; }
 
-  function showDetail(car) {
-    load3d();                           /* ここで はじめて 3Dを 読みこむ */
-    state = { car: car, step: 0, pin: null };
-    lastCarId = car.id;                 /* ずかんに もどった ときの しるし */
-    unmount3d();
-    viewDetail.innerHTML = detailHTML(car);
-    if (has3d(car) && want3d()) { mount3d(car); }
-    sync3dToggle(car);
-    if (view3d) { view3d.onFrame(place3dCallout); }
+  var lastCarId = null;     /* さっき 見て いた 車（もくじに もどった ときに わくを つける） */
+  var lastListY = 0;        /* もくじで どこまで スクロールして いたか */
 
-    updateSteps();
-    setView('detail');
-    document.title = plain(car.name) + ' - じどう車ずかん';
-
-    var star = $('#btn-star');
-    var on = isStar(car.id);
-    star.setAttribute('aria-pressed', String(on));
-    $('.star', star).textContent = on ? '★' : '☆';
-    $('.btn-star__text', star).textContent = on ? 'えらんで います' : 'えらんだ 車に する';
+  function tabHTML(id, icon, name, sub, attrs) {
+    var on = filter === id;
+    return '<button type="button" class="tab' + (on ? ' is-active' : '') + '" data-filter="' + id + '"' +
+      (attrs || '') + ' aria-pressed="' + on + '">' +
+      '<span class="tab__icon" aria-hidden="true">' + icon + '</span>' +
+      '<span class="tab__text"><span class="tab__name">' + name + '</span>' +
+      '<span class="tab__pages">' + sub + '</span></span></button>';
   }
 
-  viewDetail.addEventListener('click', function (e) {
-    var audio = e.target.closest('.js-audio');
-    if (audio) {
-      e.stopPropagation();
-      var host = audio.closest('.step, .more');
-      speak(audio, host ? $('.js-read', host) : null);
-      return;
-    }
-    if (e.target.closest('#btn-next')) {
-      state.step++;
-      updateSteps();
-      var justOpened = state.step === 1 ? $('#step-job') : $$('.js-make', viewDetail)[state.step - 2];
-      if (justOpened) { justOpened.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
-      return;
-    }
-    if (e.target.closest('#btn-3d')) {
-      clearPin();
-      if (view3d) { unmount3d(); setWant3d(false); }
-      else if (mount3d(state.car)) { setWant3d(true); view3d.onFrame(place3dCallout); }
-      sync3dToggle(state.car);
-      return;
-    }
-    var anim = e.target.closest('[data-anim]');
-    if (anim && view3d) {
-      anim.classList.toggle('is-on', view3d.toggleAnim(anim.getAttribute('data-anim')));
-      view3d.setAutoRotate(false);
-      return;
-    }
+  function renderTabs() {
+    var n = shioriList().filter(function (id) { return !!carById(id); }).length;
+    var html = tabHTML('all', '📚', 'ぜんぶ', '1〜' + bookList.length + 'ページ');
+    cats.forEach(function (c) {
+      html += tabHTML(c.id, c.icon, c.name, rangeText(c.id), ' data-cat="' + c.id + '"');
+    });
+    html += tabHTML('shiori', '🔖', 'しおり', n ? n + 'ページ' : 'まだ ない', '').replace('class="tab', 'class="tab tab--shiori');
+    $('#tabs').innerHTML = html;
+  }
 
-    var make = e.target.closest('.js-make');
-    if (make) { showPin(make); }
+  function cardHTML(car) {
+    var no = book.pageOf(car.id);
+    var on = isShiori(car.id);
+    return '<a class="card' + (car.id === lastCarId ? ' is-last' : '') + '" href="#/car/' + car.id + '" ' +
+      'data-cat="' + car.category + '" data-id="' + car.id + '" ' +
+      'aria-label="' + esc(car.kana) + '、' + no + 'ページ' + (on ? '、しおり' : '') + '">' +
+      '<span class="card__art">' + cardArt(car) + '</span>' +
+      '<span class="card__body">' +
+      '<span class="card__no" aria-hidden="true">' + no + '</span>' +
+      '<span class="card__name">' + car.name + '</span>' +
+      '</span>' +
+      (on ? '<span class="card__shiori" aria-hidden="true">🔖</span>' : '') +
+      '</a>';
+  }
+
+  function chapHTML(c) {
+    var list = bookList.filter(function (x) { return x.category === c.id; });
+    if (!list.length) { return ''; }
+    return '<section class="chap" data-cat="' + c.id + '">' +
+      '<h3 class="chap__head">' +
+      '<span class="chap__icon" aria-hidden="true">' + c.icon + '</span>' +
+      '<span class="chap__name">' + c.name + '</span>' +
+      '<span class="chap__pages">' + rangeText(c.id) + '</span></h3>' +
+      '<div class="chap__grid">' + list.map(cardHTML).join('') + '</div>' +
+      '</section>';
+  }
+
+  function renderList() {
+    var grid = $('#grid');
+    var empty = false;
+    if (filter === 'shiori') {
+      var list = bookList.filter(function (c) { return isShiori(c.id); });
+      grid.className = 'grid';
+      grid.innerHTML = list.map(cardHTML).join('');
+      empty = list.length === 0;
+    } else {
+      grid.className = 'grid grid--chaps';
+      grid.innerHTML = cats.filter(function (c) { return filter === 'all' || c.id === filter; })
+        .map(chapHTML).join('');
+    }
+    $('#empty').hidden = !empty;
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var tab = e.target.closest('.tab[data-filter]');
+    if (!tab) return;
+    filter = tab.getAttribute('data-filter');
+    store.set('filter', filter);
+    renderTabs();
+    renderList();
   });
 
-  /* 「つくり」の カードは キーボードからも おせる（role="button" tabindex="0"） */
-  viewDetail.addEventListener('keydown', function (e) {
-    if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') { return; }
-    if (!e.target.classList || !e.target.classList.contains('js-make')) { return; }
-    e.preventDefault();                 /* スペースで がめんが 下がらない ように */
-    showPin(e.target);
-  });
+  function showMokuji() {
+    renderTabs();
+    renderList();
+    setView('mokuji');
+    document.title = 'じどう車ずかん - はたらく じどう車 60だい';
+  }
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { clearPin(); stopSpeech(); }
-  });
+  /* ==================================================================
+     車の ページ（中身は hon.js）
+     ================================================================== */
+  function syncShiori(car) {
+    var on = isShiori(car.id);
+    btnShiori.setAttribute('aria-pressed', String(on));
+    $('.btn--shiori__text', btnShiori).textContent = on ? 'しおりを はさんだ' : 'しおりを はさむ';
+  }
 
-  /* 本の ページからは 本の もくじへ。それ いがいは、さいごに 見た 一覧へ */
-  $('#btn-back').addEventListener('click', function () {
-    location.hash = (!viewHon.hidden || listMode === 'hon') ? '#/hon' : '#/';
-  });
+  function showPage(car) {
+    lastCarId = car.id;
+    setView('page');
+    if (!window.jzHon.mount(car, viewPage)) { location.replace('#/'); return; }
+    syncShiori(car);
+    document.title = bare(car.name) + '（' + book.pageOf(car.id) + 'ページ） - じどう車ずかん';
+  }
 
-  $('#btn-star').addEventListener('click', function () {
-    var car = !viewHon.hidden ? carById(lastCarId) : state.car;
+  btnShiori.addEventListener('click', function () {
+    var car = carById(lastCarId);
     if (!car) return;
-    var on = toggleStar(car.id);
-    this.setAttribute('aria-pressed', String(on));
-    $('.star', this).textContent = on ? '★' : '☆';
-    $('.btn-star__text', this).textContent = on ? 'えらんで います' : 'えらんだ 車に する';
+    toggleShiori(car.id);
+    syncShiori(car);
   });
+
+  /* ==================================================================
+     さくいん（名まえの あいうえお じゅん）
+     ================================================================== */
+  var GYO = [
+    ['あ', 'あいうえおぁぃぅぇぉ'], ['か', 'かきくけこ'], ['さ', 'さしすせそ'],
+    ['た', 'たちつてとっ'], ['な', 'なにぬねの'], ['は', 'はひふへほ'], ['ま', 'まみむめも'],
+    ['や', 'やゆよゃゅょ'], ['ら', 'らりるれろ'], ['わ', 'わをん']
+  ];
+
+  /* かたかなを ひらがなに（さくいんの ならびと ぎょう わけ だけに つかう） */
+  function hira(s) {
+    return String(s).replace(/[ァ-ヶ]/g, function (ch) {
+      return String.fromCharCode(ch.charCodeAt(0) - 0x60);
+    });
+  }
+
+  function gyoOf(kana) {
+    var c = hira(kana);
+    if (c.normalize) { c = c.normalize('NFD'); }      /* が → か ＋ ゛ */
+    c = c.charAt(0);
+    for (var i = 0; i < GYO.length; i++) { if (GYO[i][1].indexOf(c) >= 0) { return i; } }
+    return -1;
+  }
+
+  function sakuinGroups() {
+    var groups = GYO.map(function (g) { return { head: g[0], cars: [] }; });
+    var other = { head: 'ほか', cars: [] };
+    bookList.forEach(function (car) {
+      var i = gyoOf(car.kana);
+      (i >= 0 ? groups[i] : other).cars.push(car);
+    });
+    groups.push(other);
+    groups.forEach(function (g) {
+      g.cars.sort(function (a, b) { return hira(a.kana).localeCompare(hira(b.kana), 'ja'); });
+    });
+    return groups.filter(function (g) { return g.cars.length; });
+  }
+
+  function showSakuin() {
+    var groups = sakuinGroups();
+    viewSakuin.innerHTML = '<div class="sheet sakuin">' +
+      '<h2 class="sheet__h">さくいん</h2>' +
+      '<p class="sheet__lead"><ruby>車<rt>くるま</rt></ruby>の <ruby>名<rt>な</rt></ruby>まえを、あいうえおの じゅんに ならべました。' +
+      '<ruby>名<rt>な</rt></ruby>まえの よこの かずが ページです。</p>' +
+      '<div class="sakuin__jump" role="group" aria-label="ぎょうへ とぶ">' + groups.map(function (g, i) {
+        return '<a href="#/sakuin" data-jump="sakuin-' + i + '">' + g.head + '</a>';
+      }).join('') + '</div>' +
+      groups.map(function (g, i) {
+        return '<section class="sakuin__grp" id="sakuin-' + i + '" aria-label="' + g.head + 'の ぎょう">' +
+          '<h3 class="sakuin__kana">' + g.head + '</h3>' +
+          '<ul class="sakuin__list">' + g.cars.map(function (car) {
+            return '<li><a class="sakuin__a" href="#/car/' + car.id + '" data-cat="' + car.category + '">' +
+              '<span class="sakuin__name">' + car.name + '</span>' +
+              '<span class="sakuin__dots" aria-hidden="true"></span>' +
+              '<span class="sakuin__no">' + book.pageOf(car.id) + '<small>ページ</small></span></a></li>';
+          }).join('') + '</ul></section>';
+      }).join('') +
+      '</div>';
+    setView('sakuin');
+    document.title = 'さくいん - じどう車ずかん';
+  }
+
+  viewSakuin.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-jump]');
+    if (!a) return;
+    e.preventDefault();
+    var to = document.getElementById(a.getAttribute('data-jump'));
+    if (to) { to.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+  });
+
+  /* ==================================================================
+     ずかんの 見かた
+     ================================================================== */
+  function showMikata() {
+    var car = carById('ambulance') || bookList[0];
+    var d = (window.honData || {})[car.id] || { pages: [{ h: '' }] };
+    var photo = car.photo ? ' style="background-image:url(' + esc(car.photo) + ')"' : '';
+    var cat = catMap[car.category] || { icon: '', name: '' };
+
+    var mock = '<div class="mock" data-cat="' + car.category + '" aria-hidden="true">' +
+      '<div class="mock__band"><span><span class="num">1</span> ' + cat.icon + ' ' + cat.name + '</span><b>' + book.pageOf(car.id) + '</b></div>' +
+      '<div class="mock__name"><span class="num">2</span> ' + car.name + '</div>' +
+      '<div class="mock__body">' +
+      '<div>' +
+      '<div class="mock__photo"' + photo + '><span class="num num--on">3</span></div>' +
+      '<div class="mock__zukai"><span class="num num--on">4</span>' + window.carArt.svg(car.art, 'fit') +
+      '<div class="mock__chips"><i></i><i></i><i></i></div></div>' +
+      '</div>' +
+      '<div>' +
+      '<div class="mock__h"><span class="num">5</span><span>' + d.pages[0].h + '</span></div>' +
+      '<div class="mock__lines"><span class="num">6</span><span><i></i><i></i><i></i><i></i><i></i></span></div>' +
+      '<div class="mock__kazu"><span class="num">7</span> 🔢 かずで <ruby>見<rt>み</rt></ruby>る</div>' +
+      '</div>' +
+      '</div>' +
+      '<div class="mock__turn"><span><span class="num">8</span> ← まえの ページ</span><span>つぎの ページ →</span></div>' +
+      '</div>';
+
+    var items = [
+      ['なかま と ページ', 'しごとの なかまの <ruby>名<rt>な</rt></ruby>まえと、ページの かずです。'],
+      ['<ruby>名<rt>な</rt></ruby>まえ', '<ruby>車<rt>くるま</rt></ruby>の <ruby>名<rt>な</rt></ruby>まえと、どんな <ruby>車<rt>くるま</rt></ruby>かを みじかく あらわした ことばです。'],
+      ['しゃしん', 'ほんものの <ruby>車<rt>くるま</rt></ruby>の しゃしんです。'],
+      ['ぶぶんの <ruby>名<rt>な</rt></ruby>まえ', '<ruby>名<rt>な</rt></ruby>まえを おすと、えの その ぶぶんが <ruby>光<rt>ひか</rt></ruby>ります。'],
+      ['<ruby>見出<rt>みだ</rt></ruby>し', 'その まとまりに なにが かいて あるかが わかります。しりたい ことは、<ruby>見出<rt>みだ</rt></ruby>しを <ruby>見<rt>み</rt></ruby>て さがしましょう。'],
+      ['せつめいの <ruby>文<rt>ぶん</rt></ruby>', '<ruby>見出<rt>みだ</rt></ruby>しの ことを くわしく かいて あります。'],
+      ['かずで <ruby>見<rt>み</rt></ruby>る', '<ruby>大<rt>おお</rt></ruby>きさや <ruby>長<rt>なが</rt></ruby>さ、のれる <ruby>人<rt>ひと</rt></ruby>の かず などです。'],
+      ['ページを めくる', 'まえの ページと つぎの ページへ すすめます。']
+    ];
+
+    viewMikata.innerHTML = '<div class="sheet mikata">' +
+      '<h2 class="sheet__h">ずかんの <ruby>見<rt>み</rt></ruby>かた</h2>' +
+      '<p class="sheet__lead">この ずかんの 1ページには、こんな ことが のって います。</p>' +
+      '<div class="mikata__grid">' + mock +
+      '<ol class="mikata__list">' + items.map(function (it, i) {
+        return '<li><span class="num">' + (i + 1) + '</span><span><b>' + it[0] + '</b>' + it[1] + '</span></li>';
+      }).join('') + '</ol>' +
+      '</div>' +
+      '<section class="mikata__find">' +
+      '<h3><ruby>車<rt>くるま</rt></ruby>の さがしかた</h3>' +
+      '<div class="mikata__ways">' +
+      '<a class="mikata__way" href="#/"><b>📚 もくじ</b>しごとの なかまで さがします。</a>' +
+      '<a class="mikata__way" href="#/sakuin"><b>あ さくいん</b><ruby>名<rt>な</rt></ruby>まえの あいうえおで さがします。</a>' +
+      '<div class="mikata__way"><b>🔖 しおり</b>ページの <ruby>上<rt>うえ</rt></ruby>の「しおりを はさむ」を おすと、もくじの「しおり」に あつまります。</div>' +
+      '</div></section>' +
+      '</div>';
+    setView('mikata');
+    document.title = 'ずかんの 見かた - じどう車ずかん';
+  }
 
   /* ==================================================================
      大きさくらべ
      ================================================================== */
   function showCompare() {
-    var sorted = cars.slice().sort(function (a, b) {
+    var sorted = bookList.slice().sort(function (a, b) {
       return window.carArt.size(b.art).w - window.carArt.size(a.art).w;
     });
     var rows = sorted.map(function (car) {
-      return '<div class="crow">' +
+      return '<div class="crow" data-cat="' + car.category + '">' +
         '<div class="crow__label">' +
         '<a class="crow__name" href="#/car/' + car.id + '">' + car.name + '</a>' +
-        '<div class="crow__len">ながさ やく ' + meters(car) + '</div>' +
+        '<span class="crow__len">ながさ やく ' + meters(car) + '・' + book.pageOf(car.id) + 'ページ</span>' +
         '</div>' +
         '<div class="crow__art">' + window.carArt.svg(car.art, 'scale') + '</div>' +
         '</div>';
     }).join('');
 
-    viewCompare.innerHTML = '<div class="compare">' +
-      '<div class="compare__lead">' +
-      '<b>ぜんぶ おなじ 大きさの ものさし</b>で ならべて います。' +
-      'いちばん <ruby>左<rt>ひだり</rt></ruby>に いるのは、みんなと おなじ <ruby>一年生<rt>いちねんせい</rt></ruby>です。' +
-      'どの じどう<ruby>車<rt>しゃ</rt></ruby>が 大きいか、くらべて みよう。' +
-      '</div>' + rows + '</div>';
+    viewCompare.innerHTML = '<div class="sheet compare">' +
+      '<h2 class="sheet__h"><ruby>大<rt>おお</rt></ruby>きさくらべ</h2>' +
+      '<p class="sheet__lead">ぜんぶ おなじ ものさしで ならべて います。' +
+      'いちばん <ruby>左<rt>ひだり</rt></ruby>に いるのは、1<ruby>年生<rt>ねんせい</rt></ruby>（やく 1.2メートル）です。</p>' +
+      rows + '</div>';
     setView('compare');
     document.title = '大きさくらべ - じどう車ずかん';
   }
 
   /* ==================================================================
-     がめんの きりかえ
+     くわしく 見る（3D・大きく）
      ================================================================== */
-  /* 一覧で どこまで スクロールして いたか（ずかんと 本の もくじで べつべつ） */
-  var lastListY = { zukan: 0, hon: 0 };
+  var kzCar = null;
+  var no3d = false;         /* 3Dを 出そうと して できなかった（WebGLが ない たんまつ） */
 
-  function setView(name) {
-    stopSpeech();
-    if (name !== 'kansatsu') {
-      if (window.kansatsu) { window.kansatsu.unmount(); }
-      if (window.kansatsu3d) { window.kansatsu3d.unmount(); }
-    }
-    if (name !== 'detail') { unmount3d(); }
-    if (name !== 'hon' && window.jzHon) { window.jzHon.unmount(); }
-    viewList.hidden = name !== 'list';
-    viewDetail.hidden = name !== 'detail';
-    viewCompare.hidden = name !== 'compare';
-    viewKansatsu.hidden = name !== 'kansatsu';
-    viewHon.hidden = name !== 'hon';
-    elHeader.hidden = !(name === 'list' && listMode === 'zukan');
-    elHonHeader.hidden = !(name === 'list' && listMode === 'hon');
-    $('#note-zukan').hidden = listMode !== 'zukan';
-    $('#note-hon').hidden = listMode !== 'hon';
-    elTopbar.hidden = !(name === 'detail' || name === 'compare' || name === 'hon');
-    $('#btn-star').hidden = name === 'compare';
-    $('#btn-back').innerHTML = '<span aria-hidden="true">←</span> ' +
-      ((name === 'hon' || listMode === 'hon')
-        ? '<ruby>本<rt>ほん</rt></ruby>の もくじに もどる'
-        : 'ずかんに もどる');
-    document.body.classList.toggle('is-hon', name === 'hon');
-    /* 一覧に もどった ときは、さがして いた ところへ もどす
-       （60だい あるので、まいかい 先頭に もどると さがしなおしに なる） */
-    window.scrollTo(0, name === 'list' ? lastListY[listMode] : 0);
+  /* 3D ⇄ え の きりかえボタン（kansatsu.js / kansatsu3d.js の バーに ある #kz-mode） */
+  function syncKzMode() {
+    var b = $('#kz-mode', viewKansatsu);
+    if (!b || !kzCar) return;
+    var in3d = !!$('.kz--3d', viewKansatsu);
+    /* 3Dが 出せない たんまつでは、おしても かわらない ボタンを 出さない */
+    b.hidden = !in3d && (!has3d(kzCar) || no3d);
+    b.innerHTML = in3d ? '🖼️ えで <ruby>見<rt>み</rt></ruby>る' : '🧊 3Dで <ruby>見<rt>み</rt></ruby>る';
+    b.setAttribute('aria-pressed', String(in3d));
   }
 
-  /* ==================================================================
-     ものすごい かんさつ
-     ================================================================== */
   function showKansatsu(car) {
     load3d();                           /* ここで はじめて 3Dを 読みこむ */
+    kzCar = car;
     setView('kansatsu');
-    document.title = plain(car.name) + 'を ものすごく 大きく - じどう車ずかん';
+    document.title = bare(car.name) + 'を くわしく 見る - じどう車ずかん';
     /* まえの かんさつを かならず 片づけてから 出す（3D↔イラストの 行き来の ため）*/
     if (window.kansatsu) { window.kansatsu.unmount(); }
     if (window.kansatsu3d) { window.kansatsu3d.unmount(); }
     /* 3Dモデルが あれば まわせる ほうを つかう。だめなら イラスト版に もどす */
-    if (has3d(car) && want3d() && window.kansatsu3d &&
-      window.kansatsu3d.mount(car, viewKansatsu)) { return; }
-    window.kansatsu.mount(car, viewKansatsu);
+    var try3d = has3d(car) && want3d() && !!window.kansatsu3d;
+    if (!(try3d && window.kansatsu3d.mount(car, viewKansatsu))) {
+      if (try3d) { no3d = true; }
+      window.kansatsu.mount(car, viewKansatsu);
+    }
+    syncKzMode();
   }
 
+  viewKansatsu.addEventListener('click', function (e) {
+    if (!e.target.closest('#kz-mode') || !kzCar) return;
+    var in3d = !!$('.kz--3d', viewKansatsu);
+    setWant3d(!in3d);
+    showKansatsu(kzCar);
+  });
+
   /* ==================================================================
-     じどう車の 本（中身は hon.js）
+     がめんの きりかえ
      ================================================================== */
-  function showHon(car) {
-    listMode = 'hon';                   /* もどる ボタンの 行き先を 本の もくじに */
-    lastCarId = car.id;
-    setView('hon');
-    if (!window.jzHon.mount(car, viewHon)) { location.replace('#/car/' + car.id); return; }
-    document.title = plain(car.name) + 'の 本 - じどう車ずかん';
-    var star = $('#btn-star');
-    var on = isStar(car.id);
-    star.setAttribute('aria-pressed', String(on));
-    $('.star', star).textContent = on ? '★' : '☆';
-    $('.btn-star__text', star).textContent = on ? 'えらんで います' : 'えらんだ 車に する';
+  var routed = false;
+
+  function setView(name) {
+    routed = true;
+    stopSpeech();
+    if (name !== 'kansatsu') {
+      if (window.kansatsu) { window.kansatsu.unmount(); }
+      if (window.kansatsu3d) { window.kansatsu3d.unmount(); }
+      kzCar = null;
+    }
+    if (name !== 'page' && window.jzHon) { window.jzHon.unmount(); }
+    viewMokuji.hidden = name !== 'mokuji';
+    viewPage.hidden = name !== 'page';
+    viewSakuin.hidden = name !== 'sakuin';
+    viewMikata.hidden = name !== 'mikata';
+    viewCompare.hidden = name !== 'compare';
+    viewKansatsu.hidden = name !== 'kansatsu';
+    elTopbar.hidden = name === 'mokuji' || name === 'kansatsu';
+    btnShiori.hidden = name !== 'page';
+    $('#topbar-where').innerHTML = name === 'mokuji' || name === 'kansatsu' ? ''
+      : 'じどう<ruby>車<rt>しゃ</rt></ruby>ずかん';
+    document.body.setAttribute('data-view', name);
+    /* もくじに もどった ときは、さがして いた ところへ もどす
+       （60だい あるので、まいかい 先頭に もどると さがしなおしに なる） */
+    window.scrollTo(0, name === 'mokuji' ? lastListY : 0);
   }
 
   function route() {
     var h = location.hash || '#/';
-    /* 一覧から はなれる まえに、いま 見て いた ところを おぼえて おく */
-    if (!viewList.hidden) { lastListY[listMode] = window.scrollY || window.pageYOffset || 0; }
-    clearPin();
-    if (h.indexOf('#/hon/') === 0 && window.jzHon) {
-      var hcar = carById(h.slice('#/hon/'.length));
-      if (hcar && window.jzHon.has(hcar.id)) { showHon(hcar); return; }
+    /* #main（「ほんぶんへ すすむ」）の ような ページの 中の しるしは、そのまま ブラウザに まかせる */
+    if (h.length > 1 && h.charAt(1) !== '/') {
+      if (!routed) { showMokuji(); }
+      return;
+    }
+    /* もくじから はなれる まえに、いま 見て いた ところを おぼえて おく */
+    if (!viewMokuji.hidden && routed) { lastListY = window.scrollY || window.pageYOffset || 0; }
+
+    /* むかしの 行き先（本の もくじ・本の ページ）は、いまの ページへ */
+    if (h === '#/hon' || h === '#/hon/') { location.replace('#/'); return; }
+    if (h.indexOf('#/hon/') === 0) { location.replace('#/car/' + h.slice('#/hon/'.length)); return; }
+
+    if (h.indexOf('#/car/') === 0) {
+      var car = carById(h.slice('#/car/'.length));
+      if (car && window.jzHon && window.jzHon.has(car.id)) { showPage(car); return; }
     }
     if (h.indexOf('#/kansatsu/') === 0) {
       var kcar = carById(h.slice('#/kansatsu/'.length));
-      if (kcar && window.kansatsu &&
-        (window.carArt.has(kcar.art) || has3d(kcar))) { showKansatsu(kcar); return; }
+      if (kcar && window.kansatsu && window.carArt.has(kcar.art)) { showKansatsu(kcar); return; }
     }
-    if (h.indexOf('#/car/') === 0) {
-      var car = carById(h.slice('#/car/'.length));
-      if (car) { showDetail(car); return; }
-    }
+    if (h === '#/sakuin') { showSakuin(); return; }
+    if (h === '#/mikata') { showMikata(); return; }
     if (h === '#/kurabe') { showCompare(); return; }
-    listMode = (h === '#/hon' || h.indexOf('#/hon/') === 0) ? 'hon' : 'zukan';
-    renderTabs();
-    renderTools();
-    renderList();
-    setView('list');
-    document.title = listMode === 'hon'
-      ? 'じどう車の 本 - しごとと つくりを さがそう'
-      : 'じどう車ずかん - しごとと つくりを しらべよう';
+    if (h !== '#/') { location.replace('#/'); return; }   /* しらない 行き先は もくじへ */
+    showMokuji();
   }
 
   window.addEventListener('hashchange', route);
 
-  /* car3d.js は あとから 読みこまれる。来た ときに 詳細ページを 出して いたら、
-     詳細ページを 作りなおさずに（いまの じょうたいの まま）3Dを のせる */
-  window.addEventListener('jz3d-ready', function () {
-    /* かんさつを 見て いる とちゅうなら、まわせる ほうに 入れかえる
-       （✓は localStorage に 入って いるので 消えません）*/
-    if (!viewKansatsu.hidden) {
-      var h3 = location.hash;
-      if (h3.indexOf('#/kansatsu/') === 0) {
-        var kc = carById(h3.slice('#/kansatsu/'.length));
-        if (kc && has3d(kc) && want3d()) { showKansatsu(kc); }
-      }
-      return;
-    }
-    if (!state || !state.car || viewDetail.hidden) { return; }
-    if (!view3d && has3d(state.car) && want3d() && mount3d(state.car)) {
-      view3d.onFrame(place3dCallout);
-    }
-    sync3dToggle(state.car);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { stopSpeech(); }
   });
 
-  /* hon.js（じどう車の 本）が つかう 道具 */
+  /* car3d.js は あとから 読みこまれる。くわしく 見る を ひらいて いたら、まわせる ほうに 入れかえる
+     （見た ✓は localStorage に 入って いるので 消えません）*/
+  window.addEventListener('jz3d-ready', function () {
+    if (viewKansatsu.hidden || !kzCar) { return; }
+    if (has3d(kzCar) && want3d() && !$('.kz--3d', viewKansatsu)) { showKansatsu(kzCar); return; }
+    syncKzMode();
+  });
+
+  /* hon.js（車の ページ）が つかう 道具 */
   window.jzApp = {
-    photoCredit: photoCredit,
     store: store,
     plain: plain,
+    bare: bare,
     speak: speak,
     stopSpeech: stopSpeech,
-    artHTML: artHTML,
-    hasArtSwap: hasArtSwap,
     placeCallout: placeCallout,
-    catMap: catMap
+    catMap: catMap,
+    book: book
   };
 
-  dropOldSheets();
+  dropOld();
   route();
 })();

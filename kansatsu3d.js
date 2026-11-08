@@ -5,6 +5,10 @@
    ・ちがうのは「まわせる」こと。◯印は 車を まわしても ついてきて、
      うら がわに 行くと きえます。
    ・3Dモデルの ない 車では 出て きません（app.js が SVG版に まわします）
+   ・うえの バーの ボタンで イラスト版に きりかえられる（app.js が うけもつ）
+
+   ⚠️ むかしは その 車の「③ つくり」の 文（教科書の 型の こたえ）も ならべ、
+      その ぶぶんを さきに 出して いた。2026-11-08 に やめた（kansatsu.js と おなじ）。
    ========================================================================= */
 
 (function () {
@@ -35,6 +39,8 @@
       '<span aria-hidden="true">←</span> ずかんに もどる</button>' +
       '<h2 class="kz__title">' + car.name +
       '<span class="kz__len" id="kz-len"></span></h2>' +
+      /* 3D ⇄ え の きりかえ（中身は app.js が 入れる） */
+      '<button type="button" class="kz-btn kz-btn--mode" id="kz-mode" hidden></button>' +
       '<span class="kz__count" id="kz-count"></span>' +
       '</div>' +
 
@@ -66,20 +72,11 @@
     var info = window.partInfo || {};
     var keys = viewer.parts();
     var list = keys.map(function (k) {
-      var own = null;
-      (car.tsukuri || []).forEach(function (t) { if (t.part === k) { own = t; } });
       var d = info[k] || {};
-      return { key: k, name: d.name || k, text: d.text || '', tsukuri: own };
+      return { key: k, name: d.name || k, text: d.text || '' };
     });
-    /* ③つくりで せつめいする ぶぶんを さきに、あとは 名まえ順 */
-    var order = (car.tsukuri || []).map(function (t) { return t.part; });
-    list.sort(function (a, b) {
-      var ia = order.indexOf(a.key), ib = order.indexOf(b.key);
-      if (ia >= 0 && ib >= 0) return ia - ib;
-      if (ia >= 0) return -1;
-      if (ib >= 0) return 1;
-      return a.key < b.key ? -1 : 1;
-    });
+    /* どの ぶぶんも おなじ あつかいで、キーの じゅんに（まわすと 左右が かわるので 名まえで そろえる） */
+    list.sort(function (a, b) { return a.key < b.key ? -1 : 1; });
     return list;
   }
 
@@ -186,11 +183,6 @@
     var old = $('#kz-panel');
     if (old) old.remove();
 
-    var tsu = '';
-    if (p.tsukuri) {
-      tsu = '<div class="kz__tsukuri"><span class="kz__tag">③ つくり</span><br>' +
-        '<span class="js-read">' + p.tsukuri.text + '</span></div>';
-    }
     var pic = cropSVG(S.car, p.key);
     var html = '<aside class="kz__panel" id="kz-panel" aria-live="polite">' +
       '<div class="kz__panel-head">' +
@@ -199,7 +191,6 @@
       '<button type="button" class="kz__panel-close" id="kz-pclose" aria-label="とじる">✕</button>' +
       '</div>' +
       (pic ? '<div class="kz__thumb">' + pic + '</div>' : '') +
-      tsu +
       (p.text ? '<p class="kz__panel-text js-read">' + p.text + '</p>' : '') +
       '<div class="kz__panel-foot">' +
       '<button type="button" class="btn btn--audio" id="kz-say" data-label="🔊 こえで きく">🔊 こえで きく</button>' +

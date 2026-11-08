@@ -1,1074 +1,574 @@
 /* =========================================================================
-   hon.css — じどう車の 本（#/hon・#/hon/<id>）
-   ・紙の 本の ような 見ひらき（左に 絵、右に 文）
-   ・ペンの 色は アプリ ぜんたいと おなじ「しごと＝あお」「つくり＝みどり」
+   hon.css — 車の ページ（#/car/<id>）
+
+   ■ ずかんの 見ひらきの ように
+     ・うえに しょうの 色の おび（なかまの 名まえ と ページばんごう）
+     ・名まえ と ひとこと
+     ・ひだりに 写真 と「ぶぶんの 名まえ」の え、みぎに 見出し と 文 と「かずで 見る」
+     ・いちばん 下に ページを めくる ボタン
+     ・写真の 出典と しらべた 資料は、とじた「おとなの かたへ」の 中（子どもには いらない）
+
+   ■ つかわない もの
+     「しごと」「つくり」と いう ラベル、ペンの 色わけ、「その ために」の 型。
+     どれが しごとで どれが つくりかは、子どもが 文を よんで 見つける。
    ========================================================================= */
 
-:root {
-  --paper: #fffdf8;
-  --paper-line: #ece3d1;
-  --pen-s: #2563eb;
-  --pen-s-ink: #1d4ed8;
-  --pen-s-mark: rgba(37, 99, 235, .28);
-  --pen-s-soft: rgba(37, 99, 235, .08);
-  --pen-t: #10b981;
-  --pen-t-ink: #047857;
-  --pen-t-mark: rgba(16, 185, 129, .36);
-  --pen-t-soft: rgba(16, 185, 129, .10);
-}
-
-.ink-s {
-  color: var(--pen-s-ink);
-}
-
-.ink-t {
-  color: var(--pen-t-ink);
-}
-
-/* ---------- ずかんの 一覧から 本へ ---------- */
-.list-tools {
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.btn--hon {
-  background: #fff7e6;
-  color: #8a4b00;
-  border-color: #f5c26b;
-}
-
-.btn--hon:hover {
-  background: #ffefcc;
-  border-color: #e9a93a;
-}
-
-.btn--hon-go {
-  width: 100%;
-  min-height: 56px;
-  text-decoration: none;
-  background: #fff7e6;
-  color: #8a4b00;
-  border: 2px solid #f5c26b;
-  box-shadow: none;
-}
-
-.btn--hon-go:hover {
-  background: #ffefcc;
-}
-
-.done__acts .btn--hon-go {
-  margin-top: 12px;
-}
-
-/* ---------- 本の もくじ ---------- */
-.site-header--hon .site-header__inner::before {
-  background: linear-gradient(90deg, var(--pen-s) 0%, var(--pen-t) 60%, var(--yellow) 100%);
-}
-
-.step-pill--pen-s {
-  color: var(--pen-s-ink);
-  border: 1px solid var(--a-border);
-}
-
-.step-pill--pen-t {
-  color: var(--pen-t-ink);
-  border: 1px solid var(--t-border);
-}
-
-.step-pill--memo {
-  color: #8a4b00;
-  border: 1px solid #f5c26b;
-}
-
-.card__memo {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 2;
-  background: rgba(255, 255, 255, .95);
-  border-radius: var(--radius-pill);
-  padding: 2px 12px;
-  font-size: var(--fs-small);
-  font-weight: 700;
-  line-height: 1.8;
-  white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(30, 43, 69, .18);
-}
-
-.note__steps {
-  margin: 0 0 16px 1.4em;
-  font-size: 17px;
-  line-height: 2.1;
-}
-
-.note__steps li {
-  padding-left: 4px;
-}
-
-/* ---------- 本の ページ ---------- */
-body.is-hon {
-  padding-bottom: 140px;
-}
-
-.hon {
-  --cat: #d9480f;
-  --cat-d: #9c330a;
-  max-width: 1160px;
-  margin: 0 auto;
+.page {
+  position: relative;
+  margin: 4px 0 0;
   background: var(--paper);
-  border: 1px solid var(--paper-line);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
-.hon[data-cat="tsukuru"] { --cat: #e8a500; --cat-d: #8a5d00; }
-.hon[data-cat="mamoru"] { --cat: #d6336c; --cat-d: #a01e4d; }
-.hon[data-cat="kurashi"] { --cat: #7048e8; --cat-d: #5030b8; }
-.hon[data-cat="sodateru"] { --cat: #8f5d1a; --cat-d: #6b4310; }
-.hon[data-cat="basho"] { --cat: #0b7285; --cat-d: #08515e; }
-
-.hon__head {
-  background: linear-gradient(120deg, var(--cat) 0%, var(--cat-d) 100%);
-  color: #fff;
-  padding: 16px 30px 22px;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-
-.hon__head rt {
-  color: rgba(255, 255, 255, .9);
-}
-
-.hon__series {
+/* ---------------- あたま ---------------- */
+.page__band {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 8px 16px;
-  flex-wrap: wrap;
-  font-size: var(--fs-small);
+  gap: 12px;
+  padding: 8px 18px 8px 24px;
+  background: var(--cat);
+  color: #fff;
+}
+
+.page__chap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 700;
-  line-height: 1.9;
-  opacity: .96;
+  font-size: 17px;
+  line-height: 1.5;
 }
 
-.hon__cat {
-  background: rgba(255, 255, 255, .2);
-  border-radius: var(--radius-pill);
-  padding: 0 12px;
+.page__chap-ico {
+  font-size: 22px;
+  line-height: 1;
 }
 
-.hon__name {
+.page__no {
   font-family: var(--font-title);
-  font-size: 44px;
-  line-height: 1.35;
+  font-size: 26px;
+  line-height: 1.3;
+}
+
+.page__no small {
+  font-family: var(--font);
+  font-size: 13px;
+  margin-left: 2px;
+}
+
+.page__title {
+  padding: 14px 28px 4px;
+}
+
+.page__name {
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 46px;
+  line-height: 1.45;
   letter-spacing: .02em;
-  margin-top: 4px;
 }
 
-.hon__catch {
-  font-family: var(--font-title);
-  font-size: 20px;
+.page__catch {
+  font-size: 19px;
   line-height: 1.9;
+  color: var(--ink-sub);
 }
 
-.hon__spread {
+/* ---------------- 見ひらき ---------------- */
+.page__body {
   display: grid;
-  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: 30px;
+  padding: 16px 28px 26px;
   align-items: start;
-  /* まん中の とじめ */
-  background: linear-gradient(90deg, transparent calc(46% - 14px), rgba(120, 90, 40, .07) 46%, transparent calc(46% + 14px));
 }
 
-.hon__left {
-  padding: 24px 22px 24px 26px;
-  position: sticky;
-  top: 12px;
+.page__fig {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.hon__right {
-  padding: 22px 30px 26px 26px;
-  min-width: 0;
+/* 写真 */
+.photo__frame {
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  background: var(--paper-2);
+  overflow: hidden;
 }
 
-.hon__fig {
-  background: #fff;
-  border: 1px solid var(--paper-line);
-  border-radius: var(--radius);
-  padding: 10px;
-  box-shadow: var(--shadow-sm);
+.photo__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
-.hon__stage {
+/* 写真の 出典（ライセンスの きまりで 出す。子どもの じゃまに ならない 大きさで） */
+.credit {
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #6a7183;
+  text-align: right;
+  word-break: break-all;
+}
+
+.credit a {
+  color: inherit;
+}
+
+/* ---------------- ぶぶんの 名まえ（え） ---------------- */
+.zukai {
+  padding: 14px 16px 12px;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper);
+}
+
+.zukai__h {
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--cat-ink);
+}
+
+.art-stage {
+  position: relative;
+  height: 220px;
+  margin: 6px 0 8px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fbfaf6 0%, #f1efe7 100%);
+  overflow: hidden;
+}
+
+.art-stage svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 写真が ない 車は、この えが ページの いちばん 大きな え に なる */
+.page--nophoto .art-stage {
   height: 300px;
 }
 
-.hon__cap {
-  font-size: var(--fs-small);
-  line-height: 1.8;
-  color: var(--ink-sub);
-  text-align: center;
-  margin-top: 8px;
+/* ひかる ぶぶん */
+.car-art .art-part {
+  transition: opacity .3s var(--ease), filter .3s var(--ease);
 }
 
-.hon__look {
-  margin-bottom: 12px;
+.car-art.has-lit>*:not(.is-lit) {
+  opacity: .3;
 }
 
-.hon__look-h {
-  font-family: var(--font-title);
-  font-size: 18px;
+.car-art .art-part.is-lit {
+  filter: drop-shadow(0 0 6px var(--lit)) drop-shadow(0 0 16px rgba(245, 158, 11, .9));
+}
+
+/* ふきだし（ぶぶんの 名まえ） */
+.callout {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, -100%);
+  background: var(--lit);
+  color: var(--ink);
   font-weight: 700;
-  color: #92400e;
-  margin-bottom: 6px;
+  font-size: 16px;
+  line-height: 1.4;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(245, 158, 11, .45);
+  pointer-events: none;
+  animation: popIn .3s var(--ease) both;
 }
 
-.hon__chips {
+.callout::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  margin-left: -7px;
+  border: 7px solid transparent;
+  border-top-color: var(--lit);
+  border-bottom: 0;
+}
+
+.callout rt {
+  color: inherit;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -80%) scale(.85);
+  }
+}
+
+.zukai__chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.hon__chip {
+.chip {
   min-height: var(--tap);
-  padding: 6px 18px;
+  padding: 4px 16px;
+  border: 2px solid var(--line-bold);
   border-radius: var(--radius-pill);
-  border: 2px solid var(--lit);
-  background: #fff;
-  color: #92400e;
-  font-family: var(--font-title);
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1.6;
+  background: var(--paper);
+  color: var(--ink);
+  font: 700 17px/1.5 var(--font);
   cursor: pointer;
-  transition: background .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
-}
-
-.hon__chip:hover {
-  background: #fff7e6;
-}
-
-.hon__chip[aria-pressed="true"] {
-  background: var(--lit);
-  color: #fff;
-  transform: translateY(-2px);
-}
-
-.hon__chip[aria-pressed="true"] rt {
-  color: #fef3c7;
-}
-
-/* --- 見出しと 文 --- */
-.hon__sec {
-  padding: 4px 0 18px;
-  margin-bottom: 16px;
-  border-bottom: 2px dashed var(--paper-line);
-}
-
-.hon__sec-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.hon__h {
-  font-family: var(--font-title);
-  font-size: 23px;
-  line-height: 1.6;
-  color: var(--cat-d);
-  border-left: 8px solid var(--cat);
-  padding-left: 12px;
-}
-
-.hon__audio {
-  flex: none;
-  min-height: var(--tap);
-  padding: 6px 16px;
-}
-
-.hon__p {
-  font-size: 21px;
-  line-height: 2.35;
-  letter-spacing: .02em;
-  margin-top: 8px;
-}
-
-/* --- 線を ひける ところ ---
-   マーカーの 線は 文の あたまから おわりへ のびる（行を またいで つづく）。
-   色は --mk、のびる ながさは background-size で うごかす。 */
-.hs {
-  --mk: transparent;
-  cursor: pointer;
-  border-radius: 4px;
-  padding: 3px 1px;
-  background-image: linear-gradient(transparent 58%, var(--mk) 58%);
-  background-repeat: no-repeat;
-  background-size: 0% 100%;
-  transition: background-size .55s var(--ease), background-color .2s var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
 
-.hs.is-s {
-  --mk: var(--pen-s-mark);
-  background-size: 100% 100%;
+.chip:hover {
+  border-color: #b9b09d;
 }
 
-.hs.is-t {
-  --mk: var(--pen-t-mark);
-  background-size: 100% 100%;
+.chip[aria-pressed="true"] {
+  background: #fff3d6;
+  border-color: var(--lit);
 }
 
-/* 色だけに たよらない ように、線の あとに ふせんを つける */
-.hs.is-s::after,
-.hs.is-t::after {
-  display: inline-block;
-  margin-left: 6px;
-  padding: 0 8px;
-  border-radius: 6px;
-  font-family: var(--font-title);
-  font-size: var(--fs-small);
-  font-weight: 700;
+.chip ruby rt {
+  color: inherit;
+}
+
+.zukai__hint {
+  margin-top: 8px;
+  font-size: 13px;
   line-height: 1.7;
-  letter-spacing: 0;
+  color: var(--ink-sub);
+}
+
+/* くわしく 見る（3D・大きく） */
+.btn--kansatsu {
+  justify-content: flex-start;
+  gap: 12px;
+  min-height: 60px;
+  padding: 8px 18px;
+  background: #1f2a44;
+  border-color: #1f2a44;
   color: #fff;
-  vertical-align: 2px;
+  font-size: 18px;
 }
 
-.hs.is-s::after {
-  content: 'しごと';
-  background: var(--pen-s-ink);
+.btn--kansatsu:hover {
+  background: #2b3a5e;
+  border-color: #2b3a5e;
 }
 
-.hs.is-t::after {
-  content: 'つくり';
-  background: var(--pen-t-ink);
+.btn--kansatsu ruby rt {
+  color: inherit;
 }
 
-.hs.is-new::after {
-  animation: tagPop .45s var(--ease) .35s both;
+.btn--kansatsu small {
+  font-weight: 400;
+  font-size: 14px;
+  opacity: .92;
 }
 
-@keyframes tagPop {
-  from {
-    opacity: 0;
-    transform: scale(.6);
-  }
+.btn--kansatsu__ico {
+  font-size: 24px;
+  line-height: 1;
 }
 
-/* ペンを もって いる ときは、おせる ところを うすく 見せる */
-.hon.pen-s .hs:hover {
-  background-color: var(--pen-s-soft);
-}
-
-.hon.pen-t .hs:hover {
-  background-color: var(--pen-t-soft);
-}
-
-.hon.pen-x .hs:hover {
-  background-color: rgba(100, 116, 139, .12);
-}
-
-.hs:focus-visible {
-  outline: 3px solid var(--yellow-d);
-  outline-offset: 2px;
-}
-
-/* --- かずで 見る --- */
-.hon__kazu {
-  background: #fff7e6;
-  border: 2px solid #f5d9a8;
-  border-radius: var(--radius);
-  padding: 12px 18px 14px;
-  margin-bottom: 18px;
-}
-
-.hon__kazu-h {
-  font-family: var(--font-title);
-  font-size: 20px;
-  color: #8a4b00;
-  margin-bottom: 4px;
-}
-
-.hon__kz-row {
+/* ---------------- 見出しと 文 ---------------- */
+.page__text {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 14px;
-  padding: 6px 10px 6px 16px;
-  border-bottom: 1px dotted #e9cf9f;
-  font-size: 19px;
-  line-height: 2.1;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.hon__kz-row:last-child {
-  border-bottom: 0;
+.sec {
+  padding: 4px 0 14px;
+  border-bottom: 1px dashed var(--line);
 }
 
-/* かずの 行は マーカーの かわりに 行ごと 色を つける（はばの せまい 行で 線が 切れる ため） */
-.hon__kz-row.hs {
-  background-image: none;
-  border-radius: 8px;
-}
-
-.hon__kz-row.is-s {
-  background-color: var(--pen-s-soft);
-  box-shadow: inset 6px 0 0 var(--pen-s);
-}
-
-.hon__kz-row.is-t {
-  background-color: var(--pen-t-soft);
-  box-shadow: inset 6px 0 0 var(--pen-t);
-}
-
-.hon__kz-row.is-s::after,
-.hon__kz-row.is-t::after {
-  margin-left: auto;
-  align-self: center;
-}
-
-.hon.pen-s .hon__kz-row.hs:hover,
-.hon.pen-t .hon__kz-row.hs:hover,
-.hon.pen-x .hon__kz-row.hs:hover {
-  box-shadow: inset 6px 0 0 var(--line-bold);
-}
-
-.hon__kz-row dt {
-  font-weight: 700;
-  color: var(--ink-sub);
-  min-width: 7.5em;
-}
-
-.hon__kz-row dd {
-  flex: 1;
-  min-width: 8em;
-  font-weight: 700;
-}
-
-/* --- しらべた ところ（大人むけ） --- */
-.hon__src {
-  margin-top: 6px;
-  background: #fff;
-  border: 1px solid var(--paper-line);
-  border-radius: var(--radius-s);
-  padding: 4px 16px;
-  font-size: var(--fs-small);
-  line-height: 1.8;
-  color: var(--ink-sub);
-}
-
-.hon__src summary {
-  cursor: pointer;
-  min-height: var(--tap);
+.sec__head {
   display: flex;
   align-items: center;
-  font-weight: 700;
+  gap: 12px;
+  margin-bottom: 2px;
 }
 
-.hon__src ul {
-  margin: 4px 0 8px 1.2em;
-}
-
-.hon__src a {
-  color: var(--navy);
-  word-break: break-all;
-}
-
-.hon__src p {
-  margin-bottom: 10px;
-}
-
-.hon__more {
-  margin-top: 18px;
+.sec__h {
+  flex: 1;
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--cat-ink);
 }
 
-.hon__more .btn {
-  text-decoration: none;
+.sec__h::before {
+  content: '';
+  flex: none;
+  width: 8px;
+  height: 1.15em;
+  border-radius: 4px;
+  background: var(--cat);
 }
 
-/* --- ページを めくる --- */
-.hon__turn {
+.sec__p {
+  font-size: 20px;
+  line-height: 2.15;
+}
+
+/* まめちしきは 本の コラムの ように かこむ */
+.sec--mame {
+  margin-top: 8px;
+  padding: 10px 18px 12px;
+  border: 2px dashed var(--line-bold);
+  border-radius: 16px;
+  background: var(--paper-2);
+}
+
+.sec--mame .sec__h::before {
+  content: '💡';
+  content: '💡' / '';
+  width: auto;
+  height: auto;
+  background: none;
+  font-size: 20px;
+}
+
+/* ---------------- かずで 見る ---------------- */
+.kazu {
+  padding: 14px 18px 12px;
+  border-radius: 16px;
+  background: #fff8ea;
+  border: 2px solid #f0dcb0;
+}
+
+.kazu__h {
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.5;
+  color: #6b4400;
+}
+
+/* 1年生と くらべた 大きさ */
+.kazu__size {
+  margin: 6px 0 4px;
+  padding: 6px 8px 2px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.kazu__size svg {
+  display: block;
+  width: 100%;
+  height: 120px;
+}
+
+.kazu__size figcaption {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-sub);
+  text-align: center;
+}
+
+.kazu__row {
+  display: grid;
+  grid-template-columns: 8.5em minmax(0, 1fr);
+  gap: 12px;
+  padding: 8px 2px;
+  border-top: 1px dashed #ead6aa;
+}
+
+.kazu__row:first-child {
+  border-top: 0;
+}
+
+.kazu__row dt {
+  font-size: 16px;
+  color: #5d4a26;
+  line-height: 1.9;
+}
+
+.kazu__row dd {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.9;
+}
+
+/* ---------------- ページを めくる ---------------- */
+.turn {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 14px;
-  padding: 16px 26px 24px;
-  border-top: 2px dashed var(--paper-line);
+  padding: 16px 28px 20px;
+  border-top: 2px dashed var(--line);
+  background: var(--paper-2);
 }
 
-.hon__turn-a {
+.turn__a {
   display: flex;
   flex-direction: column;
   gap: 2px;
   min-height: 64px;
   padding: 10px 18px;
-  border-radius: var(--radius);
-  border: 1px solid var(--paper-line);
-  background: #fff;
-  box-shadow: var(--shadow-sm);
-  color: var(--navy-d);
+  border-radius: 16px;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
   text-decoration: none;
-  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+  -webkit-tap-highlight-color: transparent;
 }
 
-.hon__turn-a:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
+.turn__a:hover {
+  border-color: var(--line-bold);
 }
 
-.hon__turn-a--next {
+.turn__a--next {
   text-align: right;
 }
 
-.hon__turn-dir {
-  font-size: var(--fs-small);
-  font-weight: 700;
+.turn__dir {
+  font-size: 14px;
   color: var(--ink-sub);
 }
 
-.hon__turn-name {
+.turn__name {
   font-family: var(--font-title);
-  font-size: 20px;
+  font-size: 19px;
   line-height: 1.6;
 }
 
-.hon__pno {
-  margin-left: 12px;
-  opacity: .85;
-  font-weight: 400;
-}
-
-/* ---------- ペン ---------- */
-.penbar {
-  position: fixed;
-  left: 50%;
-  bottom: max(12px, env(safe-area-inset-bottom));
-  transform: translateX(-50%);
-  z-index: 40;
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  max-width: calc(100vw - 24px);
-  background: rgba(255, 255, 255, .97);
-  border: 1px solid var(--line-bold);
-  border-radius: 26px;
-  box-shadow: 0 12px 32px rgba(19, 34, 56, .2);
-}
-
-.penbar.is-nudge {
-  animation: nudge .5s var(--ease);
-}
-
-@keyframes nudge {
-  0%, 100% { transform: translateX(-50%); }
-  25% { transform: translateX(calc(-50% - 10px)); }
-  50% { transform: translateX(calc(-50% + 10px)); }
-  75% { transform: translateX(calc(-50% - 6px)); }
-}
-
-.pen,
-.pen-memo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 62px;
-  min-width: 62px;
-  padding: 8px 18px;
-  border: 3px solid transparent;
-  border-radius: 18px;
-  background: var(--bg-soft);
-  color: var(--ink);
-  font-family: var(--font-title);
-  font-size: 19px;
-  font-weight: 700;
-  line-height: 1.3;
-  cursor: pointer;
-  transition: transform .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease), box-shadow .2s var(--ease);
-}
-
-/* ペンの さき（マーカーの かたち） */
-.pen__tip {
-  width: 30px;
-  height: 14px;
-  border-radius: 3px 8px 8px 3px;
-  transform: rotate(-20deg);
-  box-shadow: inset -6px 0 0 rgba(255, 255, 255, .35);
-}
-
-.pen--s .pen__tip,
-.pen__tip--s {
-  background: var(--pen-s);
-}
-
-.pen--t .pen__tip,
-.pen__tip--t {
-  background: var(--pen-t);
-}
-
-.step-pill .pen__tip {
-  width: 22px;
-  height: 10px;
-}
-
-.pen--s .pen__name {
-  color: var(--pen-s-ink);
-}
-
-.pen--t .pen__name {
-  color: var(--pen-t-ink);
-}
-
-.pen__ico {
-  font-size: 24px;
-  line-height: 1;
-}
-
-.pen:hover,
-.pen-memo:hover {
-  transform: translateY(-2px);
-}
-
-.pen--s[aria-pressed="true"] {
-  border-color: var(--pen-s);
-  background: #e0ebff;
-  transform: translateY(-5px);
-  box-shadow: 0 8px 18px rgba(37, 99, 235, .3);
-}
-
-.pen--t[aria-pressed="true"] {
-  border-color: var(--pen-t);
-  background: #d9f7ea;
-  transform: translateY(-5px);
-  box-shadow: 0 8px 18px rgba(16, 185, 129, .3);
-}
-
-.pen--x[aria-pressed="true"] {
-  border-color: #64748b;
-  background: #e2e8f0;
-  transform: translateY(-5px);
-  box-shadow: 0 8px 18px rgba(100, 116, 139, .3);
-}
-
-.pen-memo {
-  background: var(--yellow);
-  color: #452b00;
-  margin-left: 6px;
-}
-
-.pen-memo:hover {
-  background: #ffbe24;
-}
-
-.pen-memo__n {
-  background: #fff;
-  border-radius: var(--radius-pill);
-  padding: 2px 10px;
-  font-size: 17px;
-  white-space: nowrap;
-}
-
-/* ---------- ひとこと（したに すこし 出る） ---------- */
-.hon-toast {
-  position: fixed;
-  left: 50%;
-  bottom: calc(max(12px, env(safe-area-inset-bottom)) + 96px);
-  transform: translate(-50%, 10px);
-  z-index: 45;
-  max-width: calc(100vw - 32px);
-  background: var(--navy-d);
-  color: #fff;
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1.9;
-  padding: 8px 22px;
-  border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-lg);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s var(--ease), transform .25s var(--ease);
-  text-align: center;
-}
-
-.hon-toast.is-on {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
-.hon-toast rt {
-  color: #cbd5e1;
-}
-
-.hon-toast .ink-s {
-  color: #93c5fd;
-}
-
-.hon-toast .ink-t {
-  color: #6ee7b7;
-}
-
-/* ---------- メモ ---------- */
-body.is-memo-open {
-  overflow: hidden;
-}
-
-.hon-memo {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  background: rgba(19, 34, 56, .5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  animation: fadeIn .2s var(--ease) both;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-}
-
-.hon-memo__panel {
-  width: min(800px, 100%);
-  max-height: calc(100vh - 32px);
-  max-height: calc(100dvh - 32px);
-  overflow: auto;
-  background: var(--paper);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  padding: 20px 26px 24px;
-  animation: popUp .3s var(--ease) both;
-}
-
-@keyframes popUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(.98);
-  }
-}
-
-.memo__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-
-.memo__title {
-  font-family: var(--font-title);
-  font-size: 26px;
-  line-height: 1.5;
-  color: var(--navy-d);
-}
-
-.memo__group {
-  border-radius: var(--radius);
-  border: 2px solid;
-  padding: 12px 18px 16px;
-  margin-bottom: 14px;
-}
-
-.memo__group--s {
-  background: var(--a-bg);
-  border-color: var(--a-border);
-}
-
-.memo__group--t {
-  background: var(--t-bg);
-  border-color: var(--t-border);
-}
-
-.memo__h {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-title);
-  font-size: 21px;
-  line-height: 1.6;
-}
-
-.memo__group--s .memo__h {
-  color: var(--pen-s-ink);
-}
-
-.memo__group--t .memo__h {
-  color: var(--pen-t-ink);
-}
-
-.memo__pen {
-  width: 30px;
-  height: 12px;
-  border-radius: 3px 8px 8px 3px;
-}
-
-.memo__pen--s {
-  background: var(--pen-s);
-}
-
-.memo__pen--t {
-  background: var(--pen-t);
-}
-
-.memo__list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-.memo__item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: #fff;
-  border-radius: var(--radius-s);
-  border-left: 6px solid;
-  padding: 8px 10px 8px 16px;
-  font-size: 20px;
-  line-height: 2.2;
-}
-
-.memo__item--s {
-  border-left-color: var(--pen-s);
-}
-
-.memo__item--t {
-  border-left-color: var(--pen-t);
-}
-
-.memo__text {
-  flex: 1;
-  min-width: 0;
-}
-
-.memo__del {
-  flex: none;
-  min-height: var(--tap);
-  min-width: var(--tap);
-  padding: 4px 12px;
-  border-radius: var(--radius-s);
-  border: 1px solid var(--line-bold);
-  background: #fff;
-  color: var(--ink-sub);
-  font-family: var(--font-title);
-  font-size: var(--fs-small);
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.memo__del:hover {
-  background: #f1f5f9;
-}
-
-.memo__empty {
-  font-size: 17px;
-  line-height: 2.1;
-  color: var(--ink-sub);
-  margin-top: 4px;
-}
-
-.memo__frame {
-  background: #fff;
-  border: 2px dashed #f5c26b;
-  border-radius: var(--radius);
-  padding: 14px 20px 16px;
-  margin-bottom: 16px;
-}
-
-.memo__frame-h {
-  font-family: var(--font-title);
-  font-size: 19px;
-  color: #8a4b00;
-  margin-bottom: 4px;
-}
-
-.memo__line {
-  font-size: 22px;
-  line-height: 2.3;
-}
-
-.blank {
+.turn__no {
   display: inline-block;
-  min-width: 7em;
+  min-width: 30px;
+  margin: 0 6px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: var(--cat-soft);
+  color: var(--cat-ink);
+  font: 700 14px/24px var(--font);
   text-align: center;
-  font-size: var(--fs-small);
-  font-weight: 700;
-  line-height: 1.6;
-  border-bottom: 4px solid;
-  margin: 0 4px;
 }
 
-.blank--s {
-  color: var(--pen-s-ink);
-  border-color: var(--pen-s);
-}
-
-.blank--t {
-  color: var(--pen-t-ink);
-  border-color: var(--pen-t);
-}
-
-.memo__tip {
-  font-size: 16px;
-  line-height: 1.9;
+/* ---------------- おとなの かたへ（ページの いちばん 下） ---------------- */
+.otona--page {
+  padding: 4px 28px 14px;
+  background: var(--paper-2);
+  font-size: 13px;
+  line-height: 1.8;
   color: var(--ink-sub);
-  margin-top: 6px;
 }
 
-.memo__foot {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  flex-wrap: wrap;
+.otona--page summary {
+  font-size: 13px;
 }
 
-.memo__clear.is-armed {
-  background: #fee2e2;
-  color: #b91c1c;
-  border-color: #fca5a5;
+.otona--page h4 {
+  margin: 8px 0 2px;
+  font-size: 14px;
 }
 
-/* ---------- タブレット・スマホ ---------- */
-@media (min-width: 1000px) {
-  .hon__stage {
-    height: 330px;
-  }
+.otona--page ul {
+  padding-left: 1.4em;
 }
 
+.otona--page li + li {
+  margin-top: 2px;
+}
+
+.otona--page a {
+  color: var(--ink-sub);
+  word-break: break-all;
+}
+
+/* ============================ せまい がめん ============================
+   1れつに する ときは、写真 → 文 → かずで 見る → ぶぶんの 名まえ の じゅんに。
+   （ならべかえる ため、ひだりと みぎの つつみを display: contents に する） */
 @media (max-width: 900px) {
-  .hon__spread {
-    grid-template-columns: 1fr;
-    background: none;
+  .page__body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 12px 18px 22px;
   }
 
-  .hon__left {
-    position: static;
-    padding: 18px 18px 6px;
+  .page__fig,
+  .page__text {
+    display: contents;
   }
 
-  .hon__right {
-    padding: 14px 18px 22px;
+  .photo { order: 1; }
+  .sec { order: 2; }
+  .kazu { order: 3; }
+  .zukai { order: 4; }
+  .btn--kansatsu { order: 5; }
+
+  /* 写真の ない 車は、えが いちばん 上 */
+  .page--nophoto .zukai { order: 1; }
+
+  .photo__frame {
+    aspect-ratio: auto;
+    height: min(56vw, 420px);
   }
 
-  .hon__stage {
-    height: 250px;
+  .page__title {
+    padding: 12px 18px 2px;
   }
-}
 
-@media (max-width: 620px) {
-  .hon__head {
+  .page__name {
+    font-size: 38px;
+  }
+
+  .turn {
     padding: 14px 18px 18px;
   }
 
-  .hon__name {
+  .otona--page {
+    padding: 4px 18px 14px;
+  }
+}
+
+@media (max-width: 560px) {
+  .page__band {
+    padding: 6px 12px 6px 16px;
+  }
+
+  .page__name {
     font-size: 32px;
   }
 
-  .hon__catch {
+  .page__catch {
     font-size: 17px;
   }
 
-  .hon__h {
-    font-size: 20px;
+  .sec__h {
+    font-size: 21px;
   }
 
-  .hon__p {
+  .sec__p {
     font-size: 19px;
   }
 
-  .hon__stage {
-    height: 200px;
+  .turn {
+    grid-template-columns: 1fr;
   }
 
-  .penbar {
-    gap: 6px;
-    padding: 8px;
-    border-radius: 22px;
+  .turn__a--next {
+    text-align: left;
   }
 
-  .pen,
-  .pen-memo {
-    padding: 6px 10px;
-    font-size: 16px;
-    gap: 6px;
-    min-height: 58px;
-    min-width: 56px;
+  .kazu__row {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
-
-  .pen__tip {
-    width: 22px;
-    height: 11px;
-  }
-
-  .pen-memo {
-    margin-left: 0;
-  }
-
-  .pen-memo__n {
-    font-size: 15px;
-    padding: 0 6px;
-  }
-
-  .hon-memo {
-    padding: 8px;
-    align-items: flex-end;
-  }
-
-  .hon-memo__panel {
-    padding: 16px 16px 20px;
-  }
-
-  .memo__item {
-    font-size: 18px;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .memo__del {
-    align-self: flex-end;
-  }
-
-  .memo__line {
-    font-size: 19px;
-  }
-
-  .hon__more .btn {
-    width: 100%;
-  }
-
-  .hon__turn {
-    padding: 14px 14px 20px;
-    gap: 8px;
-  }
-
-  .hon__turn-a {
-    padding: 8px 12px;
-  }
-
-  .hon__turn-name {
-    font-size: 17px;
-  }
-}
-
-/* ---------- 写真の でどころ（app.js の photoCredit） ---------- */
-.photo-credit {
-  margin-top: 8px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--ink-sub);
-  text-align: center;
-  word-break: break-word;
-}
-
-.photo-credit a {
-  color: var(--navy);
-}
-
-.photo-credit__chg {
-  display: block;
-}
-
-.site-footer a {
-  color: var(--navy);
 }

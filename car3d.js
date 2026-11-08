@@ -1102,7 +1102,7 @@ function createViewer(container, artKey, options) {
     },
     setView(az, pl, dist) { orbit.setView(az, pl, dist === undefined ? null : dist); },
 
-    /* 画面の どこに その部品が あるか（①②③の 印を 出すため） */
+    /* 画面の どこに その部品が あるか（くわしく 見る の ◯印を 出すため） */
     screenPos(part) {
       const pc = partCenter(part);
       if (!pc) return null;
