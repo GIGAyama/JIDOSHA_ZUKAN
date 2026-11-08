@@ -113,11 +113,17 @@
       function link(href, text) {
         return href ? '<a href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">' + esc(text) + '</a>' : esc(text);
       }
+      function needTitle(lic) {
+        var m = /CC BY(?:-SA)? (\d(?:\.\d)?)/.exec(lic || '');
+        return !!m && parseFloat(m[1]) < 4;
+      }
       var rows = cars.filter(function (c) { return c.photo && cr[c.id]; }).map(function (c) {
         var p = cr[c.id];
         return '<li><img src="' + esc(c.photo) + '" alt="" loading="lazy" decoding="async">' +
           '<div><h2>' + c.name + '</h2><dl>' +
-          '<dt>元の写真</dt><dd>' + link(p.source, p.title) + '</dd>' +
+          /* 題名の表示は CC BY / BY-SA の 3.0 以前だけが条件にしている。それ以外は、
+             ファイル名に会社名や施設名が入っていることがあるので、題名は出さずリンクだけにする */
+          '<dt>元の写真</dt><dd>' + link(p.source, needTitle(p.license) ? p.title : 'Wikimedia Commons のページ') + '</dd>' +
           '<dt>撮影者</dt><dd>' + esc(p.author) + '</dd>' +
           '<dt>ライセンス</dt><dd>' + link(p.licenseUrl, p.license) + '</dd>' +
           '<dt>変更</dt><dd>' + esc(p.changes || 'なし') + '</dd>' +
