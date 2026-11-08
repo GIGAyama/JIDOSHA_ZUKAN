@@ -20,6 +20,7 @@
 
   <script src="cars-data.js"></script>
   <script src="parts-data.js"></script>
+  <script src="hon-data.js"></script>
   <script type="module">
     import { createViewer, MODEL3D } from './car3d.js';
 
@@ -46,6 +47,9 @@
 
       head('■ 3Dモデルの ある じどう車');
       const cars = window.carsData.filter(c => MODEL3D[c.art]);
+      /* ずかんの 本文（hon-data.js）に 出て くる ぶぶん。くわしく 見る（3D）でも 見つけられる ように */
+      const honParts = car => [...new Set(((window.honData[car.id] || {}).pages || [])
+        .flatMap(pg => pg.s.map(s => s.part).filter(Boolean)))];
       ok(cars.length === keys.length,
         '3Dモデル ' + keys.length + '件 が すべて cars-data.js の art と つながって いる（' + cars.length + '件）');
       out.push('    ' + cars.map(c => c.art).join(', '));
@@ -61,12 +65,16 @@
         }
         ok(true, 'モデルが つくれる');
 
-        /* 1. つくりの 文で 光らせる 部分が モデルに ある */
-        car.tsukuri.forEach((t, i) => {
-          ok(v.builder.parts.has(t.part),
-            '③つくり' + (i + 1) + ' の part「' + t.part + '」が モデルに ある');
-          ok(v.highlight(t.part), '　→ じっさいに 光らせられる');
-          ok(v.focusPart(t.part), '　→ カメラが そこへ 飛べる');
+        /* 1. ずかんの 本文に 出て くる ぶぶん（hon-data.js の part）を 3Dでも 光らせられる
+              むかしは ①②③の「③ つくり」の part を 見て いた（その 文は 2026-11-08 に けした）。
+              本文の part は イラストに あわせて あるので、3Dに まだ ない ものは 一らんに 出すだけ
+              （くわしく 見る の 3Dは、モデルに ある ぶぶんを ぜんぶ ◯で 出すので こまらない）。 */
+        const hp = honParts(car).filter(part => v.builder.parts.has(part));
+        const miss = honParts(car).filter(part => !v.builder.parts.has(part));
+        if (miss.length) out.push('    （3Dに まだ ない 本文の ぶぶん: ' + miss.join(', ') + '）');
+        hp.forEach(part => {
+          ok(v.highlight(part), '本文の ぶぶん「' + part + '」を 光らせられる');
+          ok(v.focusPart(part), '　→ カメラが そこへ 飛べる');
         });
         v.clearHighlight();
 
@@ -82,15 +90,15 @@
         ok(m.height > 0.8 && m.height < 16, 'たかさ ' + m.height.toFixed(1) + 'm が 0.8〜16mの 中');
         ok(m.width > 0.8 && m.width < 9, 'はば ' + m.width.toFixed(1) + 'm が 0.8〜8mの 中');
 
-        /* 4. ①②③の しるしが 画面の 中に おさまる */
+        /* 4. 本文に 出て くる ぶぶんの しるしが 画面の 中に おさまる */
         await wait(300);
         v.resetView();
         v.orbit.snap();
         await wait(300);
-        car.tsukuri.forEach((t, i) => {
-          const p = v.screenPos(t.part);
+        hp.forEach((part, i) => {
+          const p = v.screenPos(part);
           ok(p && p.visible && p.x > -40 && p.x < stage.clientWidth + 40 && p.y > -40 && p.y < stage.clientHeight + 40,
-            'しるし' + (i + 1) + '（' + t.part + '）が 画面の 中に ある' +
+            'しるし' + (i + 1) + '（' + part + '）が 画面の 中に ある' +
             (p ? '  [x=' + Math.round(p.x) + ' y=' + Math.round(p.y) + ' / ' + stage.clientWidth + 'x' + stage.clientHeight +
               ' dist=' + v.orbit.dist.toFixed(1) + ']' : ' [screenPos=null]'));
         });

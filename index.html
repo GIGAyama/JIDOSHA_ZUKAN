@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>じどう車ずかん - しごとと つくりを しらべよう</title>
-  <meta name="description" content="小学1年生 国語「じどう車ずかんをつくろう」のための しらべ学習サイト。はたらく じどう車の しごとと つくりを、教科書と おなじ じゅんじょで よめます。図鑑の ように よんで、しごとと つくりに 線を ひいて あつめる「じどう車の 本」も あります。">
+  <title>じどう車ずかん - はたらく じどう車 60だい</title>
+  <meta name="description" content="小学1年生 国語「じどう車くらべ」「じどう車ずかんを つくろう」で つかう、はたらく じどう車の ずかん。60だいの 写真と 見出しの ついた せつめいを よんで、しごとと つくりを じぶんで 見つける ための ずかんです。">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GIGA school">
   <meta property="og:locale" content="ja_JP">
-  <meta property="og:title" content="じどう車ずかん - しごとと つくりを しらべよう">
-  <meta property="og:description" content="小学1年生 国語「じどう車ずかんをつくろう」のための しらべ学習サイト。はたらく じどう車の しごとと つくりを、教科書と おなじ じゅんじょで よめます。図鑑の ように よんで、しごとと つくりに 線を ひいて あつめる「じどう車の 本」も あります。">
+  <meta property="og:title" content="じどう車ずかん - はたらく じどう車 60だい">
+  <meta property="og:description" content="小学1年生 国語「じどう車くらべ」「じどう車ずかんを つくろう」で つかう、はたらく じどう車の ずかん。60だいの 写真と 見出しの ついた せつめいを よんで、しごとと つくりを じぶんで 見つける ための ずかんです。">
   <meta property="og:url" content="https://jidosha-zukan.giga-school.com/">
   <meta property="og:image" content="https://giga-school.com/assets/og.png">
   <meta property="og:image:width" content="1200">
@@ -24,177 +24,90 @@
        塞ぐと書体が当たらず、塞ぎ方によっては画面そのものが出ない。 -->
   <link rel="stylesheet" href="./fonts.css" />
   <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="hon.css">
   <link rel="stylesheet" href="kansatsu.css">
   <link rel="stylesheet" href="car3d.css">
-  <link rel="stylesheet" href="hon.css">
 </head>
 
 <body>
   <a class="skip-link" href="#main">ほんぶんへ すすむ</a>
 
-  <!-- ============ 一覧のときの 大きな ヘッダー ============ -->
-  <header class="site-header" id="site-header">
-    <div class="site-header__inner">
-      <div class="site-header__badge-wrap">
-        <span class="badge">📖 こくご「じどう車ずかんを つくろう」</span>
-      </div>
-      <h1 class="site-header__title">じどう<ruby>車<rt>しゃ</rt></ruby>ずかん</h1>
-      <p class="site-header__lead">
-        しらべたい <ruby>車<rt>くるま</rt></ruby>を えらんで、じゅんばんに よんで みよう！
-      </p>
-      <div class="site-header__steps">
-        <div class="step-pill step-pill--1">
-          <span class="step-pill__num">①</span>
-          <span class="step-pill__text">どんな しごとを しているか</span>
-        </div>
-        <span class="step-arrow" aria-hidden="true">➔</span>
-        <div class="step-pill step-pill--2">
-          <span class="step-pill__num">②</span>
-          <span class="step-pill__text">そのために どんな つくりか</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- ============ 本の もくじの ときの ヘッダー（#/hon）============ -->
-  <header class="site-header site-header--hon" id="hon-header" hidden>
-    <div class="site-header__inner">
-      <div class="site-header__badge-wrap">
-        <span class="badge">📚 こくご「じどう車ずかんを つくろう」</span>
-      </div>
-      <h1 class="site-header__title">じどう<ruby>車<rt>しゃ</rt></ruby>の <ruby>本<rt>ほん</rt></ruby></h1>
-      <p class="site-header__lead">
-        よみたい <ruby>車<rt>くるま</rt></ruby>を えらんで、しごとと つくりを <ruby>見<rt>み</rt></ruby>つけよう！
-      </p>
-      <div class="site-header__steps">
-        <div class="step-pill step-pill--pen-s">
-          <span class="pen__tip pen__tip--s" aria-hidden="true"></span>
-          <span class="step-pill__text">しごとの <ruby>文<rt>ぶん</rt></ruby>に あおい <ruby>線<rt>せん</rt></ruby></span>
-        </div>
-        <span class="step-arrow" aria-hidden="true">➔</span>
-        <div class="step-pill step-pill--pen-t">
-          <span class="pen__tip pen__tip--t" aria-hidden="true"></span>
-          <span class="step-pill__text">つくりの <ruby>文<rt>ぶん</rt></ruby>に みどりの <ruby>線<rt>せん</rt></ruby></span>
-        </div>
-        <span class="step-arrow" aria-hidden="true">➔</span>
-        <div class="step-pill step-pill--memo">
-          <span class="step-pill__num" aria-hidden="true">📝</span>
-          <span class="step-pill__text">メモを <ruby>見<rt>み</rt></ruby>て ノートに かく</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- ============ 詳細のときの ほそい バー ============ -->
+  <!-- ============ ずかんの 中の ページで 出す ほそい バー ============
+       もくじ（#/）では 出さない。ほかの ページでは「もくじに もどる」と、
+       車の ページでは「しおり」を 出す。 -->
   <div class="topbar" id="topbar" hidden>
-    <button class="btn btn--ghost" id="btn-back" type="button">
-      <span aria-hidden="true">←</span> ずかんに もどる
-    </button>
-    <button class="btn btn--star" id="btn-star" type="button" aria-pressed="false">
-      <span class="star" aria-hidden="true">☆</span><span class="btn-star__text">えらんだ 車に する</span>
+    <a class="btn btn--nav" id="btn-back" href="#/"><span aria-hidden="true">←</span> もくじ</a>
+    <p class="topbar__where" id="topbar-where"></p>
+    <button class="btn btn--shiori" id="btn-shiori" type="button" aria-pressed="false" hidden>
+      <span class="btn--shiori__ico" aria-hidden="true">🔖</span><span class="btn--shiori__text">しおりを はさむ</span>
     </button>
   </div>
 
   <main id="main">
 
-    <!-- ==================== 一覧 ==================== -->
-    <section class="view" id="view-list">
-      <div class="toolbar-area">
-        <nav class="tabs" id="tabs" aria-label="しごとで えらぶ"></nav>
-        <!-- 中身は app.js の renderTools() が 出す（ずかんと 本の もくじで ちがう） -->
-        <div class="list-tools" id="list-tools"></div>
-      </div>
+    <!-- ==================== ひょうし と もくじ（#/） ==================== -->
+    <section class="view" id="view-mokuji">
+      <header class="cover">
+        <div class="cover__spine" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="cover__text">
+          <p class="cover__kicker">はたらく</p>
+          <h1 class="cover__title">じどう<ruby>車<rt>しゃ</rt></ruby>ずかん</h1>
+          <p class="cover__sub">60だいの じどう<ruby>車<rt>しゃ</rt></ruby>が のって います</p>
+        </div>
+        <nav class="cover__nav" aria-label="ずかんの とくべつな ページ">
+          <a class="booklink" href="#/sakuin"><span class="booklink__ico" aria-hidden="true">あ</span><span>さくいん</span></a>
+          <a class="booklink" href="#/kurabe"><span class="booklink__ico" aria-hidden="true">📏</span><span><ruby>大<rt>おお</rt></ruby>きさくらべ</span></a>
+          <a class="booklink" href="#/mikata"><span class="booklink__ico" aria-hidden="true">📖</span><span>ずかんの <ruby>見<rt>み</rt></ruby>かた</span></a>
+        </nav>
+      </header>
 
-      <p class="list-count" id="list-count" aria-live="polite"></p>
+      <h2 class="mokuji__h" id="mokuji-h">もくじ</h2>
+      <!-- しごとの なかま（しょう）の つめ。中身は app.js の renderTabs() -->
+      <nav class="tabs" id="tabs" aria-labelledby="mokuji-h"></nav>
+
       <div class="grid" id="grid"></div>
       <p class="empty" id="empty" hidden>
-        まだ ★の ついた <ruby>車<rt>くるま</rt></ruby>が ありません。<br>
-        きに なった <ruby>車<rt>くるま</rt></ruby>の ページで「★ えらんだ <ruby>車<rt>くるま</rt></ruby>に する」を おして みよう。
+        まだ しおりを はさんだ ページが ありません。<br>
+        <ruby>車<rt>くるま</rt></ruby>の ページの <ruby>上<rt>うえ</rt></ruby>に ある「🔖 しおりを はさむ」を おすと、ここに あつまります。
       </p>
-
-      <section class="note" id="note-zukan">
-        <div class="note__header">
-          <h2>💡 がくしゅうの ポイント</h2>
-        </div>
-        <div class="note__content">
-          <p class="note__lead">どの ページも <b>おなじ じゅんじょ</b>で かいて あります。</p>
-          <div class="note__flow">
-            <span class="flow-item flow-item--q">①「どんな しごとを して いますか。」</span>
-            <span class="flow-arrow">➔</span>
-            <span class="flow-item flow-item--a">②「〜する しごとを して います。」</span>
-            <span class="flow-arrow">➔</span>
-            <span class="flow-item flow-item--t">③「<b>その ために</b>、〜」</span>
-          </div>
-          <p class="note__sub">この じゅんばんで かくと、じぶんの 「じどう<ruby>車<rt>しゃ</rt></ruby>ずかん」の <ruby>文<rt>ぶん</rt></ruby>に なります。</p>
-          <hr class="note__divider">
-          <div class="note__extra">
-            <span class="icon">🔬</span>
-            <div>
-              <b>ものすごい かんさつ</b>：<ruby>車<rt>くるま</rt></ruby>の ページの
-              「ものすごく <ruby>大<rt>おお</rt></ruby>きく <ruby>見<rt>み</rt></ruby>る」を おすと、
-              その <ruby>車<rt>くるま</rt></ruby>を まっくらな へやで ライトを あてた ように、
-              ものすごく <ruby>大<rt>おお</rt></ruby>きく して しらべられます。
-            </div>
-          </div>
-          <hr class="note__divider">
-          <div class="note__extra">
-            <span class="icon">📚</span>
-            <div>
-              <b><ruby>本<rt>ほん</rt></ruby>で しらべる</b>：「じどう<ruby>車<rt>しゃ</rt></ruby>ずかんを つくろう」で つかいます。
-              <ruby>図鑑<rt>ずかん</rt></ruby>の ように たくさん かいて ある ページを よんで、
-              しごとと つくりを じぶんで <ruby>見<rt>み</rt></ruby>つけます。
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 本の もくじ（#/hon）の ときだけ 出す -->
-      <section class="note note--hon" id="note-hon" hidden>
-        <div class="note__header">
-          <h2>💡 <ruby>本<rt>ほん</rt></ruby>の よみかた</h2>
-        </div>
-        <div class="note__content">
-          <ol class="note__steps">
-            <li><ruby>車<rt>くるま</rt></ruby>を えらんで、<ruby>本<rt>ほん</rt></ruby>の ページを ひらく。まず さいごまで よんで みよう。</li>
-            <li><ruby>下<rt>した</rt></ruby>の <b class="ink-s">しごと</b>の ペンを えらんで、しごとの ことが かいて ある <ruby>文<rt>ぶん</rt></ruby>を おす。</li>
-            <li><b class="ink-t">つくり</b>の ペンに かえて、つくりの ことが かいて ある <ruby>文<rt>ぶん</rt></ruby>を おす。</li>
-            <li>「📝 メモ」を おすと、<ruby>線<rt>せん</rt></ruby>を ひいた <ruby>文<rt>ぶん</rt></ruby>が あつまって います。
-              それを <ruby>見<rt>み</rt></ruby>て、ノートに かこう。</li>
-          </ol>
-          <div class="note__flow">
-            <span class="flow-item flow-item--a">「〜しごとを して います。」</span>
-            <span class="flow-arrow">➔</span>
-            <span class="flow-item flow-item--t">「<b>その ために</b>、〜。」</span>
-          </div>
-          <p class="note__sub">
-            <ruby>本<rt>ほん</rt></ruby>には、しごとでも つくりでも ない こと（<ruby>大<rt>おお</rt></ruby>きさや まめちしき）も かいて あります。
-            どれを つかうか、じぶんで えらぼう。
-          </p>
-        </div>
-      </section>
     </section>
 
-    <!-- ==================== 詳細 ==================== -->
-    <section class="view" id="view-detail" hidden></section>
+    <!-- ==================== 車の ページ（#/car/<id>。中身は hon.js） ==================== -->
+    <section class="view" id="view-page" hidden></section>
 
-    <!-- ================= 大きさくらべ ================= -->
+    <!-- ==================== さくいん（#/sakuin） ==================== -->
+    <section class="view" id="view-sakuin" hidden></section>
+
+    <!-- ==================== ずかんの 見かた（#/mikata） ==================== -->
+    <section class="view" id="view-mikata" hidden></section>
+
+    <!-- ==================== 大きさくらべ（#/kurabe） ==================== -->
     <section class="view" id="view-compare" hidden></section>
 
-    <!-- ============ じどう車の 本（#/hon/<id>。中身は hon.js）============ -->
-    <section class="view" id="view-hon" hidden></section>
-
-    <!-- ============ ものすごい かんさつ（ぜんがめん） ============ -->
+    <!-- ============ くわしく 見る（ぜんがめん。#/kansatsu/<id>） ============ -->
     <section class="view" id="view-kansatsu" hidden></section>
 
   </main>
 
+  <!-- 子どもには いらない ことは、ここに 小さく まとめる -->
   <footer class="site-footer">
-    <p>
-      イラストは この サイトで かいた ものです。
-      せつめいの <ruby>文<rt>ぶん</rt></ruby>は、<ruby>教科書<rt>きょうかしょ</rt></ruby>と おなじ じゅんじょで あたらしく かきました。<br>
-      「じどう<ruby>車<rt>しゃ</rt></ruby>の <ruby>本<rt>ほん</rt></ruby>」の <ruby>文<rt>ぶん</rt></ruby>は、おおやけの しりょうで しらべて あたらしく かきました。<br>
-      しゃしんは、つかって よいと きめられた ほんものの しゃしんです（<a href="credits.html">しゃしんの でどころ</a>）。
-    </p>
+    <details class="otona">
+      <summary>おとなの かたへ（この ずかんに ついて）</summary>
+      <div class="otona__body">
+        <p>
+          小学1年生 国語「じどう車くらべ」「じどう車ずかんを つくろう」で、
+          図書室の 図鑑の かわりに 読む ための ずかんです。
+          文は 教科書の 型（「〜しごとを して います」「その ために」）では 書いて いません。
+          どれが しごとで どれが つくりかを、子どもが 読んで 見つける ためです。
+        </p>
+        <p>
+          文は、消防・警察・自治体・メーカー などの 公式の 資料で しらべて 新しく 書き、
+          べつの 人が もう いちど たしかめて います。資料は 各ページの いちばん 下に あります。
+          イラストと 3Dは この サイトで 作りました。
+          写真は 使って よいと きめられた 本物の 写真です（<a href="credits.html">写真の 出典</a>）。
+        </p>
+      </div>
+    </details>
     <!-- ⚠️ 行き先の リンクを 手で 書かない こと。中身は 正本の 部品
          standards/web/giga-app-links.js（配布物 web/giga-app-links.js）が
          この 中に 出す。文言も 並びも 行き先も、あちらで 決まって いる。
@@ -206,7 +119,7 @@
          ⚠️ data-links で「つかいかた」を 外して ある。この アプリには まだ
             docs/manual/ が 無く、既定の まま 出すと 行き止まりの リンクに なる。
             マニュアルを 書いたら、この 属性ごと 消す こと。 -->
-    <span data-giga-links data-links="terms,privacy"></span>
+    <p class="site-footer__links"><span data-giga-links data-links="terms,privacy"></span></p>
   </footer>
 
   <!-- 利用規約・プライバシーへの 行き先を、上の <span data-giga-links> に 出す。 -->
@@ -216,7 +129,7 @@
   <script src="cars-data.js"></script>
   <script src="photo-credits.js"></script>
   <script src="parts-data.js"></script>
-  <!-- じどう車の 本（hon-data.js が 中身、hon.js が 画面） -->
+  <!-- 車の ページ（hon-data.js が 中身、hon.js が 画面） -->
   <script src="hon-data.js"></script>
   <script src="hon.js"></script>
   <script src="kansatsu-common.js"></script>
@@ -226,7 +139,7 @@
   <!-- 3Dモデル（つかえる 端末だけ 読みこむ。だめでも イラストで そのまま 動きます）
 
        car3d.js は three.js を いっしょに つれて くるので、ふたつで 1MB を こえます。
-       一覧では 3Dを つかわないので、詳細ページか かんさつを ひらいた ときに
+       3Dを つかうのは「くわしく 見る」だけなので、そこを ひらいた ときに
        はじめて 読みこみます（app.js が window.jzLoad3d() を よぶ）。 -->
   <script type="module">
     var loading = null;

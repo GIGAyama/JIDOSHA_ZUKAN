@@ -30,7 +30,7 @@
     <h1>3Dの じどう車ずかん</h1>
     <p class="lead">
       ゆびで ドラッグすると 車が まわります。2本の ゆびで 大きさを かえられます。<br>
-      「つくり」の 文を おすと、3Dの その ぶぶんだけが 光ります。まわしながら たしかめられます。<br>
+      ぶぶんの 名まえを おすと、3Dの その ぶぶんだけが 光ります。まわしながら たしかめられます。<br>
       <b>▶ の ボタン</b>を おすと、にだいが かたむいたり、はしごが のびたり します。
     </p>
 
@@ -50,20 +50,20 @@
           <button class="d3-btn" id="btn-reset">⟲ もとに もどす</button>
           <button class="d3-btn" id="btn-ruler">📏 ものさし</button>
           <button class="d3-btn" id="btn-spin">🔄 じどうで まわる</button>
-          <button class="d3-btn" id="btn-marks">①②③ を 出す</button>
+          <button class="d3-btn" id="btn-marks">しるしを けす</button>
         </div>
 
         <div class="d3-meters" id="meters"></div>
       </div>
 
       <div>
-        <h2 id="shigoto-h">② しごと</h2>
-        <p id="shigoto" style="font-size:17px;line-height:1.85"></p>
-        <h2>③ つくり — おすと 3Dが 光ります</h2>
+        <!-- ⚠️ ここには むかし、教科書の 型の 文（② しごと・③ つくり）を 出して いた。
+             2026-11-08 に cars-data.js から その 文を けしたので、ぶぶんの 名まえ だけに した。 -->
+        <h2>ぶぶん — おすと 3Dが 光ります</h2>
         <div class="d3-list" id="list"></div>
         <p class="d3-note">
           ★ 車の どこかを 直せつ さわると、その ぶぶんの 名まえと せつめいが 出ます。<br>
-          ★ ①②③の しるしは 車を まわしても ついてきます。うら がわに いくと きえます。
+          ★ 番号の しるしは 車を まわしても ついてきます。うら がわに いくと きえます。
         </p>
       </div>
     </div>
@@ -101,7 +101,7 @@
       el.className = 'd3-callout';
       el.hidden = true;
       el.innerHTML = '<button class="d3-callout__close" aria-label="とじる">✕</button>' +
-        '<p class="d3-callout__name"></p><p class="d3-callout__text"></p><p class="d3-callout__tsukuri"></p>';
+        '<p class="d3-callout__name"></p><p class="d3-callout__text"></p>';
       el.querySelector('.d3-callout__close').addEventListener('click', () => {
         el.hidden = true; viewer.clearHighlight();
         listEl.querySelectorAll('.d3-item').forEach(b => b.classList.remove('is-on'));
@@ -111,14 +111,11 @@
       return el;
     }
 
-    function showPart(part, tsukuriText) {
+    function showPart(part) {
       const info = window.partInfo[part];
       callout.hidden = false;
       callout.querySelector('.d3-callout__name').innerHTML = info ? info.name : part;
       callout.querySelector('.d3-callout__text').innerHTML = info ? info.text : '';
-      const t = callout.querySelector('.d3-callout__tsukuri');
-      if (tsukuriText) { t.hidden = false; t.innerHTML = '③ ' + tsukuriText; }
-      else t.hidden = true;
       seen.add(part);
       markers.forEach(m => {
         m.el.classList.toggle('is-on', m.part === part);
@@ -126,10 +123,10 @@
       });
     }
 
-    function pick(part, tsukuriText, focus) {
+    function pick(part, focus) {
       viewer.highlight(part);
       if (focus) viewer.focusPart(part);
-      showPart(part, tsukuriText);
+      showPart(part);
       hint.hidden = true;
     }
 
@@ -142,15 +139,15 @@
       window.V = viewer;
       callout = makeCallout();
 
-      /* ①②③の しるし — つくりで せつめいする ぶぶんに つける */
-      car.tsukuri.forEach((t, i) => {
-        if (!viewer.builder.parts.has(t.part)) return;
+      /* 番号の しるし — モデルの ぶぶん ぜんぶに つける */
+      const parts = viewer.parts().slice().sort();
+      parts.forEach((part, i) => {
         const el = document.createElement('div');
         el.className = 'd3-marker';
-        el.textContent = '①②③④⑤'[i] || (i + 1);
-        el.addEventListener('click', () => pick(t.part, t.text, true));
+        el.textContent = String(i + 1);
+        el.addEventListener('click', () => pick(part, true));
         stage.appendChild(el);
-        markers.push({ part: t.part, el: el });
+        markers.push({ part: part, el: el });
       });
 
       viewer.onFrame(() => {
@@ -173,23 +170,22 @@
         if (moved > 8) return;
         const part = viewer.pick(e.clientX, e.clientY);
         if (!part) return;
-        const t = current.tsukuri.find(x => x.part === part);
-        pick(part, t ? t.text : null, false);
+        pick(part, false);
         listEl.querySelectorAll('.d3-item').forEach(b => b.classList.toggle('is-on', b.dataset.part === part));
       });
 
-      /* ② しごと・③ つくり */
-      document.getElementById('shigoto').innerHTML = car.shigoto;
+      /* ぶぶんの 名まえ（parts-data.js） */
       listEl.innerHTML = '';
-      car.tsukuri.forEach((t, i) => {
+      parts.forEach((part, i) => {
+        const info = window.partInfo[part];
         const b = document.createElement('button');
         b.className = 'd3-item';
-        b.dataset.part = t.part;
-        b.innerHTML = '<span class="d3-item__no">' + ('①②③④⑤'[i] || (i + 1)) + '</span><span>' + t.text + '</span>';
+        b.dataset.part = part;
+        b.innerHTML = '<span class="d3-item__no">' + (i + 1) + '</span><span>' + (info ? info.name : part) + '</span>';
         b.addEventListener('click', () => {
           listEl.querySelectorAll('.d3-item').forEach(x => x.classList.remove('is-on'));
           b.classList.add('is-on');
-          pick(t.part, t.text, true);
+          pick(part, true);
         });
         listEl.appendChild(b);
       });
@@ -267,7 +263,7 @@
       marksOn = !marksOn;
       markers.forEach(m => { m.el.style.display = marksOn ? '' : 'none'; });
       e.currentTarget.classList.toggle('is-on', !marksOn);
-      e.currentTarget.textContent = marksOn ? '①②③ を 出す' : '①②③ を けす';
+      e.currentTarget.textContent = marksOn ? 'しるしを けす' : 'しるしを 出す';
     });
 
     load(cars[0]);

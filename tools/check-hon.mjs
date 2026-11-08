@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // ==========================================================================
-// check-hon.mjs — じどう車の 本（hon-data.js）の 中身を 検査する
+// check-hon.mjs — 車の ページの 中身（hon-data.js）を 検査する
 //
 //   node tools/check-hon.mjs                 … hon-data.js を 検査（60台 そろって いるかも 見る）
 //   node tools/check-hon.mjs <batch.json…>   … 書きかけの 原稿（{ "<id>": {…} }）を 検査
@@ -9,6 +9,7 @@
 //   ・ふりがなの ない 漢字、rt が かなでない、ルビの 形が こわれて いる
 //   ・教科書の 型（「その ために」「しごとを して います」）を 書いて しまって いる
 //     → どれが しごとで どれが つくりかを 子どもが 見分ける 学習に ならない
+//   ・見出しや ひとことに「しごと」「つくり」と 書いて いる（どこを 読めば よいかの こたえに なる）
 //   ・しごと（k:s）2つ・つくり（k:t）5つ・その ほか（k:o）1つ より すくない
 //   ・part が その 車の 絵（car-art.js の data-part）に ない
 //   ・src（しらべた ところ）が 2つ より すくない
@@ -76,7 +77,7 @@ function checkText(id, where, html, { maxLen = 90, sentence = false } = {}) {
     if (p.length > 16 && !/ /.test(p)) E(id, `${where}: 分かち書きに なって いない「${p}」`);
     if (/その ?ために/.test(p)) E(id, `${where}: 「その ために」は 本では つかわない（子どもが じぶんで つなぐ）「${p}」`);
     if (/しごとを ?して ?います/.test(p)) E(id, `${where}: 「しごとを して います」は 本では つかわない「${p}」`);
-    if (/^(これ|それ|この|その|ここ|そこ)/.test(p)) Wn(id, `${where}: 「これ/それ/この/その」で はじまる 文は、メモに うつすと いみが とおらない「${p}」`);
+    if (/^(これ|それ|この|その|ここ|そこ)/.test(p)) Wn(id, `${where}: 「これ/それ/この/その」で はじまる 文は、1文だけ ノートに うつすと いみが とおらない「${p}」`);
   }
 }
 
@@ -88,11 +89,19 @@ for (const [id, e] of Object.entries(data)) {
   seen.add(id);
   const parts = partsOf(car);
   checkText(id, 'catch', e.catch, { maxLen: 40 });
+  // 見出しと ひとことに「しごと」「つくり」と 書くと、どこを 読めば よいかの こたえに なる
+  const noLabel = (where, html) => {
+    if (typeof html === 'string' && /しごと|つくり/.test(norm(plain(html)))) {
+      E(id, `${where}: 「しごと」「つくり」と いう ことばは 見出しに つかわない（どこが こたえかを 教えて しまう）「${norm(plain(html))}」`);
+    }
+  };
+  noLabel('catch', e.catch);
   if (!Array.isArray(e.pages) || e.pages.length < 3 || e.pages.length > 6) E(id, `pages は 3〜6（${e.pages && e.pages.length}）`);
   const cnt = { s: 0, t: 0, o: 0 }, usedParts = new Set(), texts = new Set();
   let total = 0;
   (e.pages || []).forEach((pg, i) => {
     checkText(id, `pages[${i}].h`, pg.h, { maxLen: 22 });
+    noLabel(`pages[${i}].h`, pg.h);
     if (!Array.isArray(pg.s) || pg.s.length < 2 || pg.s.length > 6) E(id, `pages[${i}].s は 2〜6（${pg.s && pg.s.length}）`);
     (pg.s || []).forEach((s, j) => {
       const w = `pages[${i}].s[${j}]`;
