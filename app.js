@@ -235,28 +235,33 @@
   /* ------------------------------------------------------------------
      えの ぶぶんの 上に ふきだしを おく（hon.js が つかう）
      ------------------------------------------------------------------ */
-  function placeCallout(svg, els, callout, stage) {
-    var minX = Infinity, maxX = -Infinity, minY = Infinity;
+  function placeCallout(els, callout, stage) {
+    /* ぶぶんが はなれた いくつかの かたち（左右の あし・ならんだ タイヤ）で できて いる ときに
+       ぜんぶの まん中に おくと、なにも ない ところを さして しまう。
+       いちばん 大きな かたちの 上に おく（おなじ くらいなら さきに かいた ほう）。
+       <g> で まとめて ある ときは、中の かたち 1つずつで くらべる（はしご車の あしは
+       左右 2本で 1つの <g>）。getBoundingClientRect は 回した <g> の 中でも
+       見た とおりの ばしょを かえす。 */
+    var shapes = [];
     els.forEach(function (e) {
-      var b;
-      try { b = e.getBBox(); } catch (err) { return; }
-      if (!b || (!b.width && !b.height)) return;
-      minX = Math.min(minX, b.x);
-      maxX = Math.max(maxX, b.x + b.width);
-      minY = Math.min(minY, b.y);
+      if (String(e.tagName).toLowerCase() === 'g') {
+        $$('rect, circle, ellipse, path, polygon, polyline, line, text', e).forEach(function (x) { shapes.push(x); });
+      } else {
+        shapes.push(e);
+      }
     });
-    if (!isFinite(minX)) return;
-
-    var ctm = svg.getScreenCTM();
-    if (!ctm) return;
-    var p = svg.createSVGPoint();
-    p.x = (minX + maxX) / 2;
-    p.y = minY;
-    var s = p.matrixTransform(ctm);
+    var best = null, bestArea = -1;
+    shapes.forEach(function (e) {
+      var r = e.getBoundingClientRect();
+      if (!r.width && !r.height) return;
+      var area = r.width * r.height;
+      if (area > bestArea * 1.05) { best = r; bestArea = area; }
+    });
+    if (!best) return;
     var host = stage.getBoundingClientRect();
 
-    var x = s.x - host.left;
-    var y = s.y - host.top;
+    var x = best.left + best.width / 2 - host.left;
+    var y = best.top - host.top;
     var half = callout.offsetWidth / 2 + 6;
     callout.style.left = Math.max(half, Math.min(host.width - half, x)) + 'px';
     callout.style.top = Math.max(callout.offsetHeight + 6, y - 6) + 'px';

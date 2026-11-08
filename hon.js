@@ -265,7 +265,7 @@
     c.innerHTML = partName(part);
     c.hidden = false;
     S.pin = part;
-    A.placeCallout(svg, els, c, stage);
+    A.placeCallout(els, c, stage);
     /* えが 見えない ところで おした ときは、光った ところを 見せる */
     var r = stage.getBoundingClientRect();
     if (r.top < 0 || r.bottom > (window.innerHeight || document.documentElement.clientHeight)) {
@@ -277,7 +277,7 @@
     if (!S || !S.pin) { return; }
     var stage = $('#page-stage'), svg = stage && stage.querySelector('svg');
     if (!svg) { return; }
-    A.placeCallout(svg, $$('[data-part="' + S.pin + '"]', svg), $('#page-callout'), stage);
+    A.placeCallout($$('[data-part="' + S.pin + '"]', svg), $('#page-callout'), stage);
   }
 
   /* ------------------------------------------------------------------
