@@ -324,6 +324,15 @@ window.photoCredits = {
     source: 'https://commons.wikimedia.org/wiki/File:%E5%8C%97%E6%B5%B7%E9%81%93%E9%96%8B%E7%99%BA%E5%B1%80_%E9%99%A4%E9%9B%AA%E8%BB%8A01.JPG',
     changes: '切りぬき・縮小・ナンバー、メーカーの マーク（前と 燃料タンク）、運転席の 人の 顔、ドアの 標章と 文字、はねの 注意書き、はねの 下の はしの 文字を ぼかし'
   },
+  blood: {
+    file: 'assets/blood.webp',
+    title: 'File:Japanese Red Cross Society Vehicle (Love Blood Donor Vehicle).jpg',
+    author: 'Haba740',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+    source: 'https://commons.wikimedia.org/wiki/File:Japanese_Red_Cross_Society_Vehicle_(Love_Blood_Donor_Vehicle).jpg',
+    changes: '切りぬき・縮小・赤十字の 標章、「日本赤十字社」「Japanese Red Cross Society」の 文字（2か所）、けんけつちゃんの 絵、寄贈した 会社の ロゴと 名まえ、「東京 愛の献血車」の 文字を 車体の 色で ぬりつぶし（絵が かかって いた とびらの ふちと つなぎめの 線は 元の 色で かきなおし）。まどに うつった 看板・電話番号の 文字（右はしの まどの 上の だんに うすく のこって いた 看板の 字も）と、左はしの 店の 看板を ぼかし'
+  },
   rescue: {
     file: 'assets/rescue.webp',
     title: 'File:TOKYO FIRE DEPT Adachi Rescue unit 1.JPG',
@@ -387,6 +396,15 @@ window.photoCredits = {
     source: 'https://commons.wikimedia.org/wiki/File:Tokyo_Metropolitan_Government_Bureau_of_Waterworks_Isuzu_Forward_FRS-J.jpg',
     changes: '縮小・運転席の 人と 制服の ワッペン、メーカーと 車種の 文字、ナンバー、水道局の 名まえと マスコット、タンクの 文字、タイヤの 文字、まわりの 看板の 文字を ぼかし'
   },
+  kitchen: {
+    file: 'assets/kitchen.webp',
+    title: 'File:Niconiconingen food truck (50515820113).jpg',
+    author: 'Real Estate Japan from Tokyo, Japan',
+    license: 'CC BY 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/2.0/',
+    source: 'https://commons.wikimedia.org/wiki/File:Niconiconingen_food_truck_(50515820113).jpg',
+    changes: '切りぬき・縮小・店名の ロゴ、QR コード、ステッカー、のぼり（旗の 布）、メニューの 黒板の 字と はった 料理の 写真を 車体や 黒板の 色で ぬりつぶし、左の まどの 中の ネオンの 字と 支払いの ステッカーを 色ガラスの 色で ぬりつぶし、右の まどの 中の OPEN の ネオンと うしろの とびらの QR コード、背景の 看板（R）を まわりの 色で ぬりつぶし、ナンバー・小さな 札・ステッカーを ぼかし。中の かべの マンガの 絵が かいて ある 古い 看板を こい 茶色で ぬりつぶし、右の まどに うつった 筆記体の 字を ぼかし'
+  },
   library: {
     file: 'assets/library.webp',
     title: 'File:Saga City Library Bookmobile Bookas.jpg',
@@ -404,6 +422,15 @@ window.photoCredits = {
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
     source: 'https://commons.wikimedia.org/wiki/File:%E7%A5%9E%E5%A7%AB%E8%A6%B3%E5%85%89%E3%83%90%E3%82%B9_6501.jpg',
     changes: '切りぬき・縮小・会社の 名まえと マーク（前の 白い 面に うすく のこる 文字の あとも）、メーカーの 文字と マーク（ホイールの まん中）、タイヤの メーカーの 文字、まどの シール（前まどの 上の 小さな シールも）、「貸切」の 文字、ナンバーを ぼかし'
+  },
+  waterworks: {
+    file: 'assets/waterworks.webp',
+    title: 'File:Moscow, Gazon Next crew truck with pump, Mosvodostok badge, Mar 2026 01.jpg',
+    author: 'Retired electrician',
+    license: 'CC0',
+    licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/',
+    source: 'https://commons.wikimedia.org/wiki/File:Moscow,_Gazon_Next_crew_truck_with_pump,_Mosvodostok_badge,_Mar_2026_01.jpg',
+    changes: '切りぬき・縮小・クレーンの メーカー名と メーカーの 白い マークを クレーンの 色で、ドアの 水道（下水）の 団体の 標章を 車体の 色で、うしろの 工事の 看板と 通りの 名まえの 標識を 下地の 色で ぬりつぶし。会社名の 文字・荷台の シール・ポンプの 文字と QR・ナンバー・ボンネットの 車種名の バッジ・どうぐばこの 小さな ラベル・うしろの 席の 人・右はしの 人を ぼかし'
   },
   shop: {
     file: 'assets/shop.webp',
