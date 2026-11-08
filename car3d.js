@@ -5726,9 +5726,8 @@ MODEL3D.blood = {
     /* ==== うんてんせき ==== */
     truckCab(B, { x: 3.55, len: 1.95, w: W, top: 3.02, floor: 0.90, color: ACC });
     B.box({ x: 2.60, y: (ROOF + FLOOR) / 2 + 0.10, z: 0, w: 0.14, h: ROOF - FLOOR, d: W, r: 0.05, color: ACC, part: 'body', rough: 0.3 });
-    /* うしろの 赤十字・クーラー・ランプ・ナンバー・マーカー */
-    B.box({ x: -L / 2 - 0.012, y: 2.30, z: 0, w: 0.02, h: 0.44, d: 0.14, r: 0.01, mat: paint(ACC, { rough: 0.3 }) });
-    B.box({ x: -L / 2 - 0.012, y: 2.30, z: 0, w: 0.02, h: 0.14, d: 0.44, r: 0.01, mat: paint(ACC, { rough: 0.3 }) });
+    /* うしろの クーラー・ランプ・ナンバー・マーカー。
+       赤十字（白地に 赤い 十字）は ほうりつで つかえる ところが きまって いるので つけない */
     B.box({ x: -0.8, y: ROOF + 0.24, z: 0, w: 2.0, h: 0.22, d: 1.55, r: 0.08, mat: paint(0xe8ecf1, { rough: 0.4 }), part: 'body' });
     tailLamps(B, { x: -L / 2 + 0.02, y: 1.24, zOff: W / 2 - 0.40 });
     plate(B, { x: -L / 2 + 0.02, y: 1.24, z: 0, axis: 'x-' });

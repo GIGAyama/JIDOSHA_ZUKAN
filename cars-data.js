@@ -312,7 +312,7 @@ window.carsData = [
     kana: 'けんけつしゃ',
     category: 'mamoru',
     art: 'blood',
-    photo: null
+    photo: 'assets/blood.webp'
   },
   {
     id: 'rescue',
@@ -378,7 +378,7 @@ window.carsData = [
     kana: 'キッチンカー',
     category: 'kurashi',
     art: 'kitchen',
-    photo: null
+    photo: 'assets/kitchen.webp'
   },
   {
     id: 'library',
@@ -402,7 +402,7 @@ window.carsData = [
     kana: 'すいどうこうじしゃ',
     category: 'kurashi',
     art: 'waterworks',
-    photo: null
+    photo: 'assets/waterworks.webp'
   },
   {
     id: 'shop',
