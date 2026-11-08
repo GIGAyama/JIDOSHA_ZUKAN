@@ -375,7 +375,7 @@ window.photoCredits = {
     license: 'CC BY-SA 3.0',
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
     source: 'https://commons.wikimedia.org/wiki/File:Road_cleaning_track.JPG',
-    changes: '切りぬき・縮小・運転席の 人の 顔、メーカーの 文字と エンブレム、ナンバー、役所の 名まえと マーク、車の 名まえと 作った 会社の 文字、まどの シールを ぼかし'
+    changes: '切りぬき・縮小・運転席の 人の 顔、メーカーの 文字と エンブレム、ナンバー、役所の 名まえと マーク、車の 名まえと 作った 会社の 文字（グリルの エンブレムの 下の 小さな 漢字も）、まどの シールを ぼかし'
   },
   water: {
     file: 'assets/water.webp',
@@ -402,7 +402,7 @@ window.photoCredits = {
     license: 'CC BY-SA 4.0',
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
     source: 'https://commons.wikimedia.org/wiki/File:%E7%A5%9E%E5%A7%AB%E8%A6%B3%E5%85%89%E3%83%90%E3%82%B9_6501.jpg',
-    changes: '切りぬき・縮小・会社の 名まえと マーク、メーカーの 文字と マーク（ホイールの まん中）、タイヤの メーカーの 文字、まどの シール、「貸切」の 文字、ナンバーを ぼかし'
+    changes: '切りぬき・縮小・会社の 名まえと マーク（前の 白い 面に うすく のこる 文字の あとも）、メーカーの 文字と マーク（ホイールの まん中）、タイヤの メーカーの 文字、まどの シール（前まどの 上の 小さな シールも）、「貸切」の 文字、ナンバーを ぼかし'
   },
   shop: {
     file: 'assets/shop.webp',
@@ -429,7 +429,7 @@ window.photoCredits = {
     license: 'CC BY-SA 4.0',
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
     source: 'https://commons.wikimedia.org/wiki/File:Moriyama_20210615-37.jpg',
-    changes: '切りぬき・縮小・ガス会社の 名まえと マーク、車の 文字、うしろの まどの 文字、メーカーの 標章、ナンバー、ステッカー、ホイールキャップの まん中の 標章を ぼかし'
+    changes: '切りぬき・縮小・ガス会社の 名まえと マーク、車の 文字、うしろの まどの 文字（まどの 中の 赤い 文字も）、メーカーの 標章、ナンバー、ステッカー、ホイールキャップの まん中の 標章を ぼかし'
   },
   tractor: {
     file: 'assets/tractor.webp',
@@ -492,7 +492,7 @@ window.photoCredits = {
     license: 'Public domain',
     licenseUrl: '',
     source: 'https://commons.wikimedia.org/wiki/File:JAL_Pushback_tractor01.JPG',
-    changes: '切りぬき・縮小・メーカー名と 航空会社の 標章、車の 番号、運転席の 人、ひこうきの 番号を ぼかし。右はしの 係の 人は 切りぬきで 外した'
+    changes: '切りぬき・縮小・メーカー名と 航空会社の 標章、車の 番号、運転席の 人と その 右の 黄色い ベストの ような もの、ひこうきの 番号を ぼかし。右はしの 係の 人は 切りぬきで 外した'
   },
   fueler: {
     file: 'assets/fueler.webp',
@@ -510,7 +510,7 @@ window.photoCredits = {
     license: 'CC BY-SA 4.0',
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
     source: 'https://commons.wikimedia.org/wiki/File:Narita_Airport_20190714_091950.jpg',
-    changes: '切りぬき・縮小・航空会社の 標章、車の 番号と 文字、注意書き、台の 上の 係の 人の 頭、うしろの 車の 文字を ぼかし。左上の 遠くの 車と 人は 切りぬきで 外した'
+    changes: '切りぬき・縮小・航空会社の 標章、車の 番号と 文字、注意書き、台の 上の 係の 人の 頭（フードの 前まで）と 雨がっぱの せなかの 文字、うしろの 車の 文字を ぼかし。左上の 遠くの 車と 人は 切りぬきで 外した'
   },
   stairs: {
     file: 'assets/stairs.webp',
@@ -528,7 +528,7 @@ window.photoCredits = {
     license: 'CC BY 4.0',
     licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
     source: 'https://commons.wikimedia.org/wiki/File:Reach_Stacker.jpg',
-    changes: '切りぬき・縮小・メーカーと 会社の 名まえ・ロゴ、コンテナの 番号と 文字、運転席の 人、地面の 番号を ぼかし'
+    changes: '切りぬき・縮小・メーカーと 会社の 名まえ・ロゴ、コンテナの 番号と 文字、運転席の 人（とびらの まどに 見える せなかと 頭の あたりも）、地面の 番号を ぼかし'
   },
   railcar: {
     file: 'assets/railcar.webp',
