@@ -158,6 +158,49 @@
       /* ---- 5. 写真さしかえの しくみ ---- */
       ok(W.carsData.every(function (c) { return 'photo' in c; }), 'ぜんぶの 車に photo 欄が ある');
 
+      /* 5-2. 写真には かならず でどころ（ライセンスの 条件） */
+      var PC = W.photoCredits || {}, badPC = [], LIC = /^(CC0|Public domain|CC BY(-SA)? \d(\.\d)?)$/;
+      cars.forEach(function (c) {
+        var p = PC[c.id];
+        if (!c.photo) { if (p) badPC.push(c.id + ':写真が ないのに でどころが ある'); return; }
+        if (!p) { badPC.push(c.id + ':でどころが ない'); return; }
+        if (p.file !== c.photo) badPC.push(c.id + ':file と photo が ちがう');
+        if (!LIC.test(p.license)) badPC.push(c.id + ':ライセンス ' + p.license);
+        if (!/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(p.source)) badPC.push(c.id + ':source');
+        if (!p.author || !p.title || !p.changes) badPC.push(c.id + ':撮影者・題・変更');
+        if (/CC BY/.test(p.license) && !/^https:\/\/creativecommons\.org\//.test(p.licenseUrl)) badPC.push(c.id + ':licenseUrl');
+      });
+      Object.keys(PC).forEach(function (id) { if (!cars.some(function (c) { return c.id === id; })) badPC.push(id + ':しらない 車'); });
+      ok(badPC.length === 0, '写真 ' + Object.keys(PC).length + 'まいに でどころが そろう ' + (badPC.join(' / ') || ''));
+      ok(!(cars.filter(function (c) { return c.id === 'blood'; })[0] || {}).photo, 'けんけつ車は 写真に しない（赤十字の 標章）');
+
+      var badImg = [];
+      await Promise.all(cars.filter(function (c) { return c.photo; }).map(function (c) {
+        return new Promise(function (res) {
+          var im = new Image();
+          im.onload = function () {
+            if (!im.naturalWidth || Math.max(im.naturalWidth, im.naturalHeight) > 640) badImg.push(c.id + ':' + im.naturalWidth + 'x' + im.naturalHeight);
+            res();
+          };
+          im.onerror = function () { badImg.push(c.id + ':よめない'); res(); };
+          im.src = c.photo;
+        });
+      }));
+      ok(badImg.length === 0, '写真が よめて、長辺 640px いか ' + (badImg.join(' / ') || ''));
+
+      var pcar = cars.filter(function (c) { return c.photo; })[0];
+      if (pcar) {
+        await go('#/car/' + pcar.id);
+        ok(!!$('#view-detail .photo-credit a[href^="https://commons.wikimedia.org/"]'), '①②③の ページの 写真の 下に でどころが 出る');
+        await go('#/hon/' + pcar.id);
+        ok(!!$('#view-hon .photo-credit a[href^="https://commons.wikimedia.org/"]'), '本の ページの 写真の 下に でどころが 出る');
+      }
+      var icar = cars.filter(function (c) { return !c.photo; })[0];
+      if (icar) {
+        await go('#/car/' + icar.id);
+        ok(!$('#view-detail .photo-credit'), 'イラストの 車には でどころを 出さない');
+      }
+
       /* ---- 6. ものすごい かんさつ ---- */
 
       /* 6-1. ぶひん辞書（parts-data.js）が 絵の data-part を すべて カバーするか */
