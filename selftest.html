@@ -319,7 +319,11 @@
       });
       Object.keys(PC).forEach(function (id) { if (!cars.some(function (c) { return c.id === id; })) badPC.push(id + ':しらない 車'); });
       ok(badPC.length === 0, '写真 ' + Object.keys(PC).length + 'まいに でどころが そろう ' + (badPC.join(' / ') || ''));
-      ok(!(cars.filter(function (c) { return c.id === 'blood'; })[0] || {}).photo, 'けんけつ車は 写真に しない（赤十字の 標章）');
+      /* 赤十字の 標章は ほうりつで つかえる ところが きまって いる。けんけつ車の 写真は、
+         標章を ぜんぶ 車体の 色で ぬりつぶした もの だけ（変えた ところに 書いて ある こと） */
+      var blood = cars.filter(function (c) { return c.id === 'blood'; })[0] || {};
+      ok(!blood.photo || /赤十字/.test((PC.blood || {}).changes || ''),
+        'けんけつ車の 写真は、赤十字の 標章を ぬりつぶした もの だけ');
 
       var badImg = [];
       await Promise.all(cars.filter(function (c) { return c.photo; }).map(function (c) {
