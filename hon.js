@@ -8,11 +8,28 @@
      ワークシートや ノートに じぶんの ことばで 書く。
 
    ■ わざと しない こと
-     ・「しごと」「つくり」の ラベルや 色わけ、「その ために」の 型は 出さない。
+     ・文に「しごと」「つくり」の ラベルや 色を つけて 出す こと、「その ために」の 型。
        本物の ずかんにも 書いて いない。見出しと 文から 子どもが 見つける。
-     ・文に 線を ひく ペン・あつめる メモ・カードの 書きだしの 型は 出さない。
+     ・線を ひいた 文を メモに あつめる こと、カードの 書きだしの 型。
        アプリを そうさする だけで カードが しあがって しまうので、2026-11-08 に はずした。
-       （その ときに たまって いた 線の データは app.js が 1かいだけ かたづける）
+       （その ときに たまって いた 線の データ jz.hon.* は app.js が 1かいだけ かたづける）
+
+   ■ 文に 線を ひく（2026-11-26 に 足した）
+     教科書に 線を ひく のと おなじ ように、子どもが ペンを えらんで 文を なぞると、
+     その ところに 線が ひける。どこが しごとで どこが つくりかは 子どもが きめる。
+     アプリは「あって いる」とも「ちがう」とも 言わない。線は 画面に のこる だけで、
+     どこにも あつめない（書くのは ノートや ワークシート）。
+       しごとの ペン … あおい ふとい 線
+       つくりの ペン … みどりの 2本の 線（色が 見わけにくい 子でも かたちで わかる）
+       けしゴム     … なぞった ところを けす。1かい おすと、そこに つながった 線を けす
+     ペンを えらんで いる あいだは、文の 上で ゆびを うごかしても 画面は うごかない
+     （文の そとを さわれば うごく）。もう いちど おすと ペンを しまう。
+
+   ■ 線の ほぞん
+     jz.sen.<車のid> = { <文の かぎ>: "..ssss...tt.." }
+     文の かぎは まとまりの 文字から 作り、1もじに 1つ（ふりがなの ついた ことばは
+     まとめて 1つ）、'.' か 's' か 't' を ならべる。文を 書きかえると その 線は 消える
+     （ちがう ところに 線が うつって しまう より よい）。
      ・hon-data.js の k（s / t / o）と part は、材料が そろって いるかの 検査
        （tools/check-hon.mjs）に だけ つかう。画面では つかわない。
 
@@ -104,6 +121,120 @@
   }
 
   /* ------------------------------------------------------------------
+     線を ひく — 文を 1もじずつに わける
+     ------------------------------------------------------------------ */
+  var PEN = {
+    s: { name: 'しごと' },
+    t: { name: 'つくり' }
+  };
+
+  var HINT = {
+    none: 'ペンを えらんで、<ruby>文<rt>ぶん</rt></ruby>を なぞります。',
+    s: 'しごとの <ruby>線<rt>せん</rt></ruby>。<ruby>文<rt>ぶん</rt></ruby>を なぞります。',
+    t: 'つくりの <ruby>線<rt>せん</rt></ruby>。<ruby>文<rt>ぶん</rt></ruby>を なぞります。',
+    e: 'けしたい <ruby>線<rt>せん</rt></ruby>を なぞるか、おします。',
+    clear: 'もう いちど おすと、ぜんぶ きえます。'
+  };
+
+  /* <ruby>…</ruby> は まとめて 1つ、ほかは 1もじずつ */
+  var TOKEN = /<ruby>[\s\S]*?<\/ruby>|<[^>]+>|&[#a-zA-Z0-9]+;|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\s\S]/g;
+
+  function paraSource(pg) {
+    return pg.s.map(function (s) { return s.t; }).join(' ');
+  }
+
+  function tokensOf(html) {
+    return String(html).match(TOKEN) || [];
+  }
+
+  /* 線を ひける 1つ（タグ だけの もの は かぞえない） */
+  function isMarkable(tok) {
+    return tok.charAt(0) !== '<' || tok.indexOf('<ruby>') === 0;
+  }
+
+  function countOf(html) {
+    return tokensOf(html).filter(isMarkable).length;
+  }
+
+  /* 文の かぎ（文字から 作る。ルビの よみは ふくめない） */
+  function pkey(html) {
+    var s = A.bare(html), h = 5381, i;
+    for (i = 0; i < s.length; i++) { h = ((h << 5) + h + s.charCodeAt(i)) | 0; }
+    return (h >>> 0).toString(36);
+  }
+
+  function blank(n) {
+    var a = [], i;
+    for (i = 0; i < n; i++) { a.push('.'); }
+    return a;
+  }
+
+  /* ほぞんした 線を 読む。文が かわって いたら（かずが あわない）すてる */
+  function loadSen(d) {
+    var saved = A.store.get('sen.' + S.car.id, {}), out = [];
+    if (!saved || typeof saved !== 'object' || Array.isArray(saved)) { saved = {}; }
+    d.pages.forEach(function (pg) {
+      var html = paraSource(pg), n = countOf(html), m = saved[pkey(html)];
+      out.push(typeof m === 'string' && m.length === n && /^[.st]*$/.test(m) ? m.split('') : blank(n));
+    });
+    return out;
+  }
+
+  function saveSen() {
+    var o = {}, any = false;
+    S.d.pages.forEach(function (pg, i) {
+      var m = S.sen[i].join('');
+      if (/[st]/.test(m)) { o[pkey(paraSource(pg))] = m; any = true; }
+    });
+    if (any) { A.store.set('sen.' + S.car.id, o); }
+    else { A.store.remove('sen.' + S.car.id); }
+  }
+
+  /* 文の 中身。おなじ ペンが つづく ところは 1つの <span class="sen"> に まとめる
+     （1もじずつ 線を かくと、もじの さかいめに すきまが 見える） */
+  function paraBody(pi) {
+    var marks = S.sen[pi], n = 0, open = '', out = '';
+    tokensOf(paraSource(S.d.pages[pi])).forEach(function (tok) {
+      if (isMarkable(tok)) {
+        var i = n++, k = marks[i] === 's' || marks[i] === 't' ? marks[i] : '';
+        if (k !== open) {
+          if (open) { out += '</span>'; }
+          if (k) { out += '<span class="sen is-' + k + '">'; }
+          open = k;
+        }
+        out += '<span class="ch" data-i="' + i + '">' + tok + '</span>';
+      } else {
+        out += tok;
+      }
+    });
+    return out + (open ? '</span>' : '');
+  }
+
+  function paraHTML(pg) {
+    var pi = S.d.pages.indexOf(pg);
+    return '<p class="sec__p js-p" data-pi="' + pi + '">' + paraBody(pi) + '</p>';
+  }
+
+  function penbarHTML() {
+    function tool(k, label) {
+      return '<button type="button" class="pen js-pen pen--' + k + '" data-tool="' + k + '" aria-pressed="false">' +
+        '<span class="pen__sample" aria-hidden="true"></span>' +
+        '<span class="pen__name">' + label + '</span></button>';
+    }
+    return '<div class="penbar" role="group" aria-labelledby="penbar-h">' +
+      '<p class="penbar__h"><b id="penbar-h"><span aria-hidden="true">✏️</span> <ruby>線<rt>せん</rt></ruby>を ひく</b>' +
+      '<span class="penbar__hint" id="penbar-hint" aria-live="polite">' + HINT.none + '</span></p>' +
+      '<div class="penbar__tools">' +
+      tool('s', PEN.s.name) +
+      tool('t', PEN.t.name) +
+      tool('e', 'けしゴム') +
+      '<button type="button" class="pen pen--undo js-undo" disabled><span class="pen__name">↩ もどす</span></button>' +
+      '<button type="button" class="pen pen--clear js-clear" data-label="ぜんぶ けす"><span class="pen__name">ぜんぶ けす</span></button>' +
+      '</div>' +
+      '</div>';
+  }
+
+  /* ------------------------------------------------------------------
      ページの 中身
      ------------------------------------------------------------------ */
   function audioBtn(label) {
@@ -120,7 +251,7 @@
       '<h3 class="sec__h js-h"><span>' + pg.h + '</span></h3>' +
       audioBtn(title) +
       '</div>' +
-      '<p class="sec__p js-p">' + pg.s.map(function (s) { return s.t; }).join(' ') + '</p>' +
+      paraHTML(pg) +
       '</section>';
   }
 
@@ -220,6 +351,7 @@
       '</div>' +
 
       '<div class="page__text">' +
+      penbarHTML() +
       d.pages.map(secHTML).join('') +
       '</div>' +
 
@@ -294,6 +426,159 @@
   }
 
   /* ------------------------------------------------------------------
+     線を ひく — ペンを えらぶ・なぞる・けす・もどす
+     ------------------------------------------------------------------ */
+
+  function setHint(k) {
+    var h = $('#penbar-hint');
+    if (h) { h.innerHTML = HINT[k] || HINT.none; }
+  }
+
+  function setTool(k) {
+    if (!S) { return; }
+    S.tool = (k && S.tool !== k) ? k : null;
+    $$('.js-pen', S.el).forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-tool') === S.tool));
+    });
+    var page = $('.page', S.el);
+    if (page) {
+      page.classList.toggle('is-pen', !!S.tool);
+      page.setAttribute('data-tool', S.tool || '');
+    }
+    disarmClear();
+    setHint(S.tool || 'none');
+  }
+
+  function paint(pi) {
+    var p = $('.js-p[data-pi="' + pi + '"]', S.el);
+    if (p) { p.innerHTML = paraBody(pi); }
+  }
+
+  function syncUndo() {
+    var b = $('.js-undo', S.el);
+    if (b) { b.disabled = !S.undo.length; }
+  }
+
+  /* ゆびの ところに ある 1もじ。ゆびは 文字より すこし 下に ずれやすいので、上も さがす */
+  function hitAt(p, x, y) {
+    var dy = [0, -8, 8, -16], i, el;
+    for (i = 0; i < dy.length; i++) {
+      el = document.elementFromPoint(x, y + dy[i]);
+      el = el && el.closest && el.closest('.ch');
+      if (el && p.contains(el)) { return +el.getAttribute('data-i'); }
+    }
+    return -1;
+  }
+
+  function strokeApply() {
+    var st = S.stroke, a = Math.min(st.from, st.to), b = Math.max(st.from, st.to), i;
+    var m = st.before.slice(), v = st.tool === 'e' ? '.' : st.tool;
+    for (i = a; i <= b; i++) { m[i] = v; }
+    S.sen[st.pi] = m;
+    paint(st.pi);
+  }
+
+  /* けしゴムで 1かい おした ときは、そこに つながった おなじ 色の 線を けす */
+  function eraseRun(pi, i) {
+    var m = S.sen[pi].slice(), k = m[i], a = i, b = i;
+    if (k !== 's' && k !== 't') { return false; }
+    while (a > 0 && m[a - 1] === k) { a--; }
+    while (b < m.length - 1 && m[b + 1] === k) { b++; }
+    for (; a <= b; a++) { m[a] = '.'; }
+    S.sen[pi] = m;
+    paint(pi);
+    return true;
+  }
+
+  function same(a, b) { return a.join('') === b.join(''); }
+
+  function onDown(e) {
+    if (!S || !S.tool || S.stroke || e.isPrimary === false) { return; }
+    if (e.pointerType === 'mouse' && e.button !== 0) { return; }
+    var p = e.target.closest && e.target.closest('.js-p');
+    if (!p || !S.el.contains(p)) { return; }
+    var i = hitAt(p, e.clientX, e.clientY);
+    if (i < 0) { return; }
+    e.preventDefault();
+    var pi = +p.getAttribute('data-pi');
+    S.stroke = { id: e.pointerId, p: p, pi: pi, from: i, to: i, moved: false, tool: S.tool, before: S.sen[pi].slice() };
+    try { p.setPointerCapture(e.pointerId); } catch (err) { /* なくても うごく */ }
+    if (S.tool !== 'e') { strokeApply(); }
+  }
+
+  function onMove(e) {
+    var st = S && S.stroke;
+    if (!st || e.pointerId !== st.id) { return; }
+    e.preventDefault();
+    var i = hitAt(st.p, e.clientX, e.clientY);
+    if (i < 0 || i === st.to) { return; }
+    st.to = i;
+    st.moved = true;
+    strokeApply();
+  }
+
+  function onUp(e) {
+    var st = S && S.stroke;
+    if (!st || e.pointerId !== st.id) { return; }
+    S.stroke = null;
+    if (st.tool === 'e' && !st.moved) { eraseRun(st.pi, st.from); }
+    if (!same(st.before, S.sen[st.pi])) {
+      S.undo.push([{ pi: st.pi, before: st.before }]);
+      if (S.undo.length > 50) { S.undo.shift(); }
+      saveSen();
+      syncUndo();
+    }
+  }
+
+  function onCancel(e) {
+    var st = S && S.stroke;
+    if (!st || e.pointerId !== st.id) { return; }
+    S.stroke = null;
+    S.sen[st.pi] = st.before;
+    paint(st.pi);
+  }
+
+  /* もどすは 1かいの なぞり（ぜんぶ けす なら ぜんぶ）ずつ */
+  function undo() {
+    var u = S.undo.pop();
+    if (!u) { return; }
+    u.forEach(function (x) { S.sen[x.pi] = x.before; paint(x.pi); });
+    saveSen();
+    syncUndo();
+  }
+
+  /* ぜんぶ けす は 2かい おす（まちがえて おしても すぐには きえない） */
+  function disarmClear() {
+    if (!S) { return; }
+    clearTimeout(S.clearTimer);
+    S.clearArmed = false;
+    var b = $('.js-clear', S.el);
+    if (b) { b.classList.remove('is-armed'); $('.pen__name', b).textContent = b.getAttribute('data-label'); }
+  }
+
+  function clearAll(btn) {
+    if (!S.clearArmed) {
+      S.clearArmed = true;
+      btn.classList.add('is-armed');
+      $('.pen__name', btn).textContent = 'ほんとうに けす？';
+      setHint('clear');
+      S.clearTimer = setTimeout(function () { disarmClear(); setHint(S && S.tool || 'none'); }, 4000);
+      return;
+    }
+    disarmClear();
+    var step = [];
+    S.sen.forEach(function (m, pi) {
+      if (/[st]/.test(m.join(''))) {
+        step.push({ pi: pi, before: m.slice() });
+        S.sen[pi] = blank(m.length);
+        paint(pi);
+      }
+    });
+    if (step.length) { S.undo.push(step); saveSen(); syncUndo(); }
+    setHint(S.tool || 'none');
+  }
+
+  /* ------------------------------------------------------------------
      うけつけ
      ------------------------------------------------------------------ */
   function bind(el) {
@@ -304,11 +589,20 @@
       if (!S) { return; }
       var b;
       if ((b = e.target.closest('.js-say'))) { speakSection(b); return; }
-      if ((b = e.target.closest('.js-part'))) { light(b); }
+      if ((b = e.target.closest('.js-part'))) { light(b); return; }
+      if ((b = e.target.closest('.js-pen'))) { setTool(b.getAttribute('data-tool')); return; }
+      if ((b = e.target.closest('.js-undo'))) { undo(); return; }
+      if ((b = e.target.closest('.js-clear'))) { clearAll(b); }
     });
 
+    el.addEventListener('pointerdown', onDown);
+    el.addEventListener('pointermove', onMove);
+    el.addEventListener('pointerup', onUp);
+    el.addEventListener('pointercancel', onCancel);
+    el.addEventListener('lostpointercapture', onUp);
+
     document.addEventListener('keydown', function (e) {
-      if (S && e.key === 'Escape') { clearLight(); }
+      if (S && e.key === 'Escape') { clearLight(); if (S.tool) { setTool(null); } }
     });
 
     window.addEventListener('resize', relight);
@@ -319,7 +613,8 @@
     var d = dataOf(car.id);
     if (!d) { return false; }
     unmount();
-    S = { car: car, d: d, el: el, pin: null };
+    S = { car: car, d: d, el: el, pin: null, tool: null, stroke: null, undo: [], clearArmed: false, clearTimer: 0 };
+    S.sen = loadSen(d);
     el.innerHTML = pageHTML(car, d);
     bind(el);
     return true;
@@ -328,6 +623,7 @@
   function unmount() {
     if (!S) { return; }
     clearLight();
+    clearTimeout(S.clearTimer);
     S = null;
   }
 

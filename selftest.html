@@ -39,7 +39,8 @@
        ・はじめに、むかしの きのうの データ（ペンの 線・かきうつしシート・★の えらびかた）を
          たんまつに 入れてから もういちど 読みこみ、かたづけと ひきつぎを 見る。
        ・この ずかんは「こたえ」を 出さない。①②③の こたえの ページ・教科書の 型の 文・
-         ペンと メモが どこにも 出て こない ことも 見る。
+         メモが どこにも 出て こない ことも 見る。文に 線を ひく ペンは あるが、
+         アプリが さきに 線を ひいて いる ところが ない ことを 見る。
        ===================================================================== */
     var out = [], fails = 0;
     function ok(cond, msg) {
@@ -217,11 +218,14 @@
           });
         });
 
-        /* こたえ・ペン・メモ が ない */
+        /* こたえ・メモ が ない。線を ひく ペンは ある（2026-11-26 に もどした）が、
+           線を ひくのは 子ども。アプリが さきに 線や 色を つけて いる ところは 1つも ない */
         if (ANSWER.test(text)) badAns.push(car.id + ':「' + text.match(ANSWER)[0] + '」');
-        if ($('#view-page .js-pen, #view-page .penbar, #hon-memo, #view-page .memo__frame, #btn-next, #view-page .step'))
-          badAns.push(car.id + ':ペン・メモ・①②③の のこり');
-        $$('#view-page button, #view-page h3').forEach(function (el) {
+        if ($('#hon-memo, #view-page .memo__frame, #btn-next, #view-page .step'))
+          badAns.push(car.id + ':メモ・①②③の のこり');
+        if ($$('#view-page .penbar .js-pen').length !== 3) badAns.push(car.id + ':線を ひく ペンが ない');
+        if ($('#view-page .sen, #view-page .is-s, #view-page .is-t')) badAns.push(car.id + ':ひいて いないのに 線が ある');
+        $$('#view-page button:not(.js-pen), #view-page h3').forEach(function (el) {
           var t = bare(el).trim();
           if (t === 'しごと' || t === 'つくり') badAns.push(car.id + ':ラベル「' + t + '」');
         });
@@ -268,7 +272,7 @@
         });
       }
       ok(badPage.length === 0, cars.length + 'だい ぜんぶ ページが 出る ' + badPage.slice(0, 8).join(' / '));
-      ok(badAns.length === 0, 'どの ページにも こたえ・型・ペン・メモ・しごと/つくりの ラベルが ない ' + badAns.slice(0, 8).join(' / '));
+      ok(badAns.length === 0, 'どの ページにも こたえ・型・メモ・しごと/つくりの ラベル・さきに ひいた 線が なく、線を ひく ペンが ある ' + badAns.slice(0, 8).join(' / '));
       ok(badPhoto.length === 0, '写真と 出典の 出かた ' + badPhoto.slice(0, 8).join(' / '));
       ok(badTurn.length === 0, 'まえ・つぎの ページへ めくれる ' + badTurn.slice(0, 8).join(' / '));
       ok(badChip.length === 0, 'ぶぶんの 名まえを おすと えの その ぶぶんが 光る ' + badChip.slice(0, 8).join(' / '));
@@ -280,6 +284,61 @@
       ok(!!$('#view-page .photo img') && $$('#page-stage svg .is-lit').length > 0, '写真は のこした まま、えの ほうが 光る');
       D.dispatchEvent(new W.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
       ok($$('#page-stage svg .is-lit').length === 0, 'Esc で 光りが きえる');
+
+      /* ---- 3b. 文に 線を ひく（なぞる・けす・もどす・のこる） ---- */
+      W.localStorage.removeItem('jz.sen.ladder');
+      await go('#/car/ladder');
+      var pev = function (type, el, x, y) {
+        el.dispatchEvent(new W.PointerEvent(type, {
+          bubbles: true, cancelable: true, pointerId: 7, pointerType: 'mouse', isPrimary: true,
+          button: 0, buttons: type === 'pointerup' ? 0 : 1, clientX: x, clientY: y
+        }));
+      };
+      var trace = async function (pi, i0, i1) {
+        var p = $('#view-page .js-p[data-pi="' + pi + '"]');
+        p.scrollIntoView({ block: 'center' });
+        await wait(30);
+        var ch = function (i) { return p.querySelector('.ch[data-i="' + i + '"]').getBoundingClientRect(); };
+        var a = ch(i0), b = ch(i1);
+        pev('pointerdown', D.elementFromPoint(a.left + a.width / 2, a.top + a.height / 2), a.left + a.width / 2, a.top + a.height / 2);
+        pev('pointermove', p, b.left + b.width / 2, b.top + b.height / 2);
+        pev('pointerup', p, b.left + b.width / 2, b.top + b.height / 2);
+      };
+      var nMark = function (k) { return $$('#view-page .is-' + k + ' .ch').length; };
+      await trace(0, 0, 5);
+      ok(nMark('s') === 0, 'ペンを えらぶ まえは、なぞっても 線は ひけない');
+      $('#view-page .js-pen[data-tool="s"]').click();
+      ok($('#view-page .page').classList.contains('is-pen') &&
+        $('#view-page .js-pen[data-tool="s"]').getAttribute('aria-pressed') === 'true', 'しごとの ペンを えらべる');
+      await trace(0, 2, 9);
+      ok(nMark('s') === 8, 'しごとの ペンで なぞった ところに 線（8もじ）: ' + nMark('s'));
+      $('#view-page .js-pen[data-tool="t"]').click();
+      await trace(1, 0, 4);
+      ok(nMark('t') === 5 && nMark('s') === 8, 'つくりの ペンで べつの 色の 線: ' + nMark('t'));
+      ok(!$('#view-page .js-undo').disabled, 'ひいたら「もどす」が おせる');
+      await go('#/car/truck');
+      await go('#/car/ladder');
+      ok(nMark('s') === 8 && nMark('t') === 5, 'ページを めくって もどっても 線が のこる');
+      ok(!$('#view-page .page').classList.contains('is-pen'), 'ページを ひらきなおすと ペンは しまって ある');
+      $('#view-page .js-pen[data-tool="e"]').click();
+      var tch = $('#view-page .js-p[data-pi="1"] .is-t .ch').getBoundingClientRect();
+      pev('pointerdown', D.elementFromPoint(tch.left + 3, tch.top + tch.height / 2), tch.left + 3, tch.top + tch.height / 2);
+      pev('pointerup', $('#view-page .js-p[data-pi="1"]'), tch.left + 3, tch.top + tch.height / 2);
+      ok(nMark('t') === 0 && nMark('s') === 8, 'けしゴムで おすと、その 線だけ きえる');
+      $('#view-page .js-undo').click();
+      ok(nMark('t') === 5, '「もどす」で けす まえに もどる');
+      $('#view-page .js-clear').click();
+      ok(nMark('s') === 8, '「ぜんぶ けす」は 1かい おした だけでは けさない');
+      $('#view-page .js-clear').click();
+      ok(nMark('s') + nMark('t') === 0 && W.localStorage.getItem('jz.sen.ladder') === null, '2かい おすと ぜんぶ きえ、ほぞんも のこらない');
+      $('#view-page .js-undo').click();
+      ok(nMark('s') === 8 && nMark('t') === 5, '「ぜんぶ けす」も 1かいの「もどす」で もどる');
+      var spk = $('#view-page .sec'), sbox = D.createElement('div');
+      sbox.appendChild(spk.querySelector('.js-p').cloneNode(true));
+      ok(!KANJI.test(W.jzSpeech.reading(sbox)), '線を ひいても 読み上げは ルビの よみの まま');
+      D.dispatchEvent(new W.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      ok(!$('#view-page .page').classList.contains('is-pen'), 'Esc で ペンを しまう');
+      W.localStorage.removeItem('jz.sen.ladder');
 
       /* ---- 4. しおり ---- */
       W.localStorage.setItem('jz.stars', '[]');

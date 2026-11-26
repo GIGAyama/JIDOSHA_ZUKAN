@@ -9,8 +9,9 @@
      ・写真の 出典と しらべた 資料は、とじた「おとなの かたへ」の 中（子どもには いらない）
 
    ■ つかわない もの
-     「しごと」「つくり」と いう ラベル、ペンの 色わけ、「その ために」の 型。
+     文に つけて 出す「しごと」「つくり」の ラベルや 色、「その ために」の 型。
      どれが しごとで どれが つくりかは、子どもが 文を よんで 見つける。
+     （ペンで 線を ひくのは 子ども。アプリが 色を つける ことは ない）
    ========================================================================= */
 
 .page {
@@ -20,6 +21,8 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   overflow: hidden;
+  /* clip なら「線を ひく」の おびが 画面の 上に はりつく（hidden だと はりつかない） */
+  overflow: clip;
 }
 
 /* ---------------- あたま ---------------- */
@@ -325,6 +328,159 @@
   line-height: 2.15;
 }
 
+/* ---------------- 線を ひく ----------------
+   しごと … あおい ふとい 線 ／ つくり … みどりの 2本の 線。
+   色が 見わけにくい 子でも、かたちで わかるように する。
+   1もじずつの span の 下に かくので、となりあう もじで 線が つながる。 */
+.page {
+  --pen-s: #1565c0;
+  --pen-t: #1b7a33;
+}
+
+.penbar {
+  position: sticky;
+  top: 64px;               /* うえの バー（.topbar）の 下 */
+  z-index: 5;
+  margin: 0 -8px 2px;
+  padding: 4px 8px 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 2px 10px rgba(28, 35, 51, .08);
+}
+
+.penbar__h {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 10px;
+  font-size: 14px;
+  line-height: 2.1;
+  color: var(--ink-sub);
+}
+
+.penbar__h b {
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.penbar__h rt {
+  font-size: .6em;
+}
+
+.penbar__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pen {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 4px 10px;
+  border: 2px solid var(--line-bold);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 700 16px/1.4 var(--font);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pen:hover {
+  border-color: #b9b09d;
+}
+
+.pen:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.pen__sample {
+  flex: none;
+  width: 20px;
+  height: 20px;
+}
+
+.pen--s .pen__sample {
+  background: linear-gradient(var(--pen-s), var(--pen-s)) center / 100% 5px no-repeat;
+}
+
+.pen--t .pen__sample {
+  background:
+    linear-gradient(var(--pen-t), var(--pen-t)) center calc(50% - 4px) / 100% 3px no-repeat,
+    linear-gradient(var(--pen-t), var(--pen-t)) center calc(50% + 4px) / 100% 3px no-repeat;
+}
+
+.pen--e .pen__sample::before {
+  content: '🧽';
+  content: '🧽' / '';
+  font-size: 17px;
+  line-height: 20px;
+}
+
+.pen--s[aria-pressed="true"] {
+  background: #e3eefb;
+  border-color: var(--pen-s);
+  box-shadow: inset 0 0 0 1px var(--pen-s);
+}
+
+.pen--t[aria-pressed="true"] {
+  background: #e4f3e7;
+  border-color: var(--pen-t);
+  box-shadow: inset 0 0 0 1px var(--pen-t);
+}
+
+.pen--e[aria-pressed="true"] {
+  background: #fff3d6;
+  border-color: var(--lit);
+  box-shadow: inset 0 0 0 1px var(--lit);
+}
+
+/* もどす・ぜんぶ けす は ペンと すこし はなす */
+.pen--undo {
+  margin-left: auto;
+}
+
+.pen--clear.is-armed {
+  background: #fdecec;
+  border-color: #c62828;
+  color: #a51f1f;
+}
+
+/* 線は .sen（おなじ ペンが つづく ところを まとめた span）の 下に かく。
+   下に すきまを とって、線が 文字に かからないように する
+   （inline の たての padding は 行の 高さを かえない） */
+.sen {
+  padding-bottom: .28em;
+}
+
+.sen.is-s {
+  background: linear-gradient(var(--pen-s), var(--pen-s)) left bottom / 100% 5px no-repeat;
+}
+
+.sen.is-t {
+  background:
+    linear-gradient(var(--pen-t), var(--pen-t)) left bottom / 100% 3px no-repeat,
+    linear-gradient(var(--pen-t), var(--pen-t)) left calc(100% - 6px) / 100% 3px no-repeat;
+}
+
+/* ペンを もって いる あいだ: 文の 上では 画面を うごかさず、えらぶ（青い はんい）も 出さない */
+.page.is-pen .sec__p {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  cursor: crosshair;
+  /* どこを なぞれば よいかを 見せる */
+  outline: 2px dashed var(--line-bold);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
 /* まめちしきは 本の コラムの ように かこむ */
 .sec--mame {
   margin-top: 8px;
@@ -508,6 +664,9 @@
   }
 
   .photo { order: 1; }
+  /* 1れつの ときは 画面が せまいので、ペンを もって いる あいだ だけ 上に はりつける */
+  .penbar { order: 2; margin: 0; position: static; }
+  .page.is-pen .penbar { position: sticky; }
   .sec { order: 2; }
   .kazu { order: 3; }
   .zukai { order: 4; }
@@ -541,6 +700,21 @@
 @media (max-width: 560px) {
   .page__band {
     padding: 6px 12px 6px 16px;
+  }
+
+  /* ペンの おびを 2だんに おさめる（しごと・つくり・けしゴム ／ もどす・ぜんぶ けす） */
+  .penbar__tools {
+    gap: 5px;
+  }
+
+  .pen {
+    padding: 4px 8px;
+    gap: 4px;
+    font-size: 15px;
+  }
+
+  .pen__sample {
+    width: 16px;
   }
 
   .page__name {
